@@ -1,0 +1,58 @@
+import { Expression } from '../../expressions/expression';
+import { FieldExpression } from '../../expressions/field';
+import { DataType, DataTypeType } from '../../types/data-type';
+import { PipeOperator } from './pipe-operator';
+
+export class FieldOperator implements PipeOperator {
+  constructor(public readonly field: string, private readonly type: DataType = { type: DataTypeType.unknown }) {
+  }
+
+  public instantiate(input: Expression): Expression<any> {
+    return new FieldExpression(input, this.field, this.apply(input.dataType));
+  }
+
+  private apply(type: DataType): DataType {
+    const suggestion: DataType = this.applyWithoutKnownType(type);
+    return suggestion.type === DataTypeType.unknown
+      ? this.type
+      : suggestion;
+  }
+
+  private applyWithoutKnownType(type: DataType): DataType {
+    switch (type.type) {
+      case DataTypeType.object:
+        return type.fields[this.field] ?? { type: DataTypeType.undefined };
+      case DataTypeType.unknownObject:
+      case DataTypeType.unknown:
+        return { type: DataTypeType.unknown };
+      default:
+        return { type: DataTypeType.undefined };
+    }
+  }
+}
+
+export function field<TIn, TField extends keyof NonNullable<TIn> & string>(
+  field: TField
+): PipeOperator<TIn, undefined extends TIn ? NonNullable<TIn>[TField] | undefined : NonNullable<TIn>[TField]> {
+  return new FieldOperator(field);
+}
+
+// Operators defining the type of the selected field (primitive, object, or array):
+
+// export function primitiveField<TIn, TField extends keyof NonNullable<TIn> & string>(
+//   field: TField extends infer T ? IfNullablePrimitive<NonNullable<TIn>[TField], TField, never> : never
+// ): PipeOperator<TIn, undefined extends TIn ? NonNullable<TIn>[TField] | undefined : NonNullable<TIn>[TField]> {
+//   return new FieldOperator(field, { type: DataTypeType.unknownPrimitive });
+// }
+
+// export function objectField<TIn, TField extends keyof NonNullable<TIn> & string>(
+//   field: TField extends infer T ? IfNullableObject<NonNullable<TIn>[TField], TField, never> : never
+// ): PipeOperator<TIn, undefined extends TIn ? NonNullable<TIn>[TField] | undefined : NonNullable<TIn>[TField]> {
+//   return new FieldOperator(field, { type: DataTypeType.unknownObject });
+// }
+
+// export function arrayField<TIn, TField extends keyof NonNullable<TIn> & string>(
+//   field: TField extends infer T ? IfNullableArray<NonNullable<TIn>[TField], TField, never> : never
+// ): PipeOperator<TIn, undefined extends TIn ? NonNullable<TIn>[TField] | undefined : NonNullable<TIn>[TField]> {
+//   return new FieldOperator(field, { type: DataTypeType.unknownArray });
+// }
