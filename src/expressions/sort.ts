@@ -30,7 +30,8 @@ export class SortExpression implements Expression {
         const valueContext: EvaluationContext = addVariable(context, this.variableSymbol, value);
         return evaluateExpression(spec.value, valueContext);
       }),
-      this.specs.map((spec) => spec.isAscending ? 'asc' : 'desc'));
+      this.specs.map((spec) => spec.isAscending ? 'asc' : 'desc')
+    );
   }
 
 }

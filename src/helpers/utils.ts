@@ -13,7 +13,8 @@ export function createObjectFromArray<TElement, TKey extends PropertyKey>(
 export function createObjectFromArray<TElement, TKey extends PropertyKey, TValue = TElement>(
   array: TElement[],
   keyGetter: (element: TElement) => TKey,
-  valueGetter?: (element: TElement) => TValue): { [key in TKey]: TValue } {
+  valueGetter?: (element: TElement) => TValue
+): { [key in TKey]: TValue } {
   return array.reduce(
     (acc, element) => {
       acc[keyGetter(element)] = valueGetter ? valueGetter(element) : element;
@@ -73,8 +74,8 @@ export function unexpected(x: never): never {
  */
 export const expectType =
   <T>() => <U extends T>(
-    value: U,
-    shouldMatch: IfAny<
+    _value: U,
+    _shouldMatch: IfAny<
       U,
       IfAny<
         T,
@@ -86,7 +87,9 @@ export const expectType =
         'Value must have type any.',
         true
       >
-    >) => {};
+    >) => {
+    // Nothing to do.
+  };
 
 export const nameOf = <T>() => <TField extends keyof T>(field: TField) => field;
 

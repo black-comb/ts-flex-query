@@ -2,9 +2,9 @@ import { Expression } from '../../expressions/expression';
 import { FilterExpression } from '../../expressions/filter';
 import { variable } from '../../expressions/variable';
 import {
-    createQueryFromObjectValueSelector,
-    ObjectValueSelector,
-    ObjectValueSelectorType
+  createQueryFromObjectValueSelector,
+  ObjectValueSelector,
+  ObjectValueSelectorType
 } from '../../helpers/object-value-selector';
 import { DataType, DataTypeType } from '../../types/data-type';
 import { Error } from '../../types/utils';

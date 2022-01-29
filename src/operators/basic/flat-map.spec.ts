@@ -2,6 +2,7 @@ import { constant } from '../../expressions/constant';
 import { evaluateExpression } from '../../helpers/evaluate-expression';
 import { emptyContext } from '../../helpers/evaluation-context-utils';
 import { pipeExpression } from '../../helpers/pipe-expression';
+import { expectType } from '../../helpers/utils';
 import { sample1 } from '../../tests/sample-1';
 import { flatMap } from '../basic/flat-map';
 import { map } from '../basic/map';
@@ -15,10 +16,7 @@ describe('flatMap', () => {
       map('field1')
     ), emptyContext);
     expect(result).toEqual([1]);
-
-    const x: number[] = result;
-    // @ts-expect-error result is not a number.
-    const y: number = result;
+    expectType<number[]>()(result, true);
   });
 
   it('with operator', () => {
@@ -28,9 +26,6 @@ describe('flatMap', () => {
       map('field1')
     ), emptyContext);
     expect(result).toEqual([1]);
-
-    const x: number[] = result;
-    // @ts-expect-error result is not a number.
-    const y: number = result;
+    expectType<number[]>()(result, true);
   });
 });

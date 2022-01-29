@@ -7,11 +7,11 @@ import { PipeOperator } from '../basic/pipe-operator';
 import { merge, MergeOutType } from './merge';
 import { noOp } from './no-op';
 import {
-    createOperatorForSchema,
-    SchemaSpec,
-    SchemaType,
-    SpecificSchemaSpec,
-    ValidSchemaSpec
+  createOperatorForSchema,
+  SchemaSpec,
+  SchemaType,
+  SpecificSchemaSpec,
+  ValidSchemaSpec
 } from './query-schema';
 import { record, RecordOutType, RecordSpec } from './record';
 

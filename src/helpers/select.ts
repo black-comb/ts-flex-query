@@ -1,8 +1,8 @@
 import { Expression } from '../expressions/expression';
 import {
-    createQueryFromObjectValueSelector,
-    ObjectValueSelector,
-    ObjectValueSelectorType
+  createQueryFromObjectValueSelector,
+  ObjectValueSelector,
+  ObjectValueSelectorType
 } from './object-value-selector';
 
 export function select<TIn, TSelector extends ObjectValueSelector<TIn>>(

@@ -4,11 +4,11 @@ import { DataType, DataTypeType } from '../../types/data-type';
 import { PipeOperator } from './pipe-operator';
 
 export class FieldOperator implements PipeOperator {
-  constructor(public readonly field: string, private readonly type: DataType = { type: DataTypeType.unknown }) {
+  constructor(public readonly name: string, private readonly type: DataType = { type: DataTypeType.unknown }) {
   }
 
   public instantiate(input: Expression): Expression<any> {
-    return new FieldExpression(input, this.field, this.apply(input.dataType));
+    return new FieldExpression(input, this.name, this.apply(input.dataType));
   }
 
   private apply(type: DataType): DataType {
@@ -21,7 +21,7 @@ export class FieldOperator implements PipeOperator {
   private applyWithoutKnownType(type: DataType): DataType {
     switch (type.type) {
       case DataTypeType.object:
-        return type.fields[this.field] ?? { type: DataTypeType.undefined };
+        return type.fields[this.name] ?? { type: DataTypeType.undefined };
       case DataTypeType.unknownObject:
       case DataTypeType.unknown:
         return { type: DataTypeType.unknown };
@@ -32,9 +32,9 @@ export class FieldOperator implements PipeOperator {
 }
 
 export function field<TIn, TField extends keyof NonNullable<TIn> & string>(
-  field: TField
+  name: TField
 ): PipeOperator<TIn, undefined extends TIn ? NonNullable<TIn>[TField] | undefined : NonNullable<TIn>[TField]> {
-  return new FieldOperator(field);
+  return new FieldOperator(name);
 }
 
 // Operators defining the type of the selected field (primitive, object, or array):

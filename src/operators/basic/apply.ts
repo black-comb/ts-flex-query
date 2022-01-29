@@ -1,6 +1,6 @@
 import { Expression } from '../../expressions/expression';
 import {
-    createQueryFromObjectValueSelector, ObjectValueSelector, ObjectValueSelectorType
+  createQueryFromObjectValueSelector, ObjectValueSelector, ObjectValueSelectorType
 } from '../../helpers/object-value-selector';
 import { PipeOperator } from './pipe-operator';
 

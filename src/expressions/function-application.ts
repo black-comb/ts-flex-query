@@ -31,8 +31,8 @@ type ContainerMemberFunction<TContainer, TMember extends FuncFields<TContainer> 
 export function func<TContainer, TMember extends FuncFields<TContainer> & string>(
   container: TContainer,
   member: TMember,
-  ...args: TContainer extends { [TKey in TMember]: (...args: any) => any } ? ExpressionArray<Parameters<TContainer[TMember]>> : never
-): TContainer extends { [TKey in TMember]: (...args: any) => any } ? Expression<ReturnType<TContainer[TMember]>> : never {
+  ...args: TContainer extends { [TKey in TMember]: (...xs: any) => any } ? ExpressionArray<Parameters<TContainer[TMember]>> : never
+): TContainer extends { [TKey in TMember]: (...xs: any) => any } ? Expression<ReturnType<TContainer[TMember]>> : never {
   return new FunctionApplicationExpression(container, member, args) as any;
 }
 

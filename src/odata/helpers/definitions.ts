@@ -6,6 +6,11 @@ type ODataAtomicSerializable = string | symbol | number | bigint | boolean | Dat
 
 export type ODataSerializable = ODataAtomicSerializable | ODataAtomicSerializable[];
 
+export interface ODataResponse<T = any> {
+  [oDataCountField]: number;
+  value: T;
+}
+
 export interface ODataExpand {
   [field: string]: ODataRequest | null;
 }
@@ -80,17 +85,6 @@ export const oDataDataSetAggregationFunctions: {
   }
 };
 
-const oDataMethodFunctions = {
-  stringConcat: 'concat',
-  stringContains: 'contains',
-  stringStartsWith: 'startswith',
-  stringEndsWith: 'endswith',
-  stringIndexOf: 'indexof',
-  stringLength: 'length',
-  toLower: 'tolower',
-  toUpper: 'toUpper'
-};
-
 export function isODataSerializable(value: unknown): value is ODataSerializable {
   switch (typeof value) {
     case 'string':
@@ -107,6 +101,7 @@ export function isODataSerializable(value: unknown): value is ODataSerializable 
       if (Array.isArray(value)) {
         return value.every(isODataSerializable);
       }
+      return false;
     default:
       return false
   }

@@ -13,8 +13,6 @@ type ContainerSerializers<TContainer> = {
   : never
 };
 
-type EqualLengthArray<TOriginal extends unknown[], TElementType> = TOriginal extends [any, ...infer TRest] ? [TElementType, ...EqualLengthArray<TRest, TElementType>] : [];
-
 const serializers: { [TContainer in keyof typeof functionContainers]: ContainerSerializers<(typeof functionContainers)[TContainer]> } = {
   Aggregation: {
     count: (collection) => (collection ? `${collection}/` : '') + oDataDataSetAggregationFunctions.Aggregation?.count ?? '',

@@ -1,12 +1,12 @@
 import { Expression } from '../../expressions/expression';
 import {
-    SortExpression,
-    SortSpecification as ExpressionSortSpecification
+  SortExpression,
+  SortSpecification as ExpressionSortSpecification
 } from '../../expressions/sort';
 import { variable } from '../../expressions/variable';
 import {
-    createQueryFromObjectValueSelector,
-    ObjectValueSelector
+  createQueryFromObjectValueSelector,
+  ObjectValueSelector
 } from '../../helpers/object-value-selector';
 import { DataType, DataTypeType } from '../../types/data-type';
 import { PipeOperator } from './pipe-operator';

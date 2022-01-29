@@ -2,7 +2,9 @@ import { func } from '../../expressions/function-application';
 import { RecordExpression } from '../../expressions/record';
 import { Aggregation } from '../../functions/aggregation';
 import {
-    createQueryFromObjectValueSelector, ObjectValueSelector, ObjectValueSelectorType
+  createQueryFromObjectValueSelector,
+  ObjectValueSelector,
+  ObjectValueSelectorType
 } from '../../helpers/object-value-selector';
 import { QueryFactory } from '../../helpers/query-factory';
 import { PipeOperator } from '../basic/pipe-operator';
@@ -25,6 +27,7 @@ export function includeCount(
       [elementsFieldName]: elementsSelector
         ? createQueryFromObjectValueSelector(elementsSelector).instantiate(input)
         : input
-      })));
+    }))
+  );
   return q;
 }

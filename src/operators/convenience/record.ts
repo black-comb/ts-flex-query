@@ -1,6 +1,8 @@
 import { record as recordExpression } from '../../expressions/record';
 import {
-    createQueryFromObjectValueSelector, ObjectValueSelector, ObjectValueSelectorType
+  createQueryFromObjectValueSelector,
+  ObjectValueSelector,
+  ObjectValueSelectorType
 } from '../../helpers/object-value-selector';
 import { createObjectFromObject } from '../../helpers/utils';
 import { ApplyOperator } from '../basic/apply';
@@ -14,10 +16,10 @@ export type RecordOutType<TIn, TRecord extends RecordSpec> = {
   [TKey in keyof TRecord]: ObjectValueSelectorType<TIn, TRecord[TKey]>
 };
 
-export function record<TIn, TRecord extends RecordSpec<TIn>>(record: TRecord): PipeOperator<TIn, RecordOutType<TIn, TRecord>> {
+export function record<TIn, TRecord extends RecordSpec<TIn>>(spec: TRecord): PipeOperator<TIn, RecordOutType<TIn, TRecord>> {
   return new ApplyOperator(
     (input) => recordExpression(
-      createObjectFromObject(record, (value) => createQueryFromObjectValueSelector(value).instantiate(input))
+      createObjectFromObject(spec, (value) => createQueryFromObjectValueSelector(value).instantiate(input))
     )
   );
 }

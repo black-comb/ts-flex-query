@@ -28,7 +28,7 @@ describe('record', () => {
       birthday: sample1.obj2.fieldA
     });
 
-    // @ts-expect-error
+    // @ts-expect-error Access to non-existing field.
     result.notExistingField;
   });
 

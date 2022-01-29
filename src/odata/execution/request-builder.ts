@@ -5,7 +5,8 @@ import { Expression } from '../../expressions/expression';
 import { FieldExpression } from '../../expressions/field';
 import { FilterExpression } from '../../expressions/filter';
 import {
-    FunctionApplicationExpression, isFunctionApplication
+  FunctionApplicationExpression,
+  isFunctionApplication
 } from '../../expressions/function-application';
 import { GroupExpression } from '../../expressions/group';
 import { LetExpression } from '../../expressions/let';
@@ -19,12 +20,23 @@ import { Internal } from '../../functions/internal';
 import { assertIsDefined, nameOf, unexpected } from '../../helpers/utils';
 import { GroupOperator } from '../../operators/basic/group';
 import {
-    isODataPipeExpression, isODataRootExpression, ODataExpression
+  isODataPipeExpression,
+  isODataRootExpression,
+  ODataExpression
 } from '../expressions/odata-expression';
 import {
-    isODataSerializable, ODataAggregate, ODataAggregateElement, ODataApply,
-    oDataDataSetAggregationFunctions, oDataFieldAggregationFunctions, ODataFilter, ODataGroupBy,
-    ODataOrderBy, ODataRequest, ODataSerializable, SelectAndExpandRequest
+  isODataSerializable,
+  ODataAggregate,
+  ODataAggregateElement,
+  ODataApply,
+  oDataDataSetAggregationFunctions,
+  oDataFieldAggregationFunctions,
+  ODataFilter,
+  ODataGroupBy,
+  ODataOrderBy,
+  ODataRequest,
+  ODataSerializable,
+  SelectAndExpandRequest
 } from '../helpers/definitions';
 import { SerializedVariableValues } from '../serialization/types';
 import { FunctionSerializer } from './function-serializer';
@@ -73,6 +85,7 @@ export class RequestBuilder {
     }
 
     this.build(expression);
+    return undefined;
   }
 
   /** Applies the given expression to the request. Throws an error if the expression is not OData-compatible. */
@@ -159,7 +172,7 @@ export class RequestBuilder {
           apply,
           ...(this.result.apply ?? [])
         ]
-      };
+      }
     } else if (isFunctionApplication(mapBody, Internal, 'mergeObjects')) {
       RequestBuilder.assertExpectedFieldChain(mapBody.args[0], mapVariable, GroupOperator.groupValueField);
       if (!(mapBody.args[1] instanceof RecordExpression)) {
@@ -243,7 +256,8 @@ export class RequestBuilder {
           .map(([field, subRequest]) => RequestBuilder.selectAndExpandRequestToFieldArray(
             { select: [], expand: {}, ...subRequest },
             [...baseChain, field]
-          )))
+          ))
+      )
     ];
   }
 

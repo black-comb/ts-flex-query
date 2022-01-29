@@ -1,9 +1,8 @@
-import { ODataResponse } from '../../../../../mm-query/src/lib/odata';
 import { Expression } from '../../expressions/expression';
 import { ExpandRecursively } from '../../types/utils';
 import { ODataCollectionExpression } from '../expressions/odata-collection';
 import { isODataExpression } from '../expressions/odata-expression';
-import { oDataCountField } from '../helpers/definitions';
+import { oDataCountField, ODataResponse } from '../helpers/definitions';
 import { QueryTextBuilder } from '../helpers/query-text-builder';
 import { RequestBuilder } from './request-builder';
 

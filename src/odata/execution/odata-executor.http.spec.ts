@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import { sortBy, uniq } from 'lodash';
 
 import { constant } from '../../expressions/constant';

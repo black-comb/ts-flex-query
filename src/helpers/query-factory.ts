@@ -66,6 +66,7 @@ export class QueryFactory<T> {
     operator8: PipeOperator<T8, T9>,
     operator9: PipeOperator<T9, T10>
   ): PipeOperator<T, T10>;
+  // eslint-disable-next-line class-methods-use-this
   public create(...operators: PipeOperator[]): PipeOperator {
     return new CombineOperator(operators);
   }

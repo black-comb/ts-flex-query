@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import { constant } from '../expressions/constant';
 import { field } from '../operators/basic/field';
 import { querySchema } from '../operators/convenience/query-schema';

@@ -1,1 +1,1 @@
-export interface SerializedVariableValues { [key: symbol]: string | null };
+export interface SerializedVariableValues { [key: symbol]: string | null }

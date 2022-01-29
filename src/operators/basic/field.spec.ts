@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import { constant } from '../../expressions/constant';
 import { FieldExpression } from '../../expressions/field';
 import { emptyContext } from '../../helpers/evaluation-context-utils';

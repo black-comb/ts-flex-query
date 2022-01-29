@@ -1,9 +1,14 @@
+import { unexpected } from '../../helpers/utils';
 import {
-    ODataAggregateElement, ODataApply, ODataExpand, ODataOrderBy, ODataRequest
+  ODataAggregateElement,
+  ODataApply,
+  ODataExpand,
+  ODataOrderBy,
+  ODataRequest
 } from './definitions';
 
 export class QueryTextBuilder {
-  public static buildFromRequest(request: ODataRequest, partSeparator: string = '&'): string {
+  public static buildFromRequest(request: ODataRequest, partSeparator = '&'): string {
     const actualSelect = [
       ...(request.select ?? []),
       ...Object.keys(request.expand ?? {})
@@ -31,15 +36,19 @@ export class QueryTextBuilder {
 
   private static serializeApply(apply: ODataApply): string {
     switch (apply.type) {
-      case 'groupby':
+      case 'groupby': {
         const groupApply: string = QueryTextBuilder.buildApplyPart(apply.groupApply) || '';
         const groupByFields: string = apply.fields.join(',');
         return `groupby((${groupByFields})${groupApply && (',' + groupApply)})`;
-      case 'aggregate':
+      }
+      case 'aggregate': {
         const elements = apply.elements.map(QueryTextBuilder.serializeAggregateElement).join(',');
         return `aggregate(${elements})`;
+      }
       case 'filter':
         return `filter(${apply.value})`;
+      default:
+        return unexpected(apply);
     }
   }
 
@@ -58,7 +67,7 @@ export class QueryTextBuilder {
   private static buildOrderByPart(orderBy: ODataOrderBy[]): string | undefined {
     return orderBy.length
       ? orderBy
-        .map(element => `${element.field}${element.mode !== 'asc' ? ` ${element.mode}` : ''}`)
+        .map(element => `${element.field}${element.mode === 'asc' ? '' : ` ${element.mode}`}`)
         .join(',')
       : undefined;
   }

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import { constant } from '../../expressions/constant';
 import { evaluateExpression } from '../../helpers/evaluate-expression';
 import { emptyContext } from '../../helpers/evaluation-context-utils';
@@ -39,9 +41,7 @@ describe('map', () => {
     ).evaluate!(emptyContext);
     expect(result).toEqual([1]);
 
-    const x: number[] = result;
-    // @ts-expect-error result is not a number.
-    const y: number = result;
+    expectType<number[]>()(result, true);
   });
 
   it('to object and primitive field', () => {
@@ -52,9 +52,7 @@ describe('map', () => {
     ).evaluate!(emptyContext);
     expect(result).toEqual([1]);
 
-    const x: number[] = result;
-    // @ts-expect-error result is not a number.
-    const y: number = result;
+    expectType<number[]>()(result, true);
   });
 
 });
