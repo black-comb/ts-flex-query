@@ -99,5 +99,15 @@
     "no-sequences": "error",
     "no-throw-literal": "error",
     "no-undef-init": "error"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.spec.ts"],
+      "rules": {
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "no-console": "off"
+      }
+    }
+  ]
 }

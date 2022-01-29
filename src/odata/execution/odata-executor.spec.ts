@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
-
 import { constant } from '../../expressions/constant';
 import { funcs } from '../../expressions/function-application';
 import { pipeExpression } from '../../helpers/pipe-expression';

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 import { constant } from '../../expressions/constant';
 import { evaluateExpression } from '../../helpers/evaluate-expression';
 import { emptyContext } from '../../helpers/evaluation-context-utils';
