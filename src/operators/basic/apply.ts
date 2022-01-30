@@ -1,11 +1,13 @@
 import { Expression } from '../../expressions/expression';
 import {
-  createQueryFromObjectValueSelector, ObjectValueSelector, ObjectValueSelectorType
+  createQueryFromObjectValueSelector,
+  ObjectValueSelector,
+  ObjectValueSelectorType
 } from '../../helpers/object-value-selector';
 import { PipeOperator } from './pipe-operator';
 
 export class ApplyOperator implements PipeOperator {
-  constructor(private readonly f: (input: Expression<any>) => Expression) {
+  public constructor(private readonly f: (input: Expression<any>) => Expression) {
   }
 
   public instantiate(input: Expression<unknown>): Expression<any> {

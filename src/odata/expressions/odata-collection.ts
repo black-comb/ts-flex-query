@@ -5,7 +5,7 @@ export class ODataCollectionExpression implements Expression {
 
   public readonly dataType: DataType = { type: DataTypeType.array, elementType: { type: DataTypeType.unknownObject } };
 
-  constructor(public readonly name: string) {
+  public constructor(public readonly name: string) {
   }
 
 }

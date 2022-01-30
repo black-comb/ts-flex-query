@@ -11,7 +11,7 @@ import { Error } from '../../types/utils';
 import { PipeOperator } from './pipe-operator';
 
 export class FilterOperator implements PipeOperator {
-  constructor(private readonly predicate: (input: Expression<any>) => Expression<boolean>) {
+  public constructor(private readonly predicate: (input: Expression<any>) => Expression<boolean>) {
   }
 
   public instantiate(input: Expression): Expression<any> {

@@ -11,7 +11,7 @@ import { Expression } from './expression';
 export class FunctionApplicationExpression implements Expression {
   public readonly dataType: DataType = { type: DataTypeType.unknown };
 
-  constructor(
+  public constructor(
     public readonly container: Record<string, any>,
     public readonly member: string,
     public readonly args: Expression[]

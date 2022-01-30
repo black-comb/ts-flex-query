@@ -8,7 +8,7 @@ import { Expression } from './expression';
 export class RecordExpression implements Expression {
   public readonly dataType: DataType;
 
-  constructor(public readonly fields: Partial<Record<PropertyKey, Expression>>) {
+  public constructor(public readonly fields: Partial<Record<PropertyKey, Expression>>) {
     this.dataType = {
       type: DataTypeType.object,
       fields: createObjectFromObject(fields, (expr) => expr.dataType)

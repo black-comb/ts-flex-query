@@ -8,7 +8,7 @@ import { RequestBuilder } from './request-builder';
 
 export class ODataExecutor {
 
-  constructor(private readonly query: (collectionName: string, queryText: string) => Promise<ODataResponse>) {
+  public constructor(private readonly query: (collectionName: string, queryText: string) => Promise<ODataResponse>) {
   }
 
   public async execute<T>(expression: Expression<T>): Promise<ExpandRecursively<T>> {

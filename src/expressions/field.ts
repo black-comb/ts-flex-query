@@ -4,7 +4,7 @@ import { EvaluationContext } from '../types/evaluation-context';
 import { Expression } from './expression';
 
 export class FieldExpression implements Expression {
-  constructor(
+  public constructor(
     public readonly input: Expression,
     public readonly field: string,
     public readonly dataType: DataType

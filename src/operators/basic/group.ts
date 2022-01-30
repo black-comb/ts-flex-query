@@ -13,7 +13,7 @@ export class GroupOperator implements PipeOperator {
   public static readonly elementsField = 'elements';
   public static readonly groupValueField = 'key';
 
-  constructor(public readonly groupValue: (element: Expression<any>) => Expression) {
+  public constructor(public readonly groupValue: (element: Expression<any>) => Expression) {
   }
 
   public instantiate(input: Expression): Expression<any> {

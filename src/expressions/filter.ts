@@ -9,7 +9,7 @@ export class FilterExpression implements Expression {
     return this.input.dataType;
   }
 
-  constructor(
+  public constructor(
     public readonly input: Expression,
     public readonly variableSymbol: symbol,
     public readonly body: Expression<boolean>

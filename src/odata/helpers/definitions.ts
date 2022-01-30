@@ -11,9 +11,7 @@ export interface ODataResponse<T = any> {
   value: T;
 }
 
-export interface ODataExpand {
-  [field: string]: ODataRequest | null;
-}
+export type ODataExpand = Record<string, ODataRequest | null>;
 
 export interface ODataGroupBy {
   readonly type: 'groupby';

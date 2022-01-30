@@ -8,7 +8,7 @@ export class SliceExpression implements Expression {
     return this.input.dataType;
   }
 
-  constructor(
+  public constructor(
     public readonly input: Expression,
     public readonly skip: number,
     public readonly take: number

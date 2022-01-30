@@ -72,7 +72,7 @@ export function unexpected(x: never): never {
  * The second argument must be true.
  * The assertion fails if one of T and U is "any" but not both or if U does not extend T.
  */
-export const expectType =
+export const expectType:
   <T>() => <U extends T>(
     _value: U,
     _shouldMatch: IfAny<
@@ -87,11 +87,11 @@ export const expectType =
         'Value must have type any.',
         true
       >
-    >) => {
-    // Nothing to do.
-  };
+    >) => void = () => () => {
+      // Nothing to do.
+    };
 
-export const nameOf = <T>() => <TField extends keyof T>(field: TField) => field;
+export const nameOf: <T>() => <TField extends keyof T>(field: TField) => TField = () => (field) => field;
 
 export function isDefined<T>(value: T): value is Exclude<T, undefined | null> {
   return value !== undefined && value !== null;

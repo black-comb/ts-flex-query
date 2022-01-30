@@ -61,7 +61,7 @@ const serializers: { [TContainer in keyof typeof functionContainers]: ContainerS
 
 export class FunctionSerializer {
 
-  constructor(
+  public constructor(
     private readonly baseSerializer: (expr: Expression, variables: SerializedVariableValues) => string | null,
     private readonly initialVariables: SerializedVariableValues
   ) {

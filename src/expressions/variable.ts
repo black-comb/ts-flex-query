@@ -3,7 +3,7 @@ import { EvaluationContext } from '../types/evaluation-context';
 import { Expression } from './expression';
 
 export class VariableExpression implements Expression {
-  constructor(public readonly dataType: DataType, public readonly symbol: symbol) {
+  public constructor(public readonly dataType: DataType, public readonly symbol: symbol) {
   }
 
   public evaluate(context: EvaluationContext): any {

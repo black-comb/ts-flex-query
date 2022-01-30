@@ -13,7 +13,7 @@ import { PipeOperator } from './pipe-operator';
 export class FlatMapOperator implements PipeOperator {
   public static readonly inputIdentifier = Symbol('inputIdentifier');
 
-  constructor(public readonly mapper: (input: Expression<any>) => Expression) {
+  public constructor(public readonly mapper: (input: Expression<any>) => Expression) {
   }
 
   public instantiate(input: Expression): Expression<any> {

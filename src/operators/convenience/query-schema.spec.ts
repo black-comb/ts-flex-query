@@ -90,7 +90,7 @@ describe('querySchema', () => {
   });
 
   // Typing tests:
-  function testQueryResult() {
+  function testQueryResult(): void {
     const q = new QueryFactory<SampleType2[]>().create(
       querySchema([{
         fieldA: true,

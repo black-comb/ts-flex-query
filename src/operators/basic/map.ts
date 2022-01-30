@@ -10,7 +10,7 @@ import { DataType, DataTypeType } from '../../types/data-type';
 import { PipeOperator } from './pipe-operator';
 
 export class MapOperator implements PipeOperator {
-  constructor(public readonly mapper: (input: Expression<any>) => Expression) {
+  public constructor(public readonly mapper: (input: Expression<any>) => Expression) {
   }
 
   public instantiate(input: Expression): Expression<any> {

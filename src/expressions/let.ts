@@ -11,7 +11,7 @@ export class LetExpression implements Expression {
     return this.body.dataType;
   }
 
-  constructor(
+  public constructor(
     public readonly input: Expression,
     public readonly variableSymbol: symbol,
     public readonly body: Expression

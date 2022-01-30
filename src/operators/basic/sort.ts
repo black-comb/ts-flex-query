@@ -13,7 +13,7 @@ import { PipeOperator } from './pipe-operator';
 
 export class SortOperator implements PipeOperator {
 
-  constructor(public readonly specs: SortSpecification[]) {
+  public constructor(public readonly specs: SortSpecification[]) {
   }
 
   public instantiate(input: Expression): Expression<any> {

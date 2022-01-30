@@ -8,7 +8,7 @@ export class MapExpression implements Expression {
 
   public readonly dataType: DataType;
 
-  constructor(
+  public constructor(
     public readonly input: Expression,
     public readonly variableSymbol: symbol,
     public readonly body: Expression

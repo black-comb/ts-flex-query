@@ -4,7 +4,7 @@ import { DataType, DataTypeType } from '../../types/data-type';
 import { PipeOperator } from './pipe-operator';
 
 export class FieldOperator implements PipeOperator {
-  constructor(public readonly name: string, private readonly type: DataType = { type: DataTypeType.unknown }) {
+  public constructor(public readonly name: string, private readonly type: DataType = { type: DataTypeType.unknown }) {
   }
 
   public instantiate(input: Expression): Expression<any> {

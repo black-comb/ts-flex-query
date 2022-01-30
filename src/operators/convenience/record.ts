@@ -8,9 +8,7 @@ import { createObjectFromObject } from '../../helpers/utils';
 import { ApplyOperator } from '../basic/apply';
 import { PipeOperator } from '../basic/pipe-operator';
 
-export interface RecordSpec<TIn = any> {
-  [key: string]: ObjectValueSelector<TIn>;
-}
+export type RecordSpec<TIn = any> = Record<string, ObjectValueSelector<TIn>>;
 
 export type RecordOutType<TIn, TRecord extends RecordSpec> = {
   [TKey in keyof TRecord]: ObjectValueSelectorType<TIn, TRecord[TKey]>

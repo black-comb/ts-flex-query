@@ -1,1 +1,1 @@
-export interface SerializedVariableValues { [key: symbol]: string | null }
+export type SerializedVariableValues = Record<symbol, string | null>;

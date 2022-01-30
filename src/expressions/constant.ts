@@ -5,7 +5,7 @@ import { Expression } from './expression';
 export class ConstantExpression implements Expression<any> {
   public readonly dataType: DataType;
 
-  constructor(public readonly value: unknown) {
+  public constructor(public readonly value: unknown) {
     this.dataType = getDataType(value);
   }
 
