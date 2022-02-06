@@ -1,10 +1,16 @@
+import { PipeOperator } from '../../core/pipe-operator';
 import { pipeExpression } from '../../helpers/pipe-expression';
 import { QueryFactory } from '../../helpers/query-factory';
 import { field } from '../basic/field';
-import { groupBy, GroupOperator } from '../basic/group';
+import {
+  groupBy,
+  GroupOperator
+} from '../basic/group';
 import { map } from '../basic/map';
-import { PipeOperator } from '../basic/pipe-operator';
-import { merge, MergeOutType } from './merge';
+import {
+  merge,
+  MergeOutType
+} from './merge';
 import { noOp } from './no-op';
 import {
   createOperatorForSchema,
@@ -13,7 +19,11 @@ import {
   SpecificSchemaSpec,
   ValidSchemaSpec
 } from './query-schema';
-import { record, RecordOutType, RecordSpec } from './record';
+import {
+  record,
+  RecordOutType,
+  RecordSpec
+} from './record';
 
 type GroupAndAggregateOutType<TIn, TSchema extends SchemaSpec, TAggregations extends RecordSpec<TIn[]> | undefined> =
   SchemaType<TIn, TSchema> extends Record<string, any>

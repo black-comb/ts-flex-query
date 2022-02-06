@@ -1,12 +1,19 @@
 import { merge } from 'lodash';
 
+import { Expression } from '../core/expression';
 import { publicFunctionContainers } from '../functions/main';
 import { evaluateExpression } from '../helpers/evaluate-expression';
 import { createObjectFromArray } from '../helpers/utils';
-import { DataType, DataTypeType } from '../types/data-type';
+import {
+  DataType,
+  DataTypeType
+} from '../types/data-type';
 import { EvaluationContext } from '../types/evaluation-context';
-import { ExpressionArray, FuncFields, UnionToIntersection } from '../types/utils';
-import { Expression } from './expression';
+import {
+  ExpressionArray,
+  FuncFields,
+  UnionToIntersection
+} from '../types/utils';
 
 export class FunctionApplicationExpression implements Expression {
   public readonly dataType: DataType = { type: DataTypeType.unknown };

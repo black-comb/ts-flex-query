@@ -1,3 +1,4 @@
+import { PipeOperator } from '../../core/pipe-operator';
 import { letIn as letInExpression } from '../../expressions/let';
 import {
   createQueryFromObjectValueSelector,
@@ -5,7 +6,6 @@ import {
   ObjectValueSelectorType
 } from '../../helpers/object-value-selector';
 import { ApplyOperator } from '../basic/apply';
-import { PipeOperator } from '../basic/pipe-operator';
 
 export function letIn<TIn, TSelector extends ObjectValueSelector<TIn>>(
   selector: TSelector

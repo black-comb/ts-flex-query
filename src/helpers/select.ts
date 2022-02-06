@@ -1,4 +1,4 @@
-import { Expression } from '../expressions/expression';
+import { Expression } from '../core/expression';
 import {
   createQueryFromObjectValueSelector,
   ObjectValueSelector,

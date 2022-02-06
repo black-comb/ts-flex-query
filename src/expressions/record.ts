@@ -1,9 +1,12 @@
+import { Expression } from '../core/expression';
 import { evaluateExpression } from '../helpers/evaluate-expression';
 import { createObjectFromObject } from '../helpers/utils';
-import { DataType, DataTypeType } from '../types/data-type';
+import {
+  DataType,
+  DataTypeType
+} from '../types/data-type';
 import { EvaluationContext } from '../types/evaluation-context';
 import { ExpressionResultType } from '../types/expression-result-type';
-import { Expression } from './expression';
 
 export class RecordExpression implements Expression {
   public readonly dataType: DataType;

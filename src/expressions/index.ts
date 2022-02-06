@@ -1,5 +1,4 @@
 export * from './constant';
-export * from './expression';
 export * from './field';
 export * from './filter';
 export * from './flat-map';

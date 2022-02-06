@@ -1,5 +1,5 @@
+import { Expression } from '../../core/expression';
 import { ConstantExpression } from '../../expressions/constant';
-import { Expression } from '../../expressions/expression';
 import { FieldExpression } from '../../expressions/field';
 import { FilterExpression } from '../../expressions/filter';
 import { LetExpression } from '../../expressions/let';

@@ -1,8 +1,8 @@
+import { Expression } from '../core/expression';
 import { evaluateExpression } from '../helpers/evaluate-expression';
 import { addVariable } from '../helpers/evaluation-context-utils';
 import { DataType } from '../types/data-type';
 import { EvaluationContext } from '../types/evaluation-context';
-import { Expression } from './expression';
 import { VariableExpression } from './variable';
 
 export class LetExpression implements Expression {

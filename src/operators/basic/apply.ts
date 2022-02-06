@@ -1,10 +1,10 @@
-import { Expression } from '../../expressions/expression';
+import { Expression } from '../../core/expression';
+import { PipeOperator } from '../../core/pipe-operator';
 import {
   createQueryFromObjectValueSelector,
   ObjectValueSelector,
   ObjectValueSelectorType
 } from '../../helpers/object-value-selector';
-import { PipeOperator } from './pipe-operator';
 
 export class ApplyOperator implements PipeOperator {
   public constructor(private readonly f: (input: Expression<any>) => Expression) {

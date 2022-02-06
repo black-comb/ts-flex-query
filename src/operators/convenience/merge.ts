@@ -1,8 +1,8 @@
-import { Expression } from '../../expressions/expression';
+import { Expression } from '../../core/expression';
+import { PipeOperator } from '../../core/pipe-operator';
 import { func } from '../../expressions/function-application';
 import { Internal } from '../../functions/internal';
 import { apply } from '../basic/apply';
-import { PipeOperator } from '../basic/pipe-operator';
 
 export type MergeOutType<TIn extends Record<PropertyKey, any>, TObj extends Record<PropertyKey, any>> =
   {

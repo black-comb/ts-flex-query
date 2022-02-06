@@ -1,8 +1,11 @@
-import { ObjectValueSelector, ObjectValueSelectorType } from '../../helpers/object-value-selector';
+import { PipeOperator } from '../../core/pipe-operator';
+import {
+  ObjectValueSelector,
+  ObjectValueSelectorType
+} from '../../helpers/object-value-selector';
 import { QueryFactory } from '../../helpers/query-factory';
 import { apply } from '../basic/apply';
 import { map } from '../basic/map';
-import { PipeOperator } from '../basic/pipe-operator';
 
 export function aggregateValue<TIn, TValueSelector extends ObjectValueSelector<TIn>, TAggregateSelector extends ObjectValueSelector<ObjectValueSelectorType<TIn, TValueSelector>[]>>(
   valueSelector: TValueSelector,

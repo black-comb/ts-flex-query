@@ -1,7 +1,10 @@
-import { Expression } from '../../expressions/expression';
+import { Expression } from '../../core/expression';
 import { FunctionApplicationExpression } from '../../expressions/function-application';
 import { functionContainers } from '../../functions/main';
-import { ArrayOf, FuncFields } from '../../types/utils';
+import {
+  ArrayOf,
+  FuncFields
+} from '../../types/utils';
 import { oDataDataSetAggregationFunctions } from '../helpers/definitions';
 import { SerializedVariableValues } from '../serialization/types';
 

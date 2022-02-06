@@ -1,4 +1,4 @@
-import { PipeOperator } from '../operators/basic/pipe-operator';
+import { PipeOperator } from '../core/pipe-operator';
 import { ExpandRecursively } from './utils';
 
 export type QueryResultType<TQuery extends PipeOperator> =

@@ -1,7 +1,10 @@
-import { Expression } from '../../expressions/expression';
+import { Expression } from '../../core/expression';
+import { PipeOperator } from '../../core/pipe-operator';
 import { FieldExpression } from '../../expressions/field';
-import { DataType, DataTypeType } from '../../types/data-type';
-import { PipeOperator } from './pipe-operator';
+import {
+  DataType,
+  DataTypeType
+} from '../../types/data-type';
 
 export class FieldOperator implements PipeOperator {
   public constructor(public readonly name: string, private readonly type: DataType = { type: DataTypeType.unknown }) {

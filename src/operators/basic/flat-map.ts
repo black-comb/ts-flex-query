@@ -1,4 +1,5 @@
-import { Expression } from '../../expressions/expression';
+import { Expression } from '../../core/expression';
+import { PipeOperator } from '../../core/pipe-operator';
 import { FlatMapExpression } from '../../expressions/flat-map';
 import { variable } from '../../expressions/variable';
 import {
@@ -8,7 +9,6 @@ import {
 } from '../../helpers/object-value-selector';
 import { DataTypeType } from '../../types/data-type';
 import { Error } from '../../types/utils';
-import { PipeOperator } from './pipe-operator';
 
 export class FlatMapOperator implements PipeOperator {
   public static readonly inputIdentifier = Symbol('inputIdentifier');

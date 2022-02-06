@@ -1,14 +1,23 @@
-import { Expression } from '../../expressions/expression';
+import { Expression } from '../../core/expression';
+import { PipeOperator } from '../../core/pipe-operator';
 import { record } from '../../expressions/record';
 import { pipeExpression } from '../../helpers/pipe-expression';
-import { createObjectFromObject, unexpected } from '../../helpers/utils';
-import { DataType, DataTypeType } from '../../types/data-type';
+import {
+  createObjectFromObject,
+  unexpected
+} from '../../helpers/utils';
+import {
+  DataType,
+  DataTypeType
+} from '../../types/data-type';
 import { ExpressionResultType } from '../../types/expression-result-type';
-import { IfObject, IfPrimitive } from '../../types/utils';
+import {
+  IfObject,
+  IfPrimitive
+} from '../../types/utils';
 import { apply } from '../basic/apply';
 import { FieldOperator } from '../basic/field';
 import { map } from '../basic/map';
-import { PipeOperator } from '../basic/pipe-operator';
 
 // Copy primitive value to result.
 export type PrimitiveSchemaSpec = true;

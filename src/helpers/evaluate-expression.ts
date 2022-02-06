@@ -1,4 +1,4 @@
-import { Expression } from '../expressions/expression';
+import { Expression } from '../core/expression';
 import { EvaluationContext } from '../types/evaluation-context';
 import { ExpandRecursively } from '../types/utils';
 

@@ -1,7 +1,7 @@
-import { Expression } from '../expressions/expression';
+import { Expression } from '../core/expression';
+import { PipeOperator } from '../core/pipe-operator';
 import { ApplyOperator } from '../operators/basic/apply';
 import { FieldOperator } from '../operators/basic/field';
-import { PipeOperator } from '../operators/basic/pipe-operator';
 import { IfPrimitive } from '../types/utils';
 import { unexpected } from './utils';
 

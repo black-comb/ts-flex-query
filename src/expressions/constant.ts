@@ -1,6 +1,6 @@
+import { Expression } from '../core/expression';
 import { getDataType } from '../helpers/get-data-type';
 import { DataType } from '../types/data-type';
-import { Expression } from './expression';
 
 export class ConstantExpression implements Expression<any> {
   public readonly dataType: DataType;

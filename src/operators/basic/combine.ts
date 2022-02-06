@@ -1,5 +1,5 @@
-import { Expression } from '../../expressions/expression';
-import { PipeOperator } from './pipe-operator';
+import { Expression } from '../../core/expression';
+import { PipeOperator } from '../../core/pipe-operator';
 
 export class CombineOperator implements PipeOperator {
   public constructor(public readonly operators: PipeOperator[]) {

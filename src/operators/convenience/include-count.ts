@@ -1,3 +1,4 @@
+import { PipeOperator } from '../../core/pipe-operator';
 import { func } from '../../expressions/function-application';
 import { RecordExpression } from '../../expressions/record';
 import { Aggregation } from '../../functions/aggregation';
@@ -7,7 +8,6 @@ import {
   ObjectValueSelectorType
 } from '../../helpers/object-value-selector';
 import { QueryFactory } from '../../helpers/query-factory';
-import { PipeOperator } from '../basic/pipe-operator';
 import { letIn } from './let';
 
 const countFieldName = 'count';

@@ -1,13 +1,19 @@
-import { Expression } from '../../expressions/expression';
-import { GroupExpression, GroupResultType } from '../../expressions/group';
+import { Expression } from '../../core/expression';
+import { PipeOperator } from '../../core/pipe-operator';
+import {
+  GroupExpression,
+  GroupResultType
+} from '../../expressions/group';
 import { variable } from '../../expressions/variable';
 import {
   createQueryFromObjectValueSelector,
   ObjectValueSelector,
   ObjectValueSelectorType
 } from '../../helpers/object-value-selector';
-import { DataType, DataTypeType } from '../../types/data-type';
-import { PipeOperator } from './pipe-operator';
+import {
+  DataType,
+  DataTypeType
+} from '../../types/data-type';
 
 export class GroupOperator implements PipeOperator {
   public static readonly elementsField = 'elements';

@@ -1,5 +1,5 @@
+import { PipeOperator } from '../core/pipe-operator';
 import { CombineOperator } from '../operators/basic/combine';
-import { PipeOperator } from '../operators/basic/pipe-operator';
 
 export class QueryFactory<T> {
 

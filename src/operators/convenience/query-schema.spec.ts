@@ -1,5 +1,5 @@
+import { Expression } from '../../core/expression';
 import { constant } from '../../expressions/constant';
-import { Expression } from '../../expressions/expression';
 import { record } from '../../expressions/record';
 import { evaluateExpression } from '../../helpers/evaluate-expression';
 import { emptyContext } from '../../helpers/evaluation-context-utils';

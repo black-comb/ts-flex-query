@@ -1,3 +1,4 @@
+import { PipeOperator } from '../../core/pipe-operator';
 import { record as recordExpression } from '../../expressions/record';
 import {
   createQueryFromObjectValueSelector,
@@ -6,7 +7,6 @@ import {
 } from '../../helpers/object-value-selector';
 import { createObjectFromObject } from '../../helpers/utils';
 import { ApplyOperator } from '../basic/apply';
-import { PipeOperator } from '../basic/pipe-operator';
 
 export type RecordSpec<TIn = any> = Record<string, ObjectValueSelector<TIn>>;
 

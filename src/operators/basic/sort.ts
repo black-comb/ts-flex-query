@@ -1,4 +1,5 @@
-import { Expression } from '../../expressions/expression';
+import { Expression } from '../../core/expression';
+import { PipeOperator } from '../../core/pipe-operator';
 import {
   SortExpression,
   SortSpecification as ExpressionSortSpecification
@@ -8,8 +9,10 @@ import {
   createQueryFromObjectValueSelector,
   ObjectValueSelector
 } from '../../helpers/object-value-selector';
-import { DataType, DataTypeType } from '../../types/data-type';
-import { PipeOperator } from './pipe-operator';
+import {
+  DataType,
+  DataTypeType
+} from '../../types/data-type';
 
 export class SortOperator implements PipeOperator {
 

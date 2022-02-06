@@ -1,4 +1,5 @@
-import { Expression } from '../../expressions/expression';
+import { Expression } from '../../core/expression';
+import { PipeOperator } from '../../core/pipe-operator';
 import { MapExpression } from '../../expressions/map';
 import { variable } from '../../expressions/variable';
 import {
@@ -6,8 +7,10 @@ import {
   ObjectValueSelector,
   ObjectValueSelectorType
 } from '../../helpers/object-value-selector';
-import { DataType, DataTypeType } from '../../types/data-type';
-import { PipeOperator } from './pipe-operator';
+import {
+  DataType,
+  DataTypeType
+} from '../../types/data-type';
 
 export class MapOperator implements PipeOperator {
   public constructor(public readonly mapper: (input: Expression<any>) => Expression) {

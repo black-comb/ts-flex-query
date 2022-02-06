@@ -1,7 +1,10 @@
-import { flatten, isEqual } from 'lodash';
+import {
+  flatten,
+  isEqual
+} from 'lodash';
 
+import { Expression } from '../../core/expression';
 import { ConstantExpression } from '../../expressions/constant';
-import { Expression } from '../../expressions/expression';
 import { FieldExpression } from '../../expressions/field';
 import { FilterExpression } from '../../expressions/filter';
 import {
@@ -17,7 +20,11 @@ import { SortExpression } from '../../expressions/sort';
 import { VariableExpression } from '../../expressions/variable';
 import { Aggregation } from '../../functions/aggregation';
 import { Internal } from '../../functions/internal';
-import { assertIsDefined, nameOf, unexpected } from '../../helpers/utils';
+import {
+  assertIsDefined,
+  nameOf,
+  unexpected
+} from '../../helpers/utils';
 import { GroupOperator } from '../../operators/basic/group';
 import {
   isODataPipeExpression,

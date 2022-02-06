@@ -1,5 +1,5 @@
+import { Expression } from '../core/expression';
 import { ConstantExpression } from './constant';
-import { Expression } from './expression';
 import { FieldExpression } from './field';
 import { FilterExpression } from './filter';
 import { FlatMapExpression } from './flat-map';

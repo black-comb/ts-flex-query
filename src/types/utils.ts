@@ -1,4 +1,4 @@
-import { Expression } from '../expressions/expression';
+import { Expression } from '../core/expression';
 
 export type Primitive = string | number | boolean | Date | bigint;
 

@@ -1,5 +1,5 @@
-import { Expression } from '../expressions/expression';
-import { PipeOperator } from '../operators/basic/pipe-operator';
+import { Expression } from '../core/expression';
+import { PipeOperator } from '../core/pipe-operator';
 
 // type PipeArgs<TIn, TArgs extends any[]> =
 //   TArgs extends [infer TFirst, ...infer TRest]

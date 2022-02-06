@@ -1,5 +1,8 @@
-import { Expression } from '../../expressions/expression';
-import { DataType, DataTypeType } from '../../types/data-type';
+import { Expression } from '../../core/expression';
+import {
+  DataType,
+  DataTypeType
+} from '../../types/data-type';
 
 export class ODataCollectionExpression implements Expression {
 

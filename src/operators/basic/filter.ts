@@ -1,4 +1,5 @@
-import { Expression } from '../../expressions/expression';
+import { Expression } from '../../core/expression';
+import { PipeOperator } from '../../core/pipe-operator';
 import { FilterExpression } from '../../expressions/filter';
 import { variable } from '../../expressions/variable';
 import {
@@ -6,9 +7,11 @@ import {
   ObjectValueSelector,
   ObjectValueSelectorType
 } from '../../helpers/object-value-selector';
-import { DataType, DataTypeType } from '../../types/data-type';
+import {
+  DataType,
+  DataTypeType
+} from '../../types/data-type';
 import { Error } from '../../types/utils';
-import { PipeOperator } from './pipe-operator';
 
 export class FilterOperator implements PipeOperator {
   public constructor(private readonly predicate: (input: Expression<any>) => Expression<boolean>) {

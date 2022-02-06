@@ -1,6 +1,6 @@
+import { Expression } from '../core/expression';
 import { DataType } from '../types/data-type';
 import { EvaluationContext } from '../types/evaluation-context';
-import { Expression } from './expression';
 
 export class VariableExpression implements Expression {
   public constructor(public readonly dataType: DataType, public readonly symbol: symbol) {

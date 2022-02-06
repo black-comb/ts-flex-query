@@ -1,7 +1,7 @@
+import { PipeOperator } from '../../core/pipe-operator';
 import { ObjectFields } from '../../types/utils';
 import { CombineOperator } from '../basic/combine';
 import { FieldOperator } from '../basic/field';
-import { PipeOperator } from '../basic/pipe-operator';
 
 export function chain<
   TObj1,
