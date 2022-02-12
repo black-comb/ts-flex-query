@@ -1,4 +1,13 @@
-import { sortBy, uniq } from 'lodash';
+import { Axios } from 'axios';
+import {
+  sortBy,
+  uniq
+} from 'lodash';
+import {
+  firstValueFrom,
+  from,
+  switchMap
+} from 'rxjs';
 
 import { constant } from '../../expressions/constant';
 import { funcs } from '../../expressions/function-application';
@@ -41,15 +50,19 @@ const collections = {
 };
 
 describe('ODataExecutor Reference Service Tests', () => {
-  const executor = new ODataExecutor(async (collectionName, queryText) => {
+  const executor = new ODataExecutor((collectionName, queryText) => {
     console.log('OData request', collectionName, queryText);
-    const response = await fetch(`https://services.odata.org/TripPinRESTierService/(S(lxf30xinakqfcqprslqo1ph0))/${collectionName}?${queryText}`);
-    if (!response.ok) {
-      throw new Error(`Status code: ${response.status} / Response: ${await response.text()}`);
-    }
-    const result = await response.json();
-    console.log('OData response', result);
-    return result;
+    const axios = new Axios({});
+    return from(axios.get(`https://services.odata.org/TripPinRESTierService/(S(lxf30xinakqfcqprslqo1ph0))/${collectionName}?${queryText}`)).pipe(
+      switchMap(async (response) => {
+        if (response.status < 200 || response.status >= 300) {
+          throw new Error(`Status code: ${response.status} / Response: ${response.data}`);
+        }
+        const result = JSON.parse(response.data);
+        console.log('OData response', result);
+        return result;
+      })
+    );
   });
 
   it('People: select', async () => {
@@ -61,7 +74,7 @@ describe('ODataExecutor Reference Service Tests', () => {
         Gender: true
       }])
     );
-    const result = await executor.execute(expr);
+    const result = await firstValueFrom(executor.execute(expr));
 
     expect(result.length).toEqual(5);
     expect(sortBy(uniq(result.map((p) => p.Gender)))).toEqual(['Female', 'Male']);
@@ -80,7 +93,7 @@ describe('ODataExecutor Reference Service Tests', () => {
         }])
       ))
     );
-    const result = await executor.execute(expr);
+    const result = await firstValueFrom(executor.execute(expr));
 
     expect(result.elements.length).toEqual(5);
     expect(result.count).toBeGreaterThan(15);
@@ -101,7 +114,7 @@ describe('ODataExecutor Reference Service Tests', () => {
         }]
       }])
     );
-    const result = await executor.execute(expr);
+    const result = await firstValueFrom(executor.execute(expr));
 
     expect(result[0].Friends[0].Friends[0].FirstName).toBeDefined();
     expect(result[0].Friends[0].Friends[0].LastName).toBeDefined();
@@ -117,7 +130,7 @@ describe('ODataExecutor Reference Service Tests', () => {
         count: funcs.count
       })
     );
-    const result = await executor.execute(expr);
+    const result = await firstValueFrom(executor.execute(expr));
 
     expect(result.length).toBe(2);
     expect(result.map(r => r.Gender).sort()).toEqual(['Female', 'Male']);

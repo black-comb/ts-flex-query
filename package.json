@@ -7,7 +7,7 @@
     "build": "tsc -p ./tsconfig.lib.json",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
     "lint-fix": "eslint ./src --ext .js,.jsx,.ts,.tsx --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tsc -p ./tsconfig.test.json && jest --config=jest.config.ts"
   },
   "repository": {
     "type": "git",
@@ -25,10 +25,15 @@
   },
   "homepage": "https://github.com/black-comb/ts-flex-query#readme",
   "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/jest": "^27.4.0",
     "@types/lodash": "^4.14.178",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
+    "axios": "^0.25.0",
     "eslint": "^8.7.0",
+    "jest": "^27.5.1",
+    "ts-node": "^10.5.0",
     "typescript": "^4.5.5"
   },
   "dependencies": {

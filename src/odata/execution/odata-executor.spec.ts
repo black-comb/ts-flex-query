@@ -1,3 +1,5 @@
+import { of } from 'rxjs';
+
 import { constant } from '../../expressions/constant';
 import { funcs } from '../../expressions/function-application';
 import { pipeExpression } from '../../helpers/pipe-expression';
@@ -21,7 +23,7 @@ describe('ODataExecutor', () => {
   const executor = new ODataExecutor((collectionName, queryText) => {
     requests.push({ collectionName, queryText });
     console.log('OData request', collectionName, queryText);
-    return Promise.resolve({ value: [], [oDataCountField]: 0 });
+    return of({ value: [], [oDataCountField]: 0 });
   });
 
   afterEach(() => requests = []);
