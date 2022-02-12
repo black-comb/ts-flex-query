@@ -20,7 +20,9 @@ export default {
   collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  // collectCoverageFrom: undefined,
+  collectCoverageFrom: [
+    "lib/**/*.js"
+  ],
 
   // The directory where Jest should output its coverage files
   coverageDirectory: "coverage",
@@ -93,7 +95,7 @@ export default {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  // preset: undefined,
+  preset: "ts-jest",
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -118,7 +120,7 @@ export default {
 
   // A list of paths to directories that Jest should use to search for files in
   roots: [
-    "dist"
+    "lib"
   ],
 
   // Allows you to use a custom runner instead of Jest's default test runner
@@ -138,6 +140,7 @@ export default {
 
   // The test environment that will be used for testing
   // testEnvironment: "jest-environment-node",
+  testEnvironment: "node",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -148,8 +151,6 @@ export default {
   // The glob patterns Jest uses to detect test files
   testMatch: [
     "**/*.spec.js"
-    // "**/__tests__/**/*.[jt]s?(x)",
-    // "**/?(*.)+(spec|test).[tj]s?(x)"
   ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
