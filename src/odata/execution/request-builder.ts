@@ -135,7 +135,7 @@ export class RequestBuilder {
       throw new Error('No filter value was provided.');
     }
     const filter: ODataFilter = { value };
-    if (this.result.filter) {
+    if (this.result.filter || this.result.apply?.length) {
       this.result.apply = [
         { type: 'filter', ...filter },
         ...(this.result.apply ?? [])
@@ -171,6 +171,7 @@ export class RequestBuilder {
     if (!(expression.groupValue instanceof RecordExpression)) {
       throw new Error('Only records are allowed as group values.');
     }
+
     if (mapBody instanceof FieldExpression && mapBody.field === expression.groupValueField) {
       RequestBuilder.assertExpectedFieldChain(mapBody.input, mapVariable);
       const apply: ODataGroupBy = RequestBuilder.createODataApplyForGroupValue(expression.groupValue, expression.variableSymbol);
@@ -182,11 +183,12 @@ export class RequestBuilder {
       }
     } else if (isFunctionApplication(mapBody, Internal, 'mergeObjects')) {
       RequestBuilder.assertExpectedFieldChain(mapBody.args[0], mapVariable, GroupOperator.groupValueField);
-      if (!(mapBody.args[1] instanceof RecordExpression)) {
+      const mergeArgument: Expression = mapBody.args[1];
+      if (!(mergeArgument instanceof RecordExpression)) {
         throw new Error('GroupExpression is mapped to a mergeObjects application with unsupported arguments. Use the groupAndAggregate operator to support OData.');
       }
       const groupBy: ODataGroupBy = RequestBuilder.createODataApplyForGroupValue(expression.groupValue, expression.variableSymbol);
-      const aggregate: ODataAggregate = RequestBuilder.createODataApplyForAggregate(mapBody.args[1], mapVariable);
+      const aggregate: ODataAggregate = RequestBuilder.createODataApplyForAggregate(mergeArgument, mapVariable);
       let consolidatedApply: ODataApply | undefined;
       if (groupBy.fields.length) {
         groupBy.groupApply = [aggregate];
@@ -235,12 +237,13 @@ export class RequestBuilder {
         if (!aggregationFunction) {
           throw new Error(`Unsupported aggregation function: ${value.container.name}.${value.member}`);
         }
-        if (!(value.args[0] instanceof MapExpression)) {
+        const aggregationFunctionArg: Expression = value.args[0];
+        if (!(aggregationFunctionArg instanceof MapExpression)) {
           throw new Error(`Expected a MapExpression as argument for aggregation function ${value.container.name}.${value.member}.`);
         }
-        RequestBuilder.assertExpectedFieldChain(value.args[0].input, groupMapVariable, GroupOperator.elementsField);
-        const { chain, terminatingExpression } = RequestBuilder.getFieldChain(value.args[0].body);
-        if (!(terminatingExpression instanceof VariableExpression) || terminatingExpression.symbol !== value.args[0].variableSymbol) {
+        RequestBuilder.assertExpectedFieldChain(aggregationFunctionArg.input, groupMapVariable, GroupOperator.elementsField);
+        const { chain, terminatingExpression } = RequestBuilder.getFieldChain(aggregationFunctionArg.body);
+        if (!(terminatingExpression instanceof VariableExpression) || terminatingExpression.symbol !== aggregationFunctionArg.variableSymbol) {
           throw new Error(`Unsupported terminating expression for map in aggregation function argument: ${terminatingExpression.constructor.name}`);
         }
         return {
@@ -375,7 +378,7 @@ export class RequestBuilder {
       return serializer.serialize(expression);
     }
     if (expression instanceof VariableExpression) {
-      const variableValue: string | undefined | null = serializedVariableValues[expression.symbol];
+      const variableValue: string | undefined | null = (serializedVariableValues as any)[expression.symbol]; // [MaMa] Remove cast to any for TypeScript 4.5.
       if (variableValue === undefined) {
         throw new Error(`Access to undefined variable: ${expression.symbol.toString()}`);
       }

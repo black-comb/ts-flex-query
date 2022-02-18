@@ -48,7 +48,7 @@ export function createObjectFromObject<TOldKey extends PropertyKey, TOldValue, T
 ): Partial<Record<TNewKey, TNewValue>> {
   return createObjectFromArray(
     Object.entries(obj),
-    entry => keyGetter?.(entry[0] as TOldKey) ?? entry[0] as TNewKey,
+    entry => keyGetter?.(entry[0] as TOldKey) ?? entry[0] as any as TNewKey,
     entry => valueGetter(entry[1] as TOldValue, entry[0] as TOldKey)
   );
 }
