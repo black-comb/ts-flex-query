@@ -19,9 +19,9 @@ import { apply } from '../basic/apply';
 import { FieldOperator } from '../basic/field';
 import { map } from '../basic/map';
 
-// Copy primitive value to result.
-export type PrimitiveSchemaSpec = true;
-type PrimitiveQuerySchemaType<TFieldType> = TFieldType;
+// Copy value to result.
+export type IdentitySchemaSpec = true;
+type IdentitySchemaType<TFieldType> = TFieldType;
 
 // Specify schema for object.
 type ObjectSchemaSpec<T = any> = {
@@ -51,15 +51,15 @@ export type ExpressionSchemaSpec<TValue = any, TContainer = any> = TContainer ex
   : (valueExpr: Expression<TValue>, container: Expression<TContainer>) => Expression<unknown>;
 type ExpressionSchemaType<TElement, TSchema extends ExpressionSchemaSpec<TElement>> = ExpressionResultType<ReturnType<TSchema>>;
 
-export type SchemaSpec = PrimitiveSchemaSpec | ObjectSchemaSpec | ArraySchemaSpec | ExpressionSchemaSpec;
+export type SchemaSpec = IdentitySchemaSpec | ObjectSchemaSpec | ArraySchemaSpec | ExpressionSchemaSpec;
 export type SpecificSchemaSpec<T, TContainer> = (
   IfPrimitive<
     T,
-    PrimitiveSchemaSpec,
+    IdentitySchemaSpec,
     IfObject<
       T,
-      ObjectSchemaSpec<T>,
-      NonNullable<T> extends (infer TElement)[] ? ArraySchemaSpec<TElement> : never
+      IdentitySchemaSpec | ObjectSchemaSpec<T>,
+      NonNullable<T> extends (infer TElement)[] ? IdentitySchemaSpec | ArraySchemaSpec<TElement> : never
     >
   >
 ) | ExpressionSchemaSpec<T, TContainer>;
@@ -71,13 +71,13 @@ export type ValidSchemaSpec<TValue, TSchema> =
   : TSchema extends Partial<Record<string, any>> // Object schema
   ? ValidObjectSchemaSpec<TValue, TSchema>
   : TSchema extends true
-  ? IfPrimitive<TValue, TSchema, never>
+  ? TSchema
   : TSchema extends (...args: any[]) => any
   ? TSchema
   : never;
 export type SchemaType<TValue, TSchema extends SchemaSpec> =
-  TSchema extends PrimitiveSchemaSpec
-  ? PrimitiveQuerySchemaType<TValue>
+  TSchema extends IdentitySchemaSpec
+  ? IdentitySchemaType<TValue>
   : TSchema extends ObjectSchemaSpec
   ? ObjectSchemaType<TValue, TSchema>
   : TSchema extends ArraySchemaSpec
@@ -95,7 +95,7 @@ export function querySchema<TIn, TSchema extends SpecificSchemaSpec<TIn, null>>(
   return createOperatorForSchema(schema, null);
 }
 
-function isPrimitiveSchemaSpec(schema: SchemaSpec): schema is PrimitiveSchemaSpec {
+function isPrimitiveSchemaSpec(schema: SchemaSpec): schema is IdentitySchemaSpec {
   return typeof schema === 'boolean';
 }
 

@@ -108,7 +108,8 @@ describe('querySchema', () => {
               }
             }]
           }]
-        }]
+        }],
+        fieldE: true
       }])
     );
     const x: QueryResultType<typeof q> = undefined as any;
@@ -117,6 +118,7 @@ describe('querySchema', () => {
     expectType<{ field1: number }>()(x[0].fieldB, true);
     expectType<{ field2: string }[]>()(x[0].fieldC, true);
     expectType<number | undefined>()(x[0].fieldD[0].fieldD[0].fieldD[0].fieldB.field3, true);
+    expectType<SampleType2 | undefined>()(x[0].fieldE, true);
     // @ts-expect-error fieldD does not exist.
     x[0].fieldD[0].fieldD[0].fieldD[0].fieldD;
 
