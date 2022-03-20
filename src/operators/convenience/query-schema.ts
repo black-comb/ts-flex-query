@@ -19,24 +19,31 @@ import {
 import { apply } from '../basic/apply';
 import { FieldOperator } from '../basic/field';
 import { map } from '../basic/map';
+import { noOp } from './no-op';
 
 // Copy primitive value to result.
 export type PrimitiveSchemaSpec = true;
 type PrimitiveQuerySchemaType<TFieldType> = TFieldType;
 
 // Specify schema for object.
-type ObjectSchemaSpec<T = any> = {
+type ExpandObjectSchemaSpec = 'expand';
+const expandObjectSchemaSpec: ExpandObjectSchemaSpec = 'expand';
+type ExplicitObjectSchemaSpec<T = any> = {
   [TKey in keyof NonNullable<T> & string]?: SpecificSchemaSpec<NonNullable<T>[TKey], T>
 };
-type NonNullableObjectSchemaType<TIn, TSchema extends ObjectSchemaSpec<TIn>> = TsFlexQueryTypeMarker<'record'> & {
-  [key in keyof TSchema]: key extends keyof NonNullable<TIn>
-  ? SchemaType<NonNullable<TIn>[key], NonNullable<TSchema[key]>>
-  : never
-};
+type ObjectSchemaSpec<T = any> = ExpandObjectSchemaSpec | ExplicitObjectSchemaSpec<T>;
+type NonNullableObjectSchemaType<TIn, TSchema extends ObjectSchemaSpec<TIn>> =
+  TSchema extends ExplicitObjectSchemaSpec<TIn>
+  ? TsFlexQueryTypeMarker<'record'> & {
+    [key in keyof TSchema]: key extends keyof NonNullable<TIn>
+    ? SchemaType<NonNullable<TIn>[key], NonNullable<TSchema[key]>>
+    : never
+  }
+  : NonNullable<TIn>;
 type ObjectSchemaType<TIn, TSchema extends ObjectSchemaSpec<TIn>> = undefined extends TIn
   ? NonNullableObjectSchemaType<TIn, TSchema> | undefined
   : NonNullableObjectSchemaType<TIn, TSchema>;
-type ValidObjectSchemaSpec<TObj, TSchema> = {
+type ValidObjectSchemaSpec<TObj, TSchema> = ExpandObjectSchemaSpec | {
   [TKey in keyof TSchema]: TKey extends keyof NonNullable<TObj> ? ValidSchemaSpec<NonNullable<TObj>[TKey], TSchema[TKey]> : never
 };
 
@@ -69,7 +76,7 @@ export type ValidSchemaSpec<TValue, TSchema> =
   ? TValue extends (infer TElement)[] | undefined
   ? [ValidObjectSchemaSpec<TElement, TObjectSchema>]
   : never
-  : TSchema extends Partial<Record<string, any>> // Object schema
+  : TSchema extends Partial<Record<string, any>> | ExpandObjectSchemaSpec // Object schema
   ? ValidObjectSchemaSpec<TValue, TSchema>
   : TSchema extends true
   ? IfPrimitive<TValue, TSchema, never>
@@ -101,7 +108,7 @@ function isPrimitiveSchemaSpec(schema: SchemaSpec): schema is PrimitiveSchemaSpe
 }
 
 function isObjectSchemaSpec(schema: SchemaSpec): schema is ObjectSchemaSpec {
-  return typeof schema === 'object' && !isArraySchemaSpec(schema);
+  return schema === expandObjectSchemaSpec || (typeof schema === 'object' && !isArraySchemaSpec(schema));
 }
 
 function isArraySchemaSpec(schema: SchemaSpec): schema is ArraySchemaSpec {
@@ -141,17 +148,19 @@ function getSchemaDataType(schema: SchemaSpec): DataType {
 }
 
 function doMap(objectSchema: ObjectSchemaSpec, mapOperator: (mapper: (input: Expression) => Expression) => PipeOperator): PipeOperator {
-  return mapOperator(input => record(createObjectFromObject(
-    objectSchema,
-    (subSchema, field) =>
-      pipeExpression(
-        pipeExpression(input, new FieldOperator(field, getSchemaDataType(subSchema))),
-        createOperatorForSchema(
-          subSchema,
-          input
+  return objectSchema === expandObjectSchemaSpec
+    ? noOp()
+    : mapOperator(input => record(createObjectFromObject(
+      objectSchema,
+      (subSchema, field) =>
+        pipeExpression(
+          pipeExpression(input, new FieldOperator(field, getSchemaDataType(subSchema))),
+          createOperatorForSchema(
+            subSchema,
+            input
+          )
         )
-      )
-  )));
+    )));
 }
 
 export function createOperatorForSchema(schema: SchemaSpec, container: Expression | null): PipeOperator {

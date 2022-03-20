@@ -3,6 +3,7 @@ import {
   TsFlexQueryTypeProperty
 } from './ts-flex-query-type';
 import {
+  ExpandRecursively,
   IfObject,
   IfPrimitive,
   PickPrimitiveFields
@@ -13,15 +14,15 @@ export type EvaluatedResultType<T, TExpandObjects = false> =
     T,
     T,
     T extends (infer TElement)[]
-    ? EvaluatedResultType<TElement>[]
+    ? EvaluatedResultType<TElement, TExpandObjects>[]
     : IfObject<
       T,
       T extends TsFlexQueryTypeMarker<'record'>
-      ? { [TKey in Exclude<keyof T, TsFlexQueryTypeProperty>]: EvaluatedResultType<T[TKey]> }
+      ? { [TKey in Exclude<keyof T, TsFlexQueryTypeProperty>]: EvaluatedResultType<T[TKey], TExpandObjects> }
       : T extends undefined
       ? undefined
       : TExpandObjects extends true
-      ? { [TKey in Exclude<keyof T, TsFlexQueryTypeProperty>]: EvaluatedResultType<T[TKey]> }
+      ? ExpandRecursively<Omit<T, TsFlexQueryTypeProperty>>
       :  PickPrimitiveFields<T>,
       T
     >

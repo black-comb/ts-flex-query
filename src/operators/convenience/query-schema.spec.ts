@@ -89,6 +89,25 @@ describe('querySchema', () => {
     expect(result).toEqual({ field1: { subField: 1 }, field2: 1, field3: sample1.obj1 });
   });
 
+  it('object for expanded object and array', () => {
+    const result = evaluateExpression(
+      pipeExpression(
+        constant(sample1.obj2),
+        querySchema({
+          fieldB: 'expand',
+          fieldC: ['expand']
+        })
+      ),
+      emptyContext
+    );
+
+    const expected: typeof result = {
+      fieldB: sample1.obj2.fieldB,
+      fieldC: sample1.obj2.fieldC
+    };
+    expect(result).toEqual({ fieldB: sample1.obj2.fieldB, fieldC: sample1.obj2.fieldC });
+  });
+
   // Typing tests:
   function testQueryResult(): void {
     const q = new QueryFactory<SampleType2[]>().create(

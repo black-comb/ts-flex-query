@@ -137,5 +137,25 @@ describe('ODataExecutor Reference Service Tests', () => {
     expect(result[0].count).toBeGreaterThan(5);
     expect(result[0].count).toBeGreaterThan(5);
   });
+
+  fit('People: filter and expand all', async () => {
+    const expr = pipeExpression(
+      collections.People,
+      filter((p) => funcs.startsWith(pipeExpression(p, field('FirstName')), constant('A'))),
+      querySchema([{
+        UserName: true,
+        FirstName: true,
+        Friends: [{
+          Friends: ['expand']
+        }]
+      }])
+    );
+    const result = await firstValueFrom(executor.execute(expr));
+
+    expect(result[0].Friends[0].Friends[0].FirstName).toBeDefined();
+    expect(result[0].Friends[0].Friends[0].LastName).toBeDefined();
+    expect(result[0].Friends[0].Friends[0].Age).toBeDefined();
+    expect(uniq(result.map((p) => p.FirstName[0]))).toEqual(['A']);
+  });
 });
 
