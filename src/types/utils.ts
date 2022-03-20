@@ -13,6 +13,8 @@ export type ObjectFields<TObj> = keyof TObj extends infer T ? T extends keyof TO
 export type ArrayFields<TObj> = keyof TObj extends infer T ? T extends keyof TObj ? IfArray<TObj[T], T, never> : never : never;
 export type FuncFields<TObj> = keyof TObj extends infer T ? T extends keyof TObj ? IfFunc<TObj[T], T, never> : never : never;
 
+export type PickPrimitiveFields<TObj> = Pick<TObj, PrimitiveFields<TObj>>;
+
 // expands object types one level deep
 export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
 

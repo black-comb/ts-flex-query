@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Expression } from '../../core/expression';
-import { ExpandRecursively } from '../../types/utils';
+import { EvaluatedResultType } from '../../types/evaluated-result-type';
 import { ODataCollectionExpression } from '../expressions/odata-collection';
 import { isODataExpression } from '../expressions/odata-expression';
 import {
@@ -21,7 +21,7 @@ export class ODataExecutor {
   public constructor(private readonly query: ODataExecutionFunction) {
   }
 
-  public execute<T>(expression: Expression<T>): Observable<ExpandRecursively<T>> {
+  public execute<T>(expression: Expression<T>): Observable<EvaluatedResultType<T>> {
     if (isODataExpression(expression)) {
       const builder = new RequestBuilder();
       const includeCountResult: { countFieldName: string, elementsFieldName: string } | void = builder.buildWithPossibleIncludeCount(expression);

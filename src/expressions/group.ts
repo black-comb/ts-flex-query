@@ -8,6 +8,7 @@ import {
   DataTypeType
 } from '../types/data-type';
 import { EvaluationContext } from '../types/evaluation-context';
+import { TsFlexQueryTypeMarker } from '../types/ts-flex-query-type';
 
 export class GroupExpression implements Expression {
   public readonly dataType: DataType;
@@ -50,8 +51,9 @@ export class GroupExpression implements Expression {
 }
 
 export type GroupResultType<TIn extends unknown[], TGroupValue, TElementsField extends string, TGroupValueField extends string> =
-  ({
-    [TKey in TElementsField]: TIn;
-  } & {
-    [TKey in TGroupValueField]: TGroupValue;
-  })[];
+  (TsFlexQueryTypeMarker<'record'>
+    & {
+      [TKey in TElementsField]: TIn;
+    } & {
+      [TKey in TGroupValueField]: TGroupValue;
+    })[];

@@ -11,6 +11,7 @@ import {
   DataTypeType
 } from '../../types/data-type';
 import { ExpressionResultType } from '../../types/expression-result-type';
+import { TsFlexQueryTypeMarker } from '../../types/ts-flex-query-type';
 import {
   IfObject,
   IfPrimitive
@@ -27,7 +28,7 @@ type PrimitiveQuerySchemaType<TFieldType> = TFieldType;
 type ObjectSchemaSpec<T = any> = {
   [TKey in keyof NonNullable<T> & string]?: SpecificSchemaSpec<NonNullable<T>[TKey], T>
 };
-type NonNullableObjectSchemaType<TIn, TSchema extends ObjectSchemaSpec<TIn>> = {
+type NonNullableObjectSchemaType<TIn, TSchema extends ObjectSchemaSpec<TIn>> = TsFlexQueryTypeMarker<'record'> & {
   [key in keyof TSchema]: key extends keyof NonNullable<TIn>
   ? SchemaType<NonNullable<TIn>[key], NonNullable<TSchema[key]>>
   : never

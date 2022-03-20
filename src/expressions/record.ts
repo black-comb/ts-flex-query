@@ -7,6 +7,7 @@ import {
 } from '../types/data-type';
 import { EvaluationContext } from '../types/evaluation-context';
 import { ExpressionResultType } from '../types/expression-result-type';
+import { TsFlexQueryTypeMarker } from '../types/ts-flex-query-type';
 
 export class RecordExpression implements Expression {
   public readonly dataType: DataType;
@@ -23,7 +24,7 @@ export class RecordExpression implements Expression {
   }
 }
 
-type RecordType<TFields extends Partial<Record<PropertyKey, Expression>>> = {
+type RecordType<TFields extends Partial<Record<PropertyKey, Expression>>> = TsFlexQueryTypeMarker<'record'> & {
   [field in keyof TFields]: ExpressionResultType<NonNullable<TFields[field]>>
 };
 

@@ -2,7 +2,8 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "import-newlines"
   ],
   "extends": [
     "eslint:recommended"
@@ -43,6 +44,12 @@
       "consistent"
     ],
     "grouped-accessor-pairs": "error",
+    "import-newlines/enforce": [
+      "error",
+      {
+        "items": 1
+      }
+    ],
     "indent": [
       "error",
       2,
@@ -88,7 +95,8 @@
     "no-proto": "error",
     "no-sequences": "error",
     "no-throw-literal": "error",
-    "no-undef-init": "error"
+    "no-undef-init": "error",
+    "object-curly-newline": "error"
   },
   "overrides": [
     {
@@ -156,6 +164,14 @@
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "no-console": "off"
+      }
+    },
+    {
+      "files": [
+        "*.typespec.ts"
+      ],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off"
       }
     }
   ]

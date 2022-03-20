@@ -1,18 +1,19 @@
 {
   "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 1,
   "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
   "importSorter.importStringConfiguration.tabSize": 2,
   "importSorter.sortConfiguration.customOrderingRules.rules": [
-      {
-          "type": "path",
-          "regex": "^@",
-          "orderLevel": 20
-      },
-      {
-          "type": "path",
-          "regex": "^\\.",
-          "orderLevel": 21
-      }
+    {
+      "type": "path",
+      "regex": "^@",
+      "orderLevel": 20
+    },
+    {
+      "type": "path",
+      "regex": "^\\.",
+      "orderLevel": 21
+    }
   ],
   "importSorter.sortConfiguration.joinImportPaths": false,
   "importSorter.sortConfiguration.removeUnusedImports": true

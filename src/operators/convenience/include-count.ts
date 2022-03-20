@@ -8,6 +8,7 @@ import {
   ObjectValueSelectorType
 } from '../../helpers/object-value-selector';
 import { QueryFactory } from '../../helpers/query-factory';
+import { TsFlexQueryTypeMarker } from '../../types/ts-flex-query-type';
 import { letIn } from './let';
 
 const countFieldName = 'count';
@@ -15,9 +16,9 @@ const elementsFieldName = 'elements';
 
 export function includeCount<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn>>(
   elementsSelector: TSelector
-): PipeOperator<TIn, { [countFieldName]: number, [elementsFieldName]: ObjectValueSelectorType<TIn, TSelector> }>;
+): PipeOperator<TIn, TsFlexQueryTypeMarker<'record'> & { [countFieldName]: number, [elementsFieldName]: ObjectValueSelectorType<TIn, TSelector> }>;
 export function includeCount<TIn extends unknown[]>(
-): PipeOperator<TIn, { [countFieldName]: number, [elementsFieldName]: TIn }>;
+): PipeOperator<TIn, TsFlexQueryTypeMarker<'record'> & { [countFieldName]: number, [elementsFieldName]: TIn }>;
 export function includeCount(
   elementsSelector?: ObjectValueSelector
 ): PipeOperator {

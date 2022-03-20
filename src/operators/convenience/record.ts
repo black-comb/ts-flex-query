@@ -6,11 +6,12 @@ import {
   ObjectValueSelectorType
 } from '../../helpers/object-value-selector';
 import { createObjectFromObject } from '../../helpers/utils';
+import { TsFlexQueryTypeMarker } from '../../types/ts-flex-query-type';
 import { ApplyOperator } from '../basic/apply';
 
 export type RecordSpec<TIn = any> = Record<string, ObjectValueSelector<TIn>>;
 
-export type RecordOutType<TIn, TRecord extends RecordSpec> = {
+export type RecordOutType<TIn, TRecord extends RecordSpec> = TsFlexQueryTypeMarker<'record'> & {
   [TKey in keyof TRecord]: ObjectValueSelectorType<TIn, TRecord[TKey]>
 };
 
