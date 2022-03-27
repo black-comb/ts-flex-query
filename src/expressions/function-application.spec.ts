@@ -3,7 +3,10 @@ import { evaluateExpression } from '../helpers/evaluate-expression';
 import { emptyContext } from '../helpers/evaluation-context-utils';
 import { expectType } from '../helpers/utils';
 import { constant } from './constant';
-import { func, funcs } from './function-application';
+import {
+  func,
+  funcs
+} from './function-application';
 
 describe('FunctionApplicationExpression', () => {
   it('equal', () => {

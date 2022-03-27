@@ -25,8 +25,8 @@ export class Comparison {
   public static has(v1: unknown, v2: unknown): boolean {
     return isDefined(v1) && isDefined(v2)
       && (
-        typeof v1 === 'string' && typeof v2 === 'string' && v1.split(/\s*,\s*/).includes(v2)
-        || typeof v1 === 'number' && typeof v2 === 'number' && (v1 & v2) === v2
+        (typeof v1 === 'string' && typeof v2 === 'string' && v1.split(/\s*,\s*/).includes(v2))
+        || (typeof v1 === 'number' && typeof v2 === 'number' && (v1 & v2) === v2)
       );
   }
 }

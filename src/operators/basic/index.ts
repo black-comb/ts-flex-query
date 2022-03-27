@@ -1,4 +1,5 @@
 export * from './apply';
+export * from './combine';
 export * from './field';
 export * from './filter';
 export * from './flat-map';

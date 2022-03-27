@@ -1,5 +1,6 @@
 export * from './aggregate-value';
 export * from './chain';
+export * from './func';
 export * from './group-and-aggregate';
 export * from './include-count';
 export * from './let';

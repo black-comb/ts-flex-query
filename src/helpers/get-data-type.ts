@@ -1,5 +1,11 @@
-import { DataType, DataTypeType } from '../types/data-type';
-import { createObjectFromArray, unexpected } from './utils';
+import {
+  DataType,
+  DataTypeType
+} from '../types/data-type';
+import {
+  createObjectFromArray,
+  unexpected
+} from './utils';
 
 export function getDataType(value: unknown): DataType {
   const type = typeof value;

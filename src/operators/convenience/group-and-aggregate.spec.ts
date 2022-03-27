@@ -6,8 +6,12 @@ import { pipeExpression } from '../../helpers/pipe-expression';
 import { QueryFactory } from '../../helpers/query-factory';
 import { sample1 } from '../../tests/sample-1';
 import { SampleType1 } from '../../tests/types/sample-type-1';
+import { field } from '../basic/field';
 import { aggregateValue } from './aggregate-value';
+import { func } from './func';
 import { groupAndAggregate } from './group-and-aggregate';
+import { noOp } from './no-op';
+import { value } from './value';
 
 describe('groupAndAggregate', () => {
   it('group by single-field record', () => {
@@ -15,7 +19,9 @@ describe('groupAndAggregate', () => {
       groupAndAggregate(
         { field1: true },
         {
-          field3Max: aggregateValue('field3', funcs.maximum),
+          // field3Max: aggregateValue('field3', funcs.maximum),
+          // Equivalent:
+          field3Max: aggregateValue(func('subtract', field('field3'), value(0)), func('add', value(0), func('maximum', noOp()))),
           field3Min: aggregateValue('field3', funcs.minimum),
           count: funcs.count
         }

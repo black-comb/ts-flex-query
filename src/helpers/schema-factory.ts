@@ -1,4 +1,7 @@
-import { SpecificSchemaSpec, ValidSchemaSpec } from '../operators/convenience/query-schema';
+import {
+  SpecificSchemaSpec,
+  ValidSchemaSpec
+} from '../operators/convenience/query-schema';
 
 export class SchemaFactory<T> {
 

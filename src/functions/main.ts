@@ -19,3 +19,8 @@ export const functionContainers = {
   ...publicFunctionContainers,
   Internal
 } as const;
+
+export function getContainerFunctionKeys(container: Record<string, any>): string[] {
+  return [...Object.keys(container), ...Object.getOwnPropertyNames(container)]
+    .filter((key) => typeof key === 'string' && typeof container[key] === 'function');
+}

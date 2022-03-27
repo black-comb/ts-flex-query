@@ -27,6 +27,12 @@ export class FilterOperator implements PipeOperator {
   }
 }
 
+export function filter<TIn extends unknown[]>(
+  selector: PipeOperator<TIn[number], boolean>
+): PipeOperator<TIn, TIn>;
+export function filter<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn[number]>>(
+  selector: ObjectValueSelectorType<TIn[number], TSelector> extends boolean ? TSelector : Error<'Selected value must have boolean type.'>
+): PipeOperator<TIn, TIn>;
 export function filter<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn[number]>>(
   selector: ObjectValueSelectorType<TIn[number], TSelector> extends boolean ? TSelector : Error<'Selected value must have boolean type.'>
 ): PipeOperator<TIn, TIn> {

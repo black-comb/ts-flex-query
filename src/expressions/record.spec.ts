@@ -6,10 +6,16 @@ import { field } from '../operators/basic/field';
 import { map } from '../operators/basic/map';
 import { sample1 } from '../tests/sample-1';
 import { SampleType1 } from '../tests/types/sample-type-1';
-import { DataType, DataTypeType } from '../types/data-type';
+import {
+  DataType,
+  DataTypeType
+} from '../types/data-type';
 import { constant } from './constant';
 import { MapExpression } from './map';
-import { record, RecordExpression } from './record';
+import {
+  record,
+  RecordExpression
+} from './record';
 
 describe('record', () => {
   it('map array to record', () => {

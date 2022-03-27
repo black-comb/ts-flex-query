@@ -1,7 +1,10 @@
 import { merge } from 'lodash';
 
 import { Expression } from '../core/expression';
-import { publicFunctionContainers } from '../functions/main';
+import {
+  getContainerFunctionKeys,
+  publicFunctionContainers
+} from '../functions/main';
 import { evaluateExpression } from '../helpers/evaluate-expression';
 import { createObjectFromArray } from '../helpers/utils';
 import {
@@ -53,8 +56,7 @@ function createFunctionExpressionFactory<TContainer, TMember extends FuncFields<
 function createFunctionExpressionFactories<TContainer extends Record<string, any>>(container: TContainer): {
   [TMember in FuncFields<TContainer> & string]: ContainerMemberFunction<TContainer, TMember>
 } {
-  const relevantKeys = [...Object.keys(container), ...Object.getOwnPropertyNames(container)]
-    .filter((key) => typeof key === 'string' && typeof container[key] === 'function');
+  const relevantKeys = getContainerFunctionKeys(container);
   return createObjectFromArray(
     relevantKeys,
     (key) => key,

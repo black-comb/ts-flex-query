@@ -1,4 +1,7 @@
-import { isEqual, uniqWith } from 'lodash';
+import {
+  isEqual,
+  uniqWith
+} from 'lodash';
 
 import { isDefined } from '../helpers/utils';
 

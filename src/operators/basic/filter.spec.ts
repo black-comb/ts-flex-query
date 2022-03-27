@@ -1,18 +1,20 @@
 import { constant } from '../../expressions/constant';
-import { funcs } from '../../expressions/function-application';
 import { evaluateExpression } from '../../helpers/evaluate-expression';
 import { emptyContext } from '../../helpers/evaluation-context-utils';
 import { pipeExpression } from '../../helpers/pipe-expression';
 import { QueryFactory } from '../../helpers/query-factory';
-import { select } from '../../helpers/select';
 import { sample1 } from '../../tests/sample-1';
 import { SampleType1 } from '../../tests/types/sample-type-1';
+import { not } from '../convenience/boolean';
+import { func } from '../convenience/func';
+import { value } from '../convenience/value';
+import { field } from './field';
 import { filter } from './filter';
 
 describe('filter', () => {
-  it('by equality', () => {
+  fit('by equality', () => {
     const q = new QueryFactory<SampleType1[]>().create(
-      filter((obj) => funcs.equal(select(obj, 'field1'), constant(42)))
+      filter(func('equal', field('field1'), value(42)))
     );
     const result: SampleType1[] = evaluateExpression(pipeExpression(constant(sample1.obj1s), q), emptyContext);
 
@@ -21,7 +23,7 @@ describe('filter', () => {
 
   it('by negated startsWith', () => {
     const q = new QueryFactory<SampleType1[]>().create(
-      filter((obj) => funcs.not(funcs.startsWith(select(obj, 'field2'), constant('A'))))
+      filter(not(func('startsWith', field('field2'), value('A'))))
     );
     const result: SampleType1[] = evaluateExpression(pipeExpression(constant(sample1.obj1s), q), emptyContext);
 
