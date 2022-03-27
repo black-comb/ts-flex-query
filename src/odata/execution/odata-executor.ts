@@ -18,12 +18,20 @@ export interface ODataExecutionFunction {
 
 export class ODataExecutor {
 
-  public constructor(private readonly query: ODataExecutionFunction) {
+  /**
+   * Constructor.
+   * @param query The function to execute the query against the backend.
+   * @param unexpandableFieldChains Specifies field chains which cannot be expanded. The select OData operator is used for these fields instead.
+   */
+  public constructor(
+    private readonly query: ODataExecutionFunction,
+    private readonly unexpandableFieldChains: string[][] = []
+  ) {
   }
 
   public execute<T>(expression: Expression<T>): Observable<EvaluatedResultType<T>> {
     if (isODataExpression(expression)) {
-      const builder = new RequestBuilder();
+      const builder = new RequestBuilder(this.unexpandableFieldChains);
       const includeCountResult: { countFieldName: string, elementsFieldName: string } | void = builder.buildWithPossibleIncludeCount(expression);
       const queryText: string = QueryTextBuilder.buildFromRequest(builder.result);
       const rootExpression: Expression | undefined = builder.rootExpression;

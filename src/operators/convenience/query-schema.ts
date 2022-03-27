@@ -1,6 +1,7 @@
 import { Expression } from '../../core/expression';
 import { PipeOperator } from '../../core/pipe-operator';
 import { record } from '../../expressions/record';
+import { specifyType } from '../../expressions/specify-type';
 import { pipeExpression } from '../../helpers/pipe-expression';
 import {
   createObjectFromObject,
@@ -19,7 +20,6 @@ import {
 import { apply } from '../basic/apply';
 import { FieldOperator } from '../basic/field';
 import { map } from '../basic/map';
-import { noOp } from './no-op';
 
 // Copy primitive value to result.
 export type PrimitiveSchemaSpec = true;
@@ -147,10 +147,10 @@ function getSchemaDataType(schema: SchemaSpec): DataType {
   return unexpected(schema);
 }
 
-function doMap(objectSchema: ObjectSchemaSpec, mapOperator: (mapper: (input: Expression) => Expression) => PipeOperator): PipeOperator {
+function doMap(objectSchema: ObjectSchemaSpec, mapOperator: (mapper: (input: Expression) => Expression) => PipeOperator, isArray: boolean): PipeOperator {
   return objectSchema === expandObjectSchemaSpec
-    ? noOp()
-    : mapOperator(input => record(createObjectFromObject(
+    ? apply((input) => specifyType(input, { type: isArray ? DataTypeType.unknownArray : DataTypeType.unknownObject }))
+    : mapOperator((input) => record(createObjectFromObject(
       objectSchema,
       (subSchema, field) =>
         pipeExpression(
@@ -169,11 +169,11 @@ export function createOperatorForSchema(schema: SchemaSpec, container: Expressio
   }
 
   if (isObjectSchemaSpec(schema)) {
-    return doMap(schema, apply);
+    return doMap(schema, apply, false);
   }
 
   if (isArraySchemaSpec(schema)) {
-    return doMap(schema[0], map);
+    return doMap(schema[0], map, true);
   }
 
   if (isExpressionSchemaSpec(schema)) {

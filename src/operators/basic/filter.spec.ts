@@ -12,7 +12,7 @@ import { field } from './field';
 import { filter } from './filter';
 
 describe('filter', () => {
-  fit('by equality', () => {
+  it('by equality', () => {
     const q = new QueryFactory<SampleType1[]>().create(
       filter(func('equal', field('field1'), value(42)))
     );

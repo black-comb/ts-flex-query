@@ -10,6 +10,7 @@ import { MapExpression } from './map';
 import { RecordExpression } from './record';
 import { SliceExpression } from './slice';
 import { SortExpression } from './sort';
+import { SpecifyTypeExpression } from './specify-type';
 import { VariableExpression } from './variable';
 
 export type FrameworkExpression =
@@ -24,6 +25,7 @@ export type FrameworkExpression =
   | RecordExpression
   | SliceExpression
   | SortExpression
+  | SpecifyTypeExpression
   | VariableExpression;
 
 export function isFrameworkExpression(expression: Expression): expression is FrameworkExpression {
@@ -38,5 +40,6 @@ export function isFrameworkExpression(expression: Expression): expression is Fra
     || expression instanceof RecordExpression
     || expression instanceof SliceExpression
     || expression instanceof SortExpression
+    || expression instanceof SpecifyTypeExpression
     || expression instanceof VariableExpression;
 }

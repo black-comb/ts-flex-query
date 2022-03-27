@@ -17,6 +17,7 @@ import { MapExpression } from '../../expressions/map';
 import { RecordExpression } from '../../expressions/record';
 import { SliceExpression } from '../../expressions/slice';
 import { SortExpression } from '../../expressions/sort';
+import { SpecifyTypeExpression } from '../../expressions/specify-type';
 import { VariableExpression } from '../../expressions/variable';
 import { Aggregation } from '../../functions/aggregation';
 import { Internal } from '../../functions/internal';
@@ -26,6 +27,7 @@ import {
   unexpected
 } from '../../helpers/utils';
 import { GroupOperator } from '../../operators/basic/group';
+import { DataTypeType } from '../../types';
 import {
   isODataPipeExpression,
   isODataRootExpression,
@@ -55,6 +57,13 @@ export class RequestBuilder {
   #rootExpression: ODataExpression | undefined;
   public get rootExpression(): ODataExpression | undefined {
     return this.#rootExpression;
+  }
+
+  /**
+   * Constructor.
+   * @param unexpandableFieldChains Specifies field chains which cannot be expanded. The select OData operator is used for these fields instead.
+   */
+  public constructor(public readonly unexpandableFieldChains: string[][] = []) {
   }
 
   public buildWithPossibleIncludeCount(expression: ODataExpression): { countFieldName: string, elementsFieldName: string } | void {
@@ -116,6 +125,8 @@ export class RequestBuilder {
       } else if (currentExpression instanceof SortExpression) {
         this.applySort(currentExpression);
         currentExpression = currentExpression.input;
+      } else if (currentExpression instanceof SpecifyTypeExpression) {
+        currentExpression = currentExpression.input;
       } else {
         //throw new Error(`Unsupported expression: ${currentExpression.constructor.name}`);
         unexpected(currentExpression);
@@ -162,7 +173,7 @@ export class RequestBuilder {
       throw new Error('MapExpression body must be a record.');
     }
 
-    const request = RequestBuilder.createRequestFromRecord(expression.body, expression.variableSymbol);
+    const request = this.createRequestFromRecord(expression.body, expression.variableSymbol);
     Object.assign(this.result, request);
     return expression.input;
   }
@@ -174,7 +185,7 @@ export class RequestBuilder {
 
     if (mapBody instanceof FieldExpression && mapBody.field === expression.groupValueField) {
       RequestBuilder.assertExpectedFieldChain(mapBody.input, mapVariable);
-      const apply: ODataGroupBy = RequestBuilder.createODataApplyForGroupValue(expression.groupValue, expression.variableSymbol);
+      const apply: ODataGroupBy = this.createODataApplyForGroupValue(expression.groupValue, expression.variableSymbol);
       if (apply.fields.length) {
         this.result.apply = [
           apply,
@@ -187,7 +198,7 @@ export class RequestBuilder {
       if (!(mergeArgument instanceof RecordExpression)) {
         throw new Error('GroupExpression is mapped to a mergeObjects application with unsupported arguments. Use the groupAndAggregate operator to support OData.');
       }
-      const groupBy: ODataGroupBy = RequestBuilder.createODataApplyForGroupValue(expression.groupValue, expression.variableSymbol);
+      const groupBy: ODataGroupBy = this.createODataApplyForGroupValue(expression.groupValue, expression.variableSymbol);
       const aggregate: ODataAggregate = RequestBuilder.createODataApplyForAggregate(mergeArgument, mapVariable);
       let consolidatedApply: ODataApply | undefined;
       if (groupBy.fields.length) {
@@ -208,8 +219,8 @@ export class RequestBuilder {
     return expression.input;
   }
 
-  private static createODataApplyForGroupValue(groupValue: RecordExpression, groupVariable: symbol): ODataGroupBy {
-    const recordRequest: SelectAndExpandRequest = RequestBuilder.createRequestFromRecord(groupValue, groupVariable);
+  private createODataApplyForGroupValue(groupValue: RecordExpression, groupVariable: symbol): ODataGroupBy {
+    const recordRequest: SelectAndExpandRequest = this.createRequestFromRecord(groupValue, groupVariable);
     return {
       type: 'groupby',
       fields: RequestBuilder.selectAndExpandRequestToFieldArray(recordRequest, []),
@@ -294,7 +305,7 @@ export class RequestBuilder {
     this.result.orderBy = oDataSpecs;
   }
 
-  private static createRequestFromRecord(record: RecordExpression, baseObjectVariableSymbol: symbol, ...expectedFieldChain: string[]): SelectAndExpandRequest {
+  private createRequestFromRecord(record: RecordExpression, baseObjectVariableSymbol: symbol, ...expectedFieldChain: string[]): SelectAndExpandRequest {
     const result: SelectAndExpandRequest = {
       select: [],
       expand: {}
@@ -303,38 +314,42 @@ export class RequestBuilder {
       if (!subExpression) {
         return;
       }
-      const fieldResult: ODataRequest | null = RequestBuilder.createFieldRequestFromExpression(subExpression, baseObjectVariableSymbol, ...expectedFieldChain, field);
-      if (fieldResult) {
-        result.expand[field] = fieldResult;
-      } else {
+      const fieldChain: string[] = [...expectedFieldChain, field];
+      const fieldResult: ODataRequest | 'select' | 'expand' | null = this.createFieldRequestFromExpression(subExpression, baseObjectVariableSymbol, ...fieldChain);
+      if (fieldResult === 'select' || this.unexpandableFieldChains.some((chain) => isEqual(chain, fieldChain))) {
         result.select.push(field);
+      } else {
+        result.expand[field] = fieldResult === 'expand' ? null : fieldResult;
       }
     });
     return result;
   }
 
 
-  private static createFieldRequestFromExpression(expression: Expression, baseObjectVariableSymbol: symbol, ...expectedFieldChain: string[]): ODataRequest | null {
-    if (expression instanceof FieldExpression || expression instanceof VariableExpression) {
-      RequestBuilder.assertExpectedFieldChain(expression, baseObjectVariableSymbol, ...expectedFieldChain);
-      return null;
+  private createFieldRequestFromExpression(expression: Expression, baseObjectVariableSymbol: symbol, ...expectedFieldChain: string[]): ODataRequest | 'select' | 'expand' | null {
+    const underlyingExpression: Expression = RequestBuilder.getUnderlyingExpression(expression);
+    if (underlyingExpression instanceof FieldExpression || underlyingExpression instanceof VariableExpression) {
+      RequestBuilder.assertExpectedFieldChain(underlyingExpression, baseObjectVariableSymbol, ...expectedFieldChain);
+      return [DataTypeType.object, DataTypeType.unknownObject, DataTypeType.array, DataTypeType.unknownArray].includes(expression.dataType.type)
+        ? 'expand'
+        : 'select';
     }
 
-    if (expression instanceof RecordExpression) {
-      return RequestBuilder.createRequestFromRecord(expression, baseObjectVariableSymbol, ...expectedFieldChain);
+    if (underlyingExpression instanceof RecordExpression) {
+      return this.createRequestFromRecord(underlyingExpression, baseObjectVariableSymbol, ...expectedFieldChain);
     }
 
-    if (isODataPipeExpression(expression)) {
+    if (isODataPipeExpression(underlyingExpression)) {
       const fieldRequestBuilder = new RequestBuilder();
-      fieldRequestBuilder.build(expression);
+      fieldRequestBuilder.build(underlyingExpression);
       if (!fieldRequestBuilder.rootExpression) {
-        throw new Error(`Root expression for ${expression.constructor.name} was expected.`);
+        throw new Error(`Root expression for ${underlyingExpression.constructor.name} was expected.`);
       }
       RequestBuilder.assertExpectedFieldChain(fieldRequestBuilder.rootExpression, baseObjectVariableSymbol, ...expectedFieldChain);
       return fieldRequestBuilder.result;
     }
 
-    throw new Error(`Unexpected expression: ${expression}`);
+    throw new Error(`Unexpected expression: ${underlyingExpression}`);
   }
 
   private static assertExpectedFieldChain(expression: Expression, baseObjectVariableSymbol: symbol, ...expectedFieldChain: string[]): void {
@@ -413,5 +428,9 @@ export class RequestBuilder {
       default:
         return unexpected(value);
     }
+  }
+
+  private static getUnderlyingExpression<T extends Expression>(expression: T): Exclude<T, SpecifyTypeExpression> {
+    return (expression instanceof SpecifyTypeExpression ? RequestBuilder.getUnderlyingExpression(expression.input) : expression) as Exclude<T, SpecifyTypeExpression>;
   }
 }

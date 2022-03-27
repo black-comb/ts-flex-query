@@ -7,6 +7,7 @@ import { MapExpression } from '../../expressions/map';
 import { RecordExpression } from '../../expressions/record';
 import { SliceExpression } from '../../expressions/slice';
 import { SortExpression } from '../../expressions/sort';
+import { SpecifyTypeExpression } from '../../expressions/specify-type';
 import { VariableExpression } from '../../expressions/variable';
 import { ODataCollectionExpression } from './odata-collection';
 
@@ -18,7 +19,8 @@ export type ODataPipeExpression =
   | LetExpression
   | MapExpression
   | SliceExpression
-  | SortExpression;
+  | SortExpression
+  | SpecifyTypeExpression;
 
 export type ODataExpression =
   | ConstantExpression
