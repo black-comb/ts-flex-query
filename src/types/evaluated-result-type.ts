@@ -1,3 +1,5 @@
+import { PipeOperator } from '../core';
+import { QueryResultType } from './query-result-type';
 import {
   TsFlexQueryTypeMarker,
   TsFlexQueryTypeProperty
@@ -27,3 +29,5 @@ export type EvaluatedResultType<T, TExpandObjects = false> =
       T
     >
   >;
+
+export type EvaluatedQueryType<T extends PipeOperator> = EvaluatedResultType<QueryResultType<T>>;

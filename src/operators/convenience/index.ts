@@ -1,4 +1,5 @@
 export * from './aggregate-value';
+export * from './boolean';
 export * from './chain';
 export * from './func';
 export * from './group-and-aggregate';
@@ -9,3 +10,4 @@ export * from './no-op';
 export * from './query-schema';
 export * from './record';
 export * from './slice';
+export * from './value';

@@ -160,5 +160,15 @@ describe('ODataExecutor Reference Service Tests', () => {
     expect(result[0].Friends[0].Friends[0].Age).toBeDefined();
     expect(uniq(result.map((p) => p.FirstName[0]))).toEqual(['A']);
   });
+
+  it('People: Count', async () => {
+    const expr = pipeExpression(
+      collections.People,
+      groupAndAggregate({}, { count: funcs.count })
+    );
+    const result = await firstValueFrom(executor.execute(expr));
+
+    expect(result[0].count).toBeGreaterThan(0);
+  });
 });
 

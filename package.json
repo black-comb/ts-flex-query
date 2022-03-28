@@ -2,16 +2,16 @@
   "name": "ts-flex-query",
   "version": "1.0.0",
   "description": "Flexible and type-safe data queries",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "files": [
-    "lib",
+    "**",
     "!**/*.js.map",
     "!**/*.spec.d.ts",
     "!**/*.spec.js"
   ],
   "scripts": {
-    "build": "tsc -p ./tsconfig.json",
+    "build": "tsc -p ./tsconfig.json && copyfiles package.json lib",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
     "lint-fix": "eslint ./src --ext .js,.jsx,.ts,.tsx --fix",
     "test": "jest"
@@ -38,6 +38,7 @@
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "axios": "^0.25.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.7.0",
     "eslint-plugin-import-newlines": "^1.2.1",
     "jest": "^27.5.1",

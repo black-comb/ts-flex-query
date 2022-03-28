@@ -3,6 +3,10 @@ import { of } from 'rxjs';
 import { constant } from '../../expressions/constant';
 import { funcs } from '../../expressions/function-application';
 import { pipeExpression } from '../../helpers/pipe-expression';
+import {
+  func,
+  map
+} from '../../operators';
 import { field } from '../../operators/basic/field';
 import { filter } from '../../operators/basic/filter';
 import { orderBy } from '../../operators/basic/sort';
@@ -120,7 +124,8 @@ describe('ODataExecutor', () => {
           field2: true
         }
       }, {
-        field1Max: aggregateValue((x) => pipeExpression(x, chain('fieldB', 'field1')), funcs.maximum),
+        //field1Max: aggregateValue(chain('fieldB', 'field1'), funcs.maximum),
+        field1Max: func('maximum', map(chain('fieldB', 'field1'))),
         count: funcs.count
       })
     );
