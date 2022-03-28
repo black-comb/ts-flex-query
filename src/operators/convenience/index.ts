@@ -1,6 +1,7 @@
 export * from './aggregate-value';
 export * from './boolean';
 export * from './chain';
+export * from './collections';
 export * from './func';
 export * from './group-and-aggregate';
 export * from './include-count';

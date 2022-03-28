@@ -32,7 +32,8 @@ const serializers: { [TContainer in keyof typeof functionContainers]: ContainerS
     xor: (v1, v2) => `((${v1}) and not (${v2})) or (not (${v1}) and (${v2}))`
   },
   Collections: {
-    in: (v1, v2) => `(${v1}) in (${v2})`
+    in: (v1, v2) => `(${v1}) in (${v2})`,
+    first: null
   },
   Comparison: {
     equal: (v1, v2) => `(${v1}) eq (${v2})`,

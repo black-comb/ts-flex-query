@@ -60,6 +60,7 @@ The type of a query is `PipeOperator<TIn, TOut>`. Therefore, a query created wit
     ```TS
     import { QueryFactory } from 'ts-flex-query';
     import { field, filter, func, value } from 'ts-flex-query/operators';
+
     const filterQuery = new QueryFactory<Node[]>().create(
       filter(func('equal', field('Id'), value(42)))
     );
@@ -94,6 +95,7 @@ The type of a query is `PipeOperator<TIn, TOut>`. Therefore, a query created wit
     ```TS
     import { QueryFactory } from 'ts-flex-query';
     import { field } from 'ts-flex-query/operators';
+
     const fieldQuery = new QueryFactory<Node>().create(
       field('Name') // compile error if Node does not have a field 'Name'
     );
@@ -103,6 +105,7 @@ The type of a query is `PipeOperator<TIn, TOut>`. Therefore, a query created wit
     ```TS
     import { QueryFactory } from 'ts-flex-query';
     import { chain, field } from 'ts-flex-query/operators';
+
     const fieldQuery2 = new QueryFactory<Node>().create(
       // field('MasterNode'), field('Id')
       // or equivalently:
@@ -114,6 +117,7 @@ The type of a query is `PipeOperator<TIn, TOut>`. Therefore, a query created wit
     ```TS
     import { QueryFactory } from 'ts-flex-query';
     import { field, orderBy, pipe } from 'ts-flex-query/operators';
+
     const orderQuery2 = new QueryFactory<Node[]>().create(
       orderBy(
         pipe(field('MasterNode'), field('Id')) // Order by MasterNode.Id.
@@ -166,6 +170,20 @@ The type of a query is `PipeOperator<TIn, TOut>`. Therefore, a query created wit
           Id: number;
       }[];
     }[]
+    ```
+
+1. Use the `record` operator to create records with custom fields and values:
+    ```TS
+    import { QueryFactory } from 'ts-flex-query';
+    import { chain, field, first, map, orderBy, pipe, record } from 'ts-flex-query/operators';
+
+    const recordQuery = new QueryFactory<Node[]>().create(
+      map(record({
+        id: 'Id',
+        masterNodeId: chain('MasterNode', 'Id'), // MasterNode.Id
+        firstProviderId: pipe(field('Providers'), orderBy('BusinessId'), first(), field('Id')) // first provider's (when ordered by BusinessId) Id
+      }))
+    );
     ```
 
 1. Use the `groupAndAggregate` operator to group by a record value and optionally merge aggregation values into this result record:
