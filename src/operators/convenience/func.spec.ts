@@ -1,4 +1,5 @@
 import { constant } from '../../expressions/constant';
+import { Mathematics } from '../../functions';
 import { evaluateExpression } from '../../helpers/evaluate-expression';
 import { emptyContext } from '../../helpers/evaluation-context-utils';
 import { pipeExpression } from '../../helpers/pipe-expression';
@@ -8,7 +9,10 @@ import { SampleType1 } from '../../tests/types/sample-type-1';
 import { field } from '../basic/field';
 import { filter } from '../basic/filter';
 import { map } from '../basic/map';
-import { func } from './func';
+import {
+  customFunc,
+  func
+} from './func';
 import { noOp } from './no-op';
 import { value } from './value';
 
@@ -32,4 +36,14 @@ describe('func', () => {
 
     expect(result).toEqual([5]);
   });
+});
+
+describe('customFunc', () => {
+
+  it('add', () => {
+    const result = evaluateExpression(pipeExpression(constant(4), customFunc(Mathematics, 'add', noOp(), value(3))), emptyContext);
+
+    expect(result).toEqual(7);
+  });
+
 });

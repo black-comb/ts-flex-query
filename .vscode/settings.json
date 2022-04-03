@@ -16,5 +16,6 @@
     }
   ],
   "importSorter.sortConfiguration.joinImportPaths": false,
-  "importSorter.sortConfiguration.removeUnusedImports": true
+  "importSorter.sortConfiguration.removeUnusedImports": true,
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }

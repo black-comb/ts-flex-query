@@ -1,8 +1,7 @@
 import { flatten } from 'lodash';
 
 import {
-  createQueryFromObjectValueSelector,
-  ObjectValueSelector,
+  Expression,
   PipeOperator
 } from '../..';
 import { FunctionApplicationExpression } from '../../expressions/function-application';
@@ -35,18 +34,25 @@ const flattenedFunctionContainers: {
 ) as any;
 
 type PipeOperators<TIn, TArgs extends unknown[]> =
-    TArgs extends [infer TFirst, ...infer TRest]
-    ? [PipeOperator<TIn, TFirst>, ...PipeOperators<TIn, TRest>]
-    : [];
+  TArgs extends [infer TFirst, ...infer TRest]
+  ? [PipeOperator<TIn, TFirst>, ...PipeOperators<TIn, TRest>]
+  : [];
+
+export function customFunc<TIn, TContainer, TMember extends keyof TContainer & string>(
+  container: TContainer,
+  member: TMember,
+  ...args: TContainer[TMember] extends (...xs: any) => any ? PipeOperators<TIn, Parameters<TContainer[TMember]>> : never
+): TContainer[TMember] extends (...xs: any) => any ? PipeOperator<TIn, ReturnType<TContainer[TMember]>> : never {
+  return apply((input) => new FunctionApplicationExpression(
+    container,
+    member,
+    args.map((selector) => selector.instantiate(input as Expression<TIn>))
+  )) as any;
+}
 
 export function func<TIn, TFunc extends keyof FlattenedFunctions>(
   key: TFunc,
   ...args: PipeOperators<TIn, Parameters<FlattenedFunctions[TFunc]>>
 ): PipeOperator<TIn, ReturnType<FlattenedFunctions[TFunc]>> {
-  return apply((input) => new FunctionApplicationExpression(
-    publicFunctionContainers[flattenedFunctionContainers[key]],
-    key,
-    args.map((selector) => createQueryFromObjectValueSelector(selector as ObjectValueSelector).instantiate(input))
-  )) as any;
+  return customFunc(publicFunctionContainers[flattenedFunctionContainers[key]], key as any, ...args);
 }
-
