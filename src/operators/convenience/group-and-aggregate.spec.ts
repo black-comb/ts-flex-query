@@ -51,7 +51,7 @@ describe('groupAndAggregate', () => {
     ])
   });
 
-  it('group by rempty record', () => {
+  it('group by empty record', () => {
     const q = new QueryFactory<SampleType1[]>().create(
       groupAndAggregate({}, {
         count: funcs.count,

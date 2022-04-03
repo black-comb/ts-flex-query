@@ -5,7 +5,9 @@ import { pipeExpression } from '../../helpers/pipe-expression';
 import { QueryFactory } from '../../helpers/query-factory';
 import { sample1 } from '../../tests/sample-1';
 import { SampleType1 } from '../../tests/types/sample-type-1';
+import { SampleType2 } from '../../tests/types/sample-type-2';
 import { not } from '../convenience/boolean';
+import { chain } from '../convenience/chain';
 import { func } from '../convenience/func';
 import { value } from '../convenience/value';
 import { field } from './field';
@@ -19,6 +21,15 @@ describe('filter', () => {
     const result: SampleType1[] = evaluateExpression(pipeExpression(constant(sample1.obj1s), q), emptyContext);
 
     expect(result).toEqual([sample1.obj1s[1], sample1.obj1s[3]]);
+  });
+
+  it('by equality for chain', () => {
+    const q = new QueryFactory<SampleType2[]>().create(
+      filter(func('equal', chain('fieldB', 'field1'), value(1)))
+    );
+    const result: SampleType2[] = evaluateExpression(pipeExpression(constant(sample1.obj2s), q), emptyContext);
+
+    expect(result).toEqual(sample1.obj2s);
   });
 
   it('by negated startsWith', () => {

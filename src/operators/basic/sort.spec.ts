@@ -12,7 +12,7 @@ import { orderBy } from './sort';
 describe('sort', () => {
   it('sample', () => {
     const q = new QueryFactory<SampleType1[]>().create(
-      orderBy('field1', [field('field3'), 'desc'])
+      orderBy('field1', ['field3', 'desc'])
     );
     const expr = pipeExpression(
       constant(sample1.obj1s),

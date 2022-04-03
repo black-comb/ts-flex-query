@@ -32,6 +32,7 @@ The following steps will guide you from query specification over using the query
       // ...
     );
     ```
+    Prerequisite: You have TypeScript types (Node in this example) describing your data model, including both atomic fields and navigation and collection properties.
 1. Define the query result type and work with it in your code, e.g., to convert the query result received from a server to a view model:
     ```TS
     import { EvaluatedQueryType } from 'ts-flex-query/types';
@@ -48,7 +49,7 @@ These steps ensure that the whole process of specifying the data to receiving an
 
 ### Creating queries
 
-Queries are basically composed of pipe operators (`PipeOperator<TIn, TOut>`). There is a bunch of predefined pipe operators (see below), but you can also specify your own operators.
+Queries are basically composed of pipe operators (`PipeOperator<TIn, TOut>`). There is a bunch of predefined pipe operators (see examples below and [Operator reference](#operator-reference)), but you can also specify your own operators.
 
 Whenever you need to create a new query, use the `QueryFactory<T>.create` method. It accepts the type parameter `T`, which is the type of the input value, and up to nine pipe operators to be applied in sequence to the input. (This method is conceptually similar to RxJs's `Observable.pipe` method.)
 
@@ -271,7 +272,7 @@ const evaluator = new ODataExecutor((collectionName, queryText) => {
 });
 evaluator.execute(expr).subscribe((result) => {
   // Work with the result.
-})
+});
 ```
 
 You may want to create a singleton instance of the `ODataExecutor` and re-use it for multiple queries. In the function provided to the `ODataExecutor` constructor, use an HTTP client of your choice to contact your OData endpoint. Build the URL from the provided parameters `collectionName` and `queryText` (which does not contain the questionmark "?").
@@ -287,29 +288,173 @@ Requirements a custom evaluator must fulfill:
 * The type of the result value must be assignable to `EvaluatedResultType<T>` where `T` is the generic type parameter of the evaluated expression.
 * The result may be provided either synchronously or asychronously as `Observable<EvaluatedResultType<T>>` or `Promise<EvaluatedResultType<T>>`.
 
+## Migrating from mm-query
+
+ts-flex-query is the successor library of mm-query, which is no longer supported.
+
+This section gives some examples on how to migrate specific constructs of mm-query to those of ts-flex-query.
+
+1. Migrate ```queryCollection``` to the ```QueryFactory```:
+    ```TS
+    // mm-query:
+    const query = queryCollection<Node>()
+      .pick/orderBy/filter/...
+
+    // ts-flex-query:
+    const query = new QueryFactory<Node[]>().create(
+      ...
+    );
+    ```
+    Note that, in order to use a collection input, the generic type argument of ```QueryFactory``` must be an array, whereas the type argument of ```queryCollection``` was not an array.
+
+1. Migrate filters:
+    ```TS
+    // mm-query:
+    const q1 = queryCollection<TestData>().filter(b => b.equal('field1', 42));
+    const q2 = queryCollection<TestData>().filter(b => b.and(
+      b2 => b2.equal('field1', 42),
+      b2 => b2.equal('field2', 'xyz'))
+    );
+    const q3 = const q = queryCollection<TestData>().filter(b => b.equal(
+      h => h.chain(c => c.select('field4').select('f1')),
+      h => h.constant(42)
+    ));
+
+    // ts-flex-query:
+    const q1 = new QueryFactory<TestData[]>().create(
+      filter(func('equal', field('field1'), value(42)))
+    );
+    const q2 = new QueryFactory<TestData[]>().create(
+      filter(and(
+        func('equal', field('field1'), value(42)),
+        func('equal', field('field2'), value('xyz'))
+      ))
+    );
+    const q3 = new QueryFactory<TestData[]>().create(
+      filter(func('equal', chain('field4', 'f1'), value(42)))
+    );
+    ```
+
+1. Migrate sorting:
+    ```TS
+    // mm-query:
+    const q = queryCollection<TestData>().orderBy('field2').orderBy('field3', false);
+
+    // ts-flex-query:
+    const q = new QueryFactory<TestData[]>().create(
+      orderBy('field2', ['field3', 'desc'])
+    );
+    ```
+
+1. Migrate grouping:
+    ```TS
+    // mm-query:
+    const q = queryCollection<TestData>()
+      .groupBy('field2')
+      .groupBy('field3')
+      .aggregate(NumberFieldAggregationFunction.sum, 'field1Sum', 'field1');
+
+    // ts-flex-query:
+    const q = new QueryFactory<TestData[]>().create(
+      groupAndAggregate({
+        field2: true,
+        field3: true
+      }, {
+        field1Sum: aggregateValue('field1', funcs.sum)
+      })
+    );
+    ```
+
+1. Migrate ```pick```, ```expand```, and ```query``` to the ```querySchema``` operator:
+    ```TS
+    // mm-query:
+    const q1 = queryCollection<TestData>().pick('field1').expand('field4').query('field5');
+    const q2 = queryCollection<TestData>()
+      .expand('field4', q2 => q2.pick('f2').pick('f3'))
+      .query('field5', q2 => q2.pick('f2').pick('f3'));
+    const q3 = queryCollection<TestData>()
+      .query('f5', f5 => f5
+        .filter(b => b.equal('field3', true))
+        .skip(3)
+        .top(1)
+        .pick('field2')))));
+
+    // ts-flex-query:
+    const q1 = new QueryFactory<TestData[]>().create(
+      querySchema([{
+        field1: true,
+        field4: 'expand', // All atomic fields of object field4.
+        field5: ['expand'] // All atomic fields of the objects in collection field5.
+      }])
+    );
+    const q2 = new QueryFactory<TestData[]>().create(
+      querySchema([{
+        field4: { f2: true, f3: true },
+        field5: [{ f2: true, f3: true }]
+      }])
+    );
+    const q3 = new QueryFactory<TestData[]>().create(
+      querySchema([{
+        f5: (objs) => pipeExpression(
+          objs,
+          filter(func('equal', field('field3'), value(true))),
+          slice(3, 1),
+          querySchema([{ field2: true }])
+        )
+      }])
+    );
+    ```
+
+1. Migrate determining the query result type:
+    ```TS
+    // mm-query:
+    type MyQueryResultType = QueryResult<typeof q>;
+
+    // ts-flex-query:
+    type MyQueryResultType = EvaluatedQueryType<typeof q>;
+    ```
+
+1. Migrate executing OData queries:
+    ```TS
+    // mm-query:
+    const q = queryCollection<TestData>()...; // Create the query.
+    const executor = new MyODataExecutor(); // Your class extending the ODataQueryExecutor.
+    const result = await executor.executeQuery(q).toPromise();
+    // Work with the result.
+
+    // ts-flex-query:
+    const q = new QueryFactory<TestData[]>().create(...); // Create the query.
+    const expr = pipeExpresssion(oDataCollection('...'), q); // Define the OData collection the query should be applied to.
+    const executor = new ODataExecutor(...); // Instantiate the ODataExecutor according to the section "The OData evaluator".
+    evaluator.execute(expr).subscribe((result) => {
+      // Work with the result.
+    });
+    ```
+
 ## Operator reference
 
-| Name              | Description                                                                                                 | OData-compatible  |
-|-------------------|-------------------------------------------------------------------------------------------------------------|-------------------|
-| aggregateValue    | Aggregate a selected value of the input elements using a specified function.                                | ✅                 |
-| and, or, not      | Boolean operators                                                                                           | ✅                 |
-| apply             | Apply a function to the input expression yielding another expression.                                       |                   |
-| chain             | Access a nested field.                                                                                      | ✅                 |
-| expression        | Ignore the input and switch to the provided expression.                                                     |                   |
-| field             | Map the input object to the value of one of its fields.                                                     | ✅                 |
-| filter            | Filter a collection based on a predicate.                                                                   | ✅                 |
-| flatMap           | Map each element of the input array to a collection and flatten the result.                                 |                   |
-| func              | Apply a predefined function to primitive values.                                                            | ✅                 |
-| groupAndAggregate | Group the collection elements and optionally merge the group key record with calculated aggregation values. | ✅                 |
-| groupBy           | Group collection elements.                                                                                  |                   |
-| includeCount      | Create a record with a count field and an elements field.                                                   | ✅                 |
-| letIn             | Save the input before continuing with further steps for better performance.                                 | ✅                 |
-| map               | Map each element of the input collection to another value.                                                  | ✅                 |
-| merge             | Recursively merge two records.                                                                              |                   |
-| noOp              | No operation. Return the input as-is.                                                                       | ✅                 |
-| orderBy           | Sort the collection elements by provided criteria.                                                          | ✅                 |
-| pipe              | Apply multiple operators.                                                                                   |                   |
-| querySchema       | Select parts of an object tree.                                                                             | ✅                 |
-| record            | Specify a record.                                                                                           |                   |
-| slice             | Skip and take elements from the input collection.                                                           | ✅                 |
-| value             | Ignore the input and return the provided value.                                                             | ✅                 |
+| Name              | Description                                                                                                 | OData-compatible |
+|-------------------|-------------------------------------------------------------------------------------------------------------|------------------|
+| aggregateValue    | Aggregate a selected value of the input elements using a specified function.                                | ✅                |
+| and, or, not      | Boolean operators                                                                                           | ✅                |
+| apply             | Apply a function to the input expression yielding another expression.                                       |                  |
+| chain             | Access a nested field.                                                                                      | ✅                |
+| customFunc        | Apply a custom value-level function.                                                                        |                  |
+| expression        | Ignore the input and switch to the provided expression.                                                     |                  |
+| field             | Map the input object to the value of one of its fields.                                                     | ✅                |
+| filter            | Filter a collection based on a predicate.                                                                   | ✅                |
+| flatMap           | Map each element of the input array to a collection and flatten the result.                                 |                  |
+| func              | Apply a predefined value-level function.                                                                    | ✅                |
+| groupAndAggregate | Group the collection elements and optionally merge the group key record with calculated aggregation values. | ✅                |
+| groupBy           | Group collection elements.                                                                                  |                  |
+| includeCount      | Create a record with a count field and an elements field.                                                   | ✅                |
+| letIn             | Save the input before continuing with further steps for better performance.                                 | ✅                |
+| map               | Map each element of the input collection to another value.                                                  | ✅                |
+| merge             | Recursively merge two records.                                                                              |                  |
+| noOp              | No operation. Return the input as-is.                                                                       | ✅                |
+| orderBy           | Sort the collection elements by provided criteria.                                                          | ✅                |
+| pipe              | Apply multiple operators.                                                                                   |                  |
+| querySchema       | Select parts of an object tree.                                                                             | ✅                |
+| record            | Specify a record.                                                                                           |                  |
+| slice             | Skip and take elements from the input collection.                                                           | ✅                |
+| value             | Ignore the input and return the provided value.                                                             | ✅                |

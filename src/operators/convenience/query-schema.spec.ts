@@ -12,7 +12,11 @@ import { SampleType1 } from '../../tests/types/sample-type-1';
 import { SampleType2 } from '../../tests/types/sample-type-2';
 import { QueryResultType } from '../../types/query-result-type';
 import { field } from '../basic/field';
+import { filter } from '../basic/filter';
+import { func } from './func';
 import { querySchema } from './query-schema';
+import { slice } from './slice';
+import { value } from './value';
 
 describe('querySchema', () => {
   it('object for primitives', () => {
@@ -80,7 +84,7 @@ describe('querySchema', () => {
     const result = pipeExpression(
       constant(sample1.obj1),
       querySchema({
-        field1: (value) => record({ subField: value }),
+        field1: (v) => record({ subField: v }),
         field2: (_, container) => pipeExpression(container, field('field1')),
         field3: (_, container) => container
       })
@@ -106,6 +110,21 @@ describe('querySchema', () => {
       fieldC: sample1.obj2.fieldC
     };
     expect(result).toEqual({ fieldB: sample1.obj2.fieldB, fieldC: sample1.obj2.fieldC });
+  });
+
+  it('array with filter', () => {
+    const q = new QueryFactory<SampleType2[]>().create(
+      querySchema([{
+        fieldC: (objs) => pipeExpression(
+          objs,
+          //filter((x) => funcs.lower(pipeExpression(x, field('field1')), constant(2))),
+          filter(func('lower', field('field1'), value(2))),
+          slice(3, 1),
+          querySchema([{ field1: true }])
+        )
+      }])
+    );
+    const result = evaluateExpression(pipeExpression(constant(sample1.obj2s), q));
   });
 
   // Typing tests:

@@ -29,7 +29,7 @@ export class FilterOperator implements PipeOperator {
 
 export function filter<TIn extends unknown[]>(
   selector: PipeOperator<TIn[number], boolean>
-): PipeOperator<TIn, TIn>;
+): PipeOperator<TIn, TIn extends any ? TIn : TIn>; // Conditional type is a workaround for successful target-typing. Test 'array with filter' in query-schema.spec.ts would not work otherwise with filter as last operator.
 export function filter<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn[number]>>(
   selector: ObjectValueSelectorType<TIn[number], TSelector> extends boolean ? TSelector : Error<'Selected value must have boolean type.'>
 ): PipeOperator<TIn, TIn>;
