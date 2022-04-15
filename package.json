@@ -22,6 +22,9 @@
     "type": "git",
     "url": "git+https://github.com/black-comb/ts-flex-query.git"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "keywords": [
     "data",
     "query",
