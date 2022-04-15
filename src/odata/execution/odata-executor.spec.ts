@@ -20,15 +20,19 @@ import { SampleType1 } from '../../tests/types/sample-type-1';
 import { SampleType2 } from '../../tests/types/sample-type-2';
 import { oDataCollection } from '../expressions/odata-collection';
 import { oDataCountField } from '../helpers/definitions';
-import { ODataExecutor } from './odata-executor';
+import {
+  ODataExecutionFunction,
+  ODataExecutor
+} from './odata-executor';
 
 describe('ODataExecutor', () => {
   let requests: { collectionName: string, queryText: string }[] = [];
-  const executor = new ODataExecutor((collectionName, queryText) => {
+  const executionFunction: ODataExecutionFunction = (collectionName, queryText) => {
     requests.push({ collectionName, queryText });
     console.log('OData request', collectionName, queryText);
     return of({ value: [], [oDataCountField]: 0 });
-  });
+  };
+  const executor = new ODataExecutor(executionFunction);
 
   afterEach(() => requests = []);
 
@@ -181,6 +185,26 @@ describe('ODataExecutor', () => {
     const result = await executor.execute(expr);
 
     expect(requests).toEqual([{ collectionName: 'test', queryText: '$count=true&$filter=(field1) eq (1)&$top=10&$select=field2' }]);
+  });
+
+  it('select object', async () => {
+    const expr = pipeExpression(
+      oDataCollection<SampleType2>('test2'),
+      querySchema([{
+        fieldD: [{
+          fieldB: 'select',
+          fieldD: [{
+            fieldB: 'expand',
+            fieldC: ['expand'],
+            fieldD: ['select']
+          }]
+        }]
+      }])
+    );
+    const executor = new ODataExecutor(executionFunction);
+    const result = await executor.execute(expr);
+
+    expect(requests).toEqual([{ collectionName: 'test2', queryText: '$select=fieldD&$expand=fieldD($select=fieldB,fieldD;$expand=fieldD($select=fieldD,fieldB,fieldC;$expand=fieldB,fieldC))' }]);
   });
 
 });

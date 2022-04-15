@@ -26,12 +26,16 @@ export type PrimitiveSchemaSpec = true;
 type PrimitiveQuerySchemaType<TFieldType> = TFieldType;
 
 // Specify schema for object.
-type ExpandObjectSchemaSpec = 'expand';
-const expandObjectSchemaSpec: ExpandObjectSchemaSpec = 'expand';
+enum SpecialObjectSchemaSpec {
+  /** Expand the object with all its primitive fields. */
+  expand = 'expand',
+  /** Like expand, but when using OData, don't include the field in the $expand clause. */
+  select = 'select'
+}
 type ExplicitObjectSchemaSpec<T = any> = {
   [TKey in keyof NonNullable<T> & string]?: SpecificSchemaSpec<NonNullable<T>[TKey], T>
 };
-type ObjectSchemaSpec<T = any> = ExpandObjectSchemaSpec | ExplicitObjectSchemaSpec<T>;
+type ObjectSchemaSpec<T = any> = keyof typeof SpecialObjectSchemaSpec | ExplicitObjectSchemaSpec<T>;
 type NonNullableObjectSchemaType<TIn, TSchema extends ObjectSchemaSpec<TIn>> =
   TSchema extends ExplicitObjectSchemaSpec<TIn>
   ? TsFlexQueryTypeMarker<'record'> & {
@@ -43,7 +47,7 @@ type NonNullableObjectSchemaType<TIn, TSchema extends ObjectSchemaSpec<TIn>> =
 type ObjectSchemaType<TIn, TSchema extends ObjectSchemaSpec<TIn>> = undefined extends TIn
   ? NonNullableObjectSchemaType<TIn, TSchema> | undefined
   : NonNullableObjectSchemaType<TIn, TSchema>;
-type ValidObjectSchemaSpec<TObj, TSchema> = ExpandObjectSchemaSpec | {
+type ValidObjectSchemaSpec<TObj, TSchema> = keyof typeof SpecialObjectSchemaSpec | {
   [TKey in keyof TSchema]: TKey extends keyof NonNullable<TObj> ? ValidSchemaSpec<NonNullable<TObj>[TKey], TSchema[TKey]> : never
 };
 
@@ -76,7 +80,7 @@ export type ValidSchemaSpec<TValue, TSchema> =
   ? TValue extends (infer TElement)[] | undefined
   ? [ValidObjectSchemaSpec<TElement, TObjectSchema>]
   : never
-  : TSchema extends Partial<Record<string, any>> | ExpandObjectSchemaSpec // Object schema
+  : TSchema extends Partial<Record<string, any>> | keyof typeof SpecialObjectSchemaSpec // Object schema
   ? ValidObjectSchemaSpec<TValue, TSchema>
   : TSchema extends true
   ? IfPrimitive<TValue, TSchema, never>
@@ -108,7 +112,9 @@ function isPrimitiveSchemaSpec(schema: SchemaSpec): schema is PrimitiveSchemaSpe
 }
 
 function isObjectSchemaSpec(schema: SchemaSpec): schema is ObjectSchemaSpec {
-  return schema === expandObjectSchemaSpec || (typeof schema === 'object' && !isArraySchemaSpec(schema));
+  return schema === SpecialObjectSchemaSpec.expand
+    || schema === SpecialObjectSchemaSpec.select
+    || (typeof schema === 'object' && !isArraySchemaSpec(schema));
 }
 
 function isArraySchemaSpec(schema: SchemaSpec): schema is ArraySchemaSpec {
@@ -148,8 +154,8 @@ function getSchemaDataType(schema: SchemaSpec): DataType {
 }
 
 function doMap(objectSchema: ObjectSchemaSpec, mapOperator: (mapper: (input: Expression) => Expression) => PipeOperator, isArray: boolean): PipeOperator {
-  return objectSchema === expandObjectSchemaSpec
-    ? apply((input) => specifyType(input, { type: isArray ? DataTypeType.unknownArray : DataTypeType.unknownObject }))
+  return objectSchema === SpecialObjectSchemaSpec.expand || objectSchema === SpecialObjectSchemaSpec.select
+    ? apply((input) => specifyType(input, { type: isArray ? DataTypeType.unknownArray : DataTypeType.unknownObject, isExpandable: objectSchema === SpecialObjectSchemaSpec.expand }))
     : mapOperator((input) => record(createObjectFromObject(
       objectSchema,
       (subSchema, field) =>

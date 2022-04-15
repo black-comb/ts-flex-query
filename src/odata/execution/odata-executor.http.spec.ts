@@ -45,8 +45,6 @@ interface Person {
   Friends: Person[];
 }
 
-const unexpandableFieldChains: string[][] = [['HomeAddress']];
-
 const collections = {
   People: oDataCollection<Person>('People')
 };
@@ -65,7 +63,7 @@ describe('ODataExecutor Reference Service Tests', () => {
         return result;
       })
     );
-  }, unexpandableFieldChains);
+  });
 
   it('People: select', async () => {
     const expr = pipeExpression(
@@ -147,7 +145,7 @@ describe('ODataExecutor Reference Service Tests', () => {
       querySchema([{
         UserName: true,
         FirstName: true,
-        // HomeAddress: 'expand', // Would occur in the select query part because of its appearance in the unexpandableFieldChains configuration of the ODataExecutor.
+        // HomeAddress: 'select', // Would occur in the select query part.
         Friends: [{
           Friends: ['expand']
         }]

@@ -16,12 +16,17 @@ export enum DataTypeType {
   unknownArray = 'unknownArray'
 }
 
-export interface ObjectDataType {
+interface ExpansionDataTypeBase {
+  /** If OData is used and this is true or undefined, the respective field is included in the $expand clause. */
+  isExpandable?: boolean;
+}
+
+export interface ObjectDataType extends ExpansionDataTypeBase {
   readonly type: DataTypeType.object;
   fields: Partial<Record<PropertyKey, DataType>>;
 }
 
-export interface ArrayDataType {
+export interface ArrayDataType extends ExpansionDataTypeBase {
   readonly type: DataTypeType.array;
   elementType: DataType;
 }
@@ -35,9 +40,17 @@ export interface UnionDataType {
   types: DataType[];
 }
 
-export interface UnknownDataType {
-  readonly type: DataTypeType.unknown | DataTypeType.unknownPrimitive | DataTypeType.unknownObject | DataTypeType.unknownArray;
+export interface UnknownExpansionDataType extends ExpansionDataTypeBase {
+  readonly type: DataTypeType.unknownObject | DataTypeType.unknownArray;
 }
+
+export interface UnknownNotExpandableDataType {
+  readonly type: DataTypeType.unknown | DataTypeType.unknownPrimitive;
+}
+
+export type UnknownDataType = UnknownExpansionDataType | UnknownNotExpandableDataType;
+
+export type ExpansionDataType = ObjectDataType | ArrayDataType | UnknownExpansionDataType;
 
 export type DataType =
   | ObjectDataType
@@ -45,3 +58,10 @@ export type DataType =
   | LiteralDataType
   | UnionDataType
   | UnknownDataType;
+
+export function isExpansionDataType(dataType: DataType): dataType is ExpansionDataType {
+  return dataType.type === DataTypeType.object
+    || dataType.type === DataTypeType.array
+    || dataType.type === DataTypeType.unknownObject
+    || dataType.type === DataTypeType.unknownArray;
+}

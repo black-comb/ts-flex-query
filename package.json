@@ -1,6 +1,6 @@
 {
   "name": "ts-flex-query",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Flexible and type-safe data queries",
   "main": "index.js",
   "types": "index.d.ts",
@@ -15,6 +15,7 @@
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
     "lint-fix": "eslint ./src --ext .js,.jsx,.ts,.tsx --fix",
     "test": "npm run build && jest",
+    "test-only": "jest",
     "ps": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command"
   },
   "repository": {

@@ -27,7 +27,7 @@ import {
   unexpected
 } from '../../helpers/utils';
 import { GroupOperator } from '../../operators/basic/group';
-import { DataTypeType } from '../../types';
+import { isExpansionDataType } from '../../types';
 import {
   isODataPipeExpression,
   isODataRootExpression,
@@ -57,13 +57,6 @@ export class RequestBuilder {
   #rootExpression: ODataExpression | undefined;
   public get rootExpression(): ODataExpression | undefined {
     return this.#rootExpression;
-  }
-
-  /**
-   * Constructor.
-   * @param unexpandableFieldChains Specifies field chains which cannot be expanded. The select OData operator is used for these fields instead.
-   */
-  public constructor(public readonly unexpandableFieldChains: string[][] = []) {
   }
 
   public buildWithPossibleIncludeCount(expression: ODataExpression): { countFieldName: string, elementsFieldName: string } | void {
@@ -316,7 +309,7 @@ export class RequestBuilder {
       }
       const fieldChain: string[] = [...expectedFieldChain, field];
       const fieldResult: ODataRequest | 'select' | 'expand' | null = this.createFieldRequestFromExpression(subExpression, baseObjectVariableSymbol, ...fieldChain);
-      if (fieldResult === 'select' || this.unexpandableFieldChains.some((chain) => isEqual(chain, fieldChain))) {
+      if (fieldResult === 'select') {
         result.select.push(field);
       } else {
         result.expand[field] = fieldResult === 'expand' ? null : fieldResult;
@@ -330,7 +323,7 @@ export class RequestBuilder {
     const underlyingExpression: Expression = RequestBuilder.getUnderlyingExpression(expression);
     if (underlyingExpression instanceof FieldExpression || underlyingExpression instanceof VariableExpression) {
       RequestBuilder.assertExpectedFieldChain(underlyingExpression, baseObjectVariableSymbol, ...expectedFieldChain);
-      return [DataTypeType.object, DataTypeType.unknownObject, DataTypeType.array, DataTypeType.unknownArray].includes(expression.dataType.type)
+      return isExpansionDataType(expression.dataType) && (expression.dataType.isExpandable ?? true)
         ? 'expand'
         : 'select';
     }

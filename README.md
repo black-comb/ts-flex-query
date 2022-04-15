@@ -141,6 +141,7 @@ The type of a query is `PipeOperator<TIn, TOut>`. Therefore, a query created wit
           Id: true // Pick MasterNode's primitive field 'Id'.
         },
         AlternativeMasterNode: 'expand', // Pick all primitive fields of the sub object 'AlternativeMasterNode'.
+        MainFacility: 'select', // Like 'expand', but when used with the ODataExecutor, this field will be included only in the $select clause, not in the $expand clause.
         Facilities: [{ // Define a sub collection schema for the field 'Facilities'.
           BusinessId: true // Pick the primitive field 'BusinessId' of all facilities.
         }],
