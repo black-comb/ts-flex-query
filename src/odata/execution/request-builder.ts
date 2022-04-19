@@ -383,7 +383,7 @@ export class RequestBuilder {
     }
     if (expression instanceof FunctionApplicationExpression) {
       const serializer = new FunctionSerializer((expr, variables) => this.serializeExpression(expr, variables), serializedVariableValues);
-      return serializer.serialize(expression);
+      return `(${serializer.serialize(expression)})`;
     }
     if (expression instanceof VariableExpression) {
       const variableValue: string | undefined | null = (serializedVariableValues as any)[expression.symbol]; // [MaMa] Remove cast to any for TypeScript 4.5.

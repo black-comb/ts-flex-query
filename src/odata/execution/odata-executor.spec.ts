@@ -100,7 +100,7 @@ describe('ODataExecutor', () => {
     console.log(JSON.stringify(expr));
     const result = await executor.execute(expr);
 
-    expect(requests).toEqual([{ collectionName: 'test', queryText: '$filter=(fieldB/field1) eq (42)' }]);
+    expect(requests).toEqual([{ collectionName: 'test', queryText: '$filter=(fieldB/field1 eq 42)' }]);
   });
 
   it('group by', async () => {
@@ -168,7 +168,7 @@ describe('ODataExecutor', () => {
     console.log(JSON.stringify(expr));
     const result = await executor.execute(expr);
 
-    expect(requests).toEqual([{ collectionName: 'test', queryText: '$apply=groupby((fieldA,fieldB/field1,fieldB/field2))&$filter=(fieldA) eq (1)' }]);
+    expect(requests).toEqual([{ collectionName: 'test', queryText: '$apply=groupby((fieldA,fieldB/field1,fieldB/field2))&$filter=(fieldA eq 1)' }]);
   });
 
   it('filter, count, top and select', async () => {
@@ -184,7 +184,7 @@ describe('ODataExecutor', () => {
     console.log(JSON.stringify(expr));
     const result = await executor.execute(expr);
 
-    expect(requests).toEqual([{ collectionName: 'test', queryText: '$count=true&$filter=(field1) eq (1)&$top=10&$select=field2' }]);
+    expect(requests).toEqual([{ collectionName: 'test', queryText: '$count=true&$filter=(field1 eq 1)&$top=10&$select=field2' }]);
   });
 
   it('select object', async () => {
@@ -201,7 +201,6 @@ describe('ODataExecutor', () => {
         }]
       }])
     );
-    const executor = new ODataExecutor(executionFunction);
     const result = await executor.execute(expr);
 
     expect(requests).toEqual([{ collectionName: 'test2', queryText: '$select=fieldD&$expand=fieldD($select=fieldB,fieldD;$expand=fieldD($select=fieldD,fieldB,fieldC;$expand=fieldB,fieldC))' }]);

@@ -1,6 +1,7 @@
 # v0.2.1 (19.04.2022)
 
 * Functions startsWith and endsWith now accepting possibly undefined arguments.
+* Fixed invalid bracketing when using OData functions.
 
 # v0.2.0 (15.04.2022)
 

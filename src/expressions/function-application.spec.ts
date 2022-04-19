@@ -32,6 +32,6 @@ describe('FunctionApplicationExpression', () => {
 
     expect(result).toBe('TEST');
 
-    expectType<string>()(result, true);
+    expectType<string | undefined>()(result, true);
   });
 });

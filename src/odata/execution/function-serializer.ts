@@ -26,34 +26,34 @@ const serializers: { [TContainer in keyof typeof functionContainers]: ContainerS
     sum: null
   },
   Boolean: {
-    and: (v1, v2) => `(${v1}) and (${v2})`,
-    or: (v1, v2) => `(${v1}) or (${v2})`,
-    not: (v) => `not (${v})`,
-    xor: (v1, v2) => `((${v1}) and not (${v2})) or (not (${v1}) and (${v2}))`
+    and: (v1, v2) => `${v1} and ${v2}`,
+    or: (v1, v2) => `${v1} or ${v2}`,
+    not: (v) => `not ${v}`,
+    xor: (v1, v2) => `(${v1} and not ${v2}) or (not ${v1} and ${v2})`
   },
   Collections: {
-    in: (v1, v2) => `(${v1}) in (${v2})`,
+    in: (v1, v2) => `${v1} in ${v2}`,
     first: null
   },
   Comparison: {
-    equal: (v1, v2) => `(${v1}) eq (${v2})`,
-    notEqual: (v1, v2) => `(${v1}) ne (${v2})`,
-    greater: (v1, v2) => `(${v1}) gt (${v2})`,
-    greaterOrEqual: (v1, v2) => `(${v1}) ge (${v2})`,
-    has: (v1, v2) => `(${v1}) has (${v2})`,
-    lower: (v1, v2) => `(${v1}) lt (${v2})`,
-    lowerOrEqual: (v1, v2) => `(${v1}) le (${v2})`
+    equal: (v1, v2) => `${v1} eq ${v2}`,
+    notEqual: (v1, v2) => `${v1} ne ${v2}`,
+    greater: (v1, v2) => `${v1} gt ${v2}`,
+    greaterOrEqual: (v1, v2) => `${v1} ge ${v2}`,
+    has: (v1, v2) => `${v1} has ${v2}`,
+    lower: (v1, v2) => `${v1} lt ${v2}`,
+    lowerOrEqual: (v1, v2) => `${v1} le ${v2}`
   },
   Internal: {
     mergeObjects: null
   },
   Mathematics: {
-    add: (v1, v2) => `(${v1}) add (${v2})`,
-    subtract: (v1, v2) => `(${v1}) sub (${v2})`,
-    multiply: (v1, v2) => `(${v1}) mul (${v2})`,
-    divide: (v1, v2) => `(${v1}) divby (${v2})`,
-    divideInteger: (v1, v2) => `(${v1}) div (${v2})`,
-    modulo: (v1, v2) => `(${v1}) mod (${v2})`
+    add: (v1, v2) => `${v1} add ${v2}`,
+    subtract: (v1, v2) => `${v1} sub ${v2}`,
+    multiply: (v1, v2) => `${v1} mul ${v2}`,
+    divide: (v1, v2) => `${v1} divby ${v2}`,
+    divideInteger: (v1, v2) => `${v1} div ${v2}`,
+    modulo: (v1, v2) => `${v1} mod ${v2}`
   },
   Text: {
     concat: (v1, v2) => `concat(${v1}, ${v2})`,
