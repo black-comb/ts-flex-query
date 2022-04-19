@@ -10,6 +10,32 @@
     "!**/*.spec.d.ts",
     "!**/*.spec.js"
   ],
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./expressions": {
+      "types": "./expressions/index.d.ts",
+      "default": "./expressions/index.js"
+    },
+    "./functions": {
+      "types": "./functions/index.d.ts",
+      "default": "./functions/index.js"
+    },
+    "./odata": {
+      "types": "./odata/index.d.ts",
+      "default": "./odata/index.js"
+    },
+    "./operators": {
+      "types": "./operators/index.d.ts",
+      "default": "./operators/index.js"
+    },
+    "./types": {
+      "types": "./types/index.d.ts",
+      "default": "./types/index.js"
+    }
+  },
   "scripts": {
     "build": "npm run ps -- Remove-Item ./lib -Recurse -Force && tsc -p ./tsconfig.json && npm run ps -- Copy-Item package.json, LICENSE, README.md lib",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
