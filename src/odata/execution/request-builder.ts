@@ -21,6 +21,7 @@ import { SpecifyTypeExpression } from '../../expressions/specify-type';
 import { VariableExpression } from '../../expressions/variable';
 import { Aggregation } from '../../functions/aggregation';
 import { Internal } from '../../functions/internal';
+import { getFunctionContainerName } from '../../functions/main';
 import {
   assertIsDefined,
   nameOf,
@@ -228,7 +229,11 @@ export class RequestBuilder {
         if (!(value instanceof FunctionApplicationExpression)) {
           throw new Error(`Aggregation values must be built using a FunctionApplicationExpression, but was ${value.constructor.name}`)
         }
-        const dataSetAggregationFunction: string | undefined = (oDataDataSetAggregationFunctions as any)[value.container.name][value.member];
+        const containerName = getFunctionContainerName(value.container);
+        if (!containerName) {
+          throw new Error(`Unsupported aggregation function container: ${containerName}`);
+        }
+        const dataSetAggregationFunction: string | undefined = (oDataDataSetAggregationFunctions as any)[containerName][value.member];
         if (dataSetAggregationFunction) {
           RequestBuilder.assertExpectedFieldChain(value.args[0], groupMapVariable, GroupOperator.elementsField);
           return {
@@ -237,13 +242,13 @@ export class RequestBuilder {
             field: null
           };
         }
-        const aggregationFunction: string | undefined = (oDataFieldAggregationFunctions as any)[value.container.name][value.member];
+        const aggregationFunction: string | undefined = (oDataFieldAggregationFunctions as any)[containerName][value.member];
         if (!aggregationFunction) {
-          throw new Error(`Unsupported aggregation function: ${value.container.name}.${value.member}`);
+          throw new Error(`Unsupported aggregation function: ${containerName}.${value.member}`);
         }
         const aggregationFunctionArg: Expression = value.args[0];
         if (!(aggregationFunctionArg instanceof MapExpression)) {
-          throw new Error(`Expected a MapExpression as argument for aggregation function ${value.container.name}.${value.member}.`);
+          throw new Error(`Expected a MapExpression as argument for aggregation function ${containerName}.${value.member}.`);
         }
         RequestBuilder.assertExpectedFieldChain(aggregationFunctionArg.input, groupMapVariable, GroupOperator.elementsField);
         const { chain, terminatingExpression } = RequestBuilder.getFieldChain(aggregationFunctionArg.body);

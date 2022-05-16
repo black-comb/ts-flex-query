@@ -1,6 +1,6 @@
 {
   "name": "ts-flex-query",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Flexible and type-safe data queries",
   "main": "index.js",
   "types": "index.d.ts",

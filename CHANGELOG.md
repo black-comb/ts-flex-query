@@ -1,3 +1,7 @@
+# v0.2.2 (16.05.2022)
+
+* Fixed ODataExecutor not working after JS minification.
+
 # v0.2.1 (19.04.2022)
 
 * Functions startsWith and endsWith now accepting possibly undefined arguments.

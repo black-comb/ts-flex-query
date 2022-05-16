@@ -1,6 +1,9 @@
 import { Expression } from '../../core/expression';
 import { FunctionApplicationExpression } from '../../expressions/function-application';
-import { functionContainers } from '../../functions/main';
+import {
+  functionContainers,
+  getFunctionContainerName
+} from '../../functions/main';
 import {
   ArrayOf,
   FuncFields
@@ -76,8 +79,8 @@ export class FunctionSerializer {
   }
 
   public serialize(expr: FunctionApplicationExpression): string {
-    const containerName = expr.container.name as keyof typeof functionContainers;
-    if (functionContainers[containerName] !== expr.container) {
+    const containerName = getFunctionContainerName(expr.container);
+    if (!containerName) {
       throw new Error(`Function container ${expr.container.name} is not supported.`);
     }
     const serializer: FunctionSerializerFunction<any> = (serializers[containerName] as any)[expr.member];
