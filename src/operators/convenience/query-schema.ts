@@ -33,7 +33,7 @@ enum SpecialObjectSchemaSpec {
   select = 'select'
 }
 type ExplicitObjectSchemaSpec<T = any> = {
-  [TKey in keyof NonNullable<T> & string]?: SpecificSchemaSpec<NonNullable<T>[TKey], T>
+  [TKey in keyof NonNullable<T> & string]?: SpecificSchemaSpec<NonNullable<T>[TKey], NonNullable<T>>
 };
 type ObjectSchemaSpec<T = any> = keyof typeof SpecialObjectSchemaSpec | ExplicitObjectSchemaSpec<T>;
 type NonNullableObjectSchemaType<TIn, TSchema extends ObjectSchemaSpec<TIn>> =

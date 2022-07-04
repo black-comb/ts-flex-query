@@ -444,6 +444,7 @@ This section gives some examples on how to migrate specific constructs of mm-que
 | expression        | Ignore the input and switch to the provided expression.                                                     |                  |
 | field             | Map the input object to the value of one of its fields.                                                     | ✅                |
 | filter            | Filter a collection based on a predicate.                                                                   | ✅                |
+| first             | Extract the first element of a collection.                                                                  |                  |
 | flatMap           | Map each element of the input array to a collection and flatten the result.                                 |                  |
 | func              | Apply a predefined value-level function.                                                                    | ✅                |
 | groupAndAggregate | Group the collection elements and optionally merge the group key record with calculated aggregation values. | ✅                |

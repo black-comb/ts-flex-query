@@ -7,6 +7,7 @@ export interface Facility {
   Id: number;
   BusinessId: number;
   Name: string;
+  Node?: Node;
 }
 
 export interface Provider {

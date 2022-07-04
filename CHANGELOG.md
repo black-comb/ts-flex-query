@@ -1,3 +1,7 @@
+# v0.2.3 (04.07.2022)
+
+* Fixed expression schemas not typable in schemas under nullable fields.
+
 # v0.2.2 (16.05.2022)
 
 * Fixed ODataExecutor not working after JS minification.
