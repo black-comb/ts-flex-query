@@ -1,3 +1,7 @@
+# v0.2.4 (06.07.2022)
+
+* Functions count and countDistinct now accepting possibly undefined arguments.
+
 # v0.2.3 (04.07.2022)
 
 * Fixed expression schemas not typable in schemas under nullable fields.

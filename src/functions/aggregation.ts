@@ -6,12 +6,12 @@ import {
 import { isDefined } from '../helpers/utils';
 
 export class Aggregation {
-  public static count(values: unknown[]): number {
-    return values.length;
+  public static count(values: unknown[] | undefined): number {
+    return values?.length ?? 0;
   }
 
-  public static countDistinct(values: unknown[]): number {
-    return uniqWith(values, isEqual).length;
+  public static countDistinct(values: unknown[] | undefined): number {
+    return values ? uniqWith(values, isEqual).length : 0;
   }
 
   public static maximum(values: (number | undefined)[]): number | undefined {

@@ -160,7 +160,8 @@ function doMap(objectSchema: ObjectSchemaSpec, mapOperator: (mapper: (input: Exp
       objectSchema,
       (subSchema, field) =>
         pipeExpression(
-          pipeExpression(input, new FieldOperator(field, getSchemaDataType(subSchema))),
+          input,
+          new FieldOperator(field, getSchemaDataType(subSchema)),
           createOperatorForSchema(
             subSchema,
             input

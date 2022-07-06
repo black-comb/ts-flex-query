@@ -5,7 +5,8 @@ import { funcs } from '../../expressions/function-application';
 import { pipeExpression } from '../../helpers/pipe-expression';
 import {
   func,
-  map
+  map,
+  value
 } from '../../operators';
 import { field } from '../../operators/basic/field';
 import { filter } from '../../operators/basic/filter';
@@ -204,6 +205,20 @@ describe('ODataExecutor', () => {
     const result = await executor.execute(expr);
 
     expect(requests).toEqual([{ collectionName: 'test2', queryText: '$select=fieldD&$expand=fieldD($select=fieldB,fieldD;$expand=fieldD($select=fieldD,fieldB,fieldC;$expand=fieldB,fieldC))' }]);
+  });
+
+  it('select array of primitives', async () => {
+    const expr = pipeExpression(
+      oDataCollection<SampleType1>('test'),
+      filter(func('greater', func('count', field('field4')), value(0))),
+      querySchema([{
+        field2: true,
+        field4: (x) => x
+      }])
+    );
+    const result = await executor.execute(expr);
+
+    expect(requests).toEqual([{ collectionName: 'test', queryText: '$filter=((field4/$count) gt 0)&$select=field2,field4' }]);
   });
 
 });
