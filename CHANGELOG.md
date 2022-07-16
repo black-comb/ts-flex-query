@@ -1,4 +1,4 @@
-# v0.3.0 (?)
+# v0.3.0 (16.07.2022)
 
 * OData: Added support for custom expression handlers and query composers.
 
