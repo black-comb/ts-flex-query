@@ -54,6 +54,8 @@ export interface ODataRequest {
   select?: string[];
   expand?: ODataExpand;
   apply?: ODataApply[];
+  /** Custom values that may be added by ODataExpressionHandlers. */
+  customValues?: Record<PropertyKey, unknown>;
 }
 
 export type SelectAndExpandRequest = Required<Pick<ODataRequest, 'select' | 'expand'>>;

@@ -9,7 +9,7 @@ import {
   FuncFields
 } from '../../types/utils';
 import { oDataDataSetAggregationFunctions } from '../helpers/definitions';
-import { SerializedVariableValues } from '../serialization/types';
+import { SerializedVariableValues } from './types';
 
 type FunctionSerializerFunction<TFunc extends (...args: any) => any> =
   ((...args: ArrayOf<Parameters<TFunc>, string>) => string) | null;
@@ -81,11 +81,11 @@ export class FunctionSerializer {
   public serialize(expr: FunctionApplicationExpression): string {
     const containerName = getFunctionContainerName(expr.container);
     if (!containerName) {
-      throw new Error(`Function container ${expr.container.name} is not supported.`);
+      throw new Error(`Function container ${expr.container.constructor.name} is not supported. Member: ${expr.member}`);
     }
     const serializer: FunctionSerializerFunction<any> = (serializers[containerName] as any)[expr.member];
     if (!serializer) {
-      throw new Error(`Function ${expr.container.name}.${expr.member} is not supported.`);
+      throw new Error(`Function ${expr.container.constructor.name}.${expr.member} is not supported.`);
     }
     return serializer(...expr.args.map((e) => this.serializeExpectNotNull(e)));
   }

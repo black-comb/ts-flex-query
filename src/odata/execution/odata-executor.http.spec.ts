@@ -50,19 +50,21 @@ const collections = {
 };
 
 describe('ODataExecutor Reference Service Tests', () => {
-  const executor = new ODataExecutor((collectionName, queryText) => {
-    console.log('OData request', collectionName, queryText);
-    const axios = new Axios({});
-    return from(axios.get(`https://services.odata.org/TripPinRESTierService/(S(lxf30xinakqfcqprslqo1ph0))/${collectionName}?${queryText}`)).pipe(
-      switchMap(async (response) => {
-        if (response.status < 200 || response.status >= 300) {
-          throw new Error(`Status code: ${response.status} / Response: ${response.data}`);
-        }
-        const result = JSON.parse(response.data);
-        console.log('OData response', result);
-        return result;
-      })
-    );
+  const executor = new ODataExecutor({
+    execute: (collectionName, queryText) => {
+      console.log('OData request', collectionName, queryText);
+      const axios = new Axios({});
+      return from(axios.get(`https://services.odata.org/TripPinRESTierService/(S(lxf30xinakqfcqprslqo1ph0))/${collectionName}?${queryText}`)).pipe(
+        switchMap(async (response) => {
+          if (response.status < 200 || response.status >= 300) {
+            throw new Error(`Status code: ${response.status} / Response: ${response.data}`);
+          }
+          const result = JSON.parse(response.data);
+          console.log('OData response', result);
+          return result;
+        })
+      );
+    }
   });
 
   it('People: select', async () => {

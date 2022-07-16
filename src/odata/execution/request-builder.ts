@@ -4,7 +4,6 @@ import {
 } from 'lodash';
 
 import { Expression } from '../../core/expression';
-import { ConstantExpression } from '../../expressions/constant';
 import { FieldExpression } from '../../expressions/field';
 import { FilterExpression } from '../../expressions/filter';
 import {
@@ -24,18 +23,15 @@ import { Internal } from '../../functions/internal';
 import { getFunctionContainerName } from '../../functions/main';
 import {
   assertIsDefined,
-  nameOf,
-  unexpected
+  nameOf
 } from '../../helpers/utils';
 import { GroupOperator } from '../../operators/basic/group';
 import { isExpansionDataType } from '../../types';
 import {
-  isODataPipeExpression,
   isODataRootExpression,
-  ODataExpression
-} from '../expressions/odata-expression';
+  ODataRootExpression
+} from '../expressions/odata-root-expression';
 import {
-  isODataSerializable,
   ODataAggregate,
   ODataAggregateElement,
   ODataApply,
@@ -45,22 +41,31 @@ import {
   ODataGroupBy,
   ODataOrderBy,
   ODataRequest,
-  ODataSerializable,
   SelectAndExpandRequest
 } from '../helpers/definitions';
-import { SerializedVariableValues } from '../serialization/types';
-import { FunctionSerializer } from './function-serializer';
+import { ExpressionSerializer } from '../serialization/expression-serializer';
+import {
+  ExpressionHandlerResult,
+  ODataExpressionHandler
+} from './odata-expression-handler';
+
+interface RequestBuilderParams {
+  expressionHandler?: ODataExpressionHandler;
+}
 
 export class RequestBuilder {
 
-  public readonly result: ODataRequest = {};
+  public result: ODataRequest = {};
 
-  #rootExpression: ODataExpression | undefined;
-  public get rootExpression(): ODataExpression | undefined {
+  #rootExpression: ODataRootExpression | undefined;
+  public get rootExpression(): ODataRootExpression | undefined {
     return this.#rootExpression;
   }
 
-  public buildWithPossibleIncludeCount(expression: ODataExpression): { countFieldName: string, elementsFieldName: string } | void {
+  public constructor(private readonly params: RequestBuilderParams) {
+  }
+
+  public buildWithPossibleIncludeCount(expression: Expression): { countFieldName: string, elementsFieldName: string } | void {
     // Detect "include count" pattern:
     if (
       expression instanceof LetExpression
@@ -101,7 +106,7 @@ export class RequestBuilder {
   /** Applies the given expression to the request. Throws an error if the expression is not OData-compatible. */
   public build(expression: Expression): void {
     let currentExpression: Expression = expression;
-    while (isODataPipeExpression(currentExpression)) {
+    while (!isODataRootExpression(currentExpression)) {
       if (currentExpression instanceof FieldExpression) {
         this.#rootExpression = currentExpression;
         return;
@@ -122,20 +127,21 @@ export class RequestBuilder {
       } else if (currentExpression instanceof SpecifyTypeExpression) {
         currentExpression = currentExpression.input;
       } else {
-        //throw new Error(`Unsupported expression: ${currentExpression.constructor.name}`);
-        unexpected(currentExpression);
+        const customResult: ExpressionHandlerResult | null | undefined = this.params.expressionHandler?.({ expression: currentExpression, currentRequest: this.result });
+        if (customResult) {
+          currentExpression = customResult.innerExpression;
+          this.result = customResult.newRequest;
+        } else {
+          throw new Error(`Unsupported expression: ${currentExpression.constructor.name}`);
+        }
       }
-    }
-
-    if (!isODataRootExpression(currentExpression)) {
-      throw new Error(`Unexpected root expression: ${currentExpression.constructor.name}`);
     }
 
     this.#rootExpression = currentExpression;
   }
 
   private applyFilter(expression: FilterExpression): void {
-    const value: string | null = RequestBuilder.serializeExpression(expression.body, { [expression.variableSymbol]: null });
+    const value: string | null = ExpressionSerializer.serializeExpression(expression.body, { [expression.variableSymbol]: null });
     if (!value) {
       throw new Error('No filter value was provided.');
     }
@@ -291,7 +297,7 @@ export class RequestBuilder {
 
   private applySort(expression: SortExpression): void {
     const oDataSpecs: ODataOrderBy[] = expression.specs.map((spec) => {
-      const serializedValue: string | null = RequestBuilder.serializeExpression(spec.value, { [expression.variableSymbol]: null });
+      const serializedValue: string | null = ExpressionSerializer.serializeExpression(spec.value, { [expression.variableSymbol]: null });
       if (serializedValue === null) {
         throw new Error('No sort value was provided.');
       }
@@ -337,17 +343,13 @@ export class RequestBuilder {
       return this.createRequestFromRecord(underlyingExpression, baseObjectVariableSymbol, ...expectedFieldChain);
     }
 
-    if (isODataPipeExpression(underlyingExpression)) {
-      const fieldRequestBuilder = new RequestBuilder();
-      fieldRequestBuilder.build(underlyingExpression);
-      if (!fieldRequestBuilder.rootExpression) {
-        throw new Error(`Root expression for ${underlyingExpression.constructor.name} was expected.`);
-      }
-      RequestBuilder.assertExpectedFieldChain(fieldRequestBuilder.rootExpression, baseObjectVariableSymbol, ...expectedFieldChain);
-      return fieldRequestBuilder.result;
+    const fieldRequestBuilder = new RequestBuilder(this.params);
+    fieldRequestBuilder.build(underlyingExpression);
+    if (!fieldRequestBuilder.rootExpression) {
+      throw new Error(`Root expression for ${underlyingExpression.constructor.name} was expected.`);
     }
-
-    throw new Error(`Unexpected expression: ${underlyingExpression}`);
+    RequestBuilder.assertExpectedFieldChain(fieldRequestBuilder.rootExpression, baseObjectVariableSymbol, ...expectedFieldChain);
+    return fieldRequestBuilder.result;
   }
 
   private static assertExpectedFieldChain(expression: Expression, baseObjectVariableSymbol: symbol, ...expectedFieldChain: string[]): void {
@@ -368,64 +370,6 @@ export class RequestBuilder {
     }
     chain.reverse();
     return { chain, terminatingExpression: expr };
-  }
-
-  /**
-   * Serializes an expression to an OData expression.
-   * @param serializedVariableValues Maps variable symbols to serialized values or null if this variable represents the current base object.
-   * @returns The expression string, or null if the expression refers to the current base object (represented by a variable with serializedVariableValues[V] = null).
-   */
-  private static serializeExpression(expression: Expression, serializedVariableValues: SerializedVariableValues): string | null {
-    if (expression instanceof ConstantExpression) {
-      if (!isODataSerializable(expression.value)) {
-        throw new Error(`Unserializable value: ${expression.value}`);
-      }
-      return RequestBuilder.serializeValue(expression.value);
-    }
-    if (expression instanceof FieldExpression) {
-      const inputResult: string | null = RequestBuilder.serializeExpression(expression.input, serializedVariableValues);
-      return inputResult ? `${inputResult}/${expression.field}` : expression.field;
-    }
-    if (expression instanceof FunctionApplicationExpression) {
-      const serializer = new FunctionSerializer((expr, variables) => this.serializeExpression(expr, variables), serializedVariableValues);
-      return `(${serializer.serialize(expression)})`;
-    }
-    if (expression instanceof VariableExpression) {
-      const variableValue: string | undefined | null = (serializedVariableValues as any)[expression.symbol]; // [MaMa] Remove cast to any for TypeScript 4.5.
-      if (variableValue === undefined) {
-        throw new Error(`Access to undefined variable: ${expression.symbol.toString()}`);
-      }
-      return variableValue;
-    }
-
-    throw new Error(`Unsupported expression: ${expression.constructor.name}`);
-  }
-
-  private static serializeValue(value: ODataSerializable): string {
-    switch (typeof value) {
-      case 'string':
-        return `'${value}'`;
-      case 'symbol':
-        return `'${String(value)}'`;
-      case 'number':
-      case 'bigint':
-      case 'boolean':
-        return value.toString();
-      case 'object':
-        if (value === null) {
-          return 'null';
-        } else if (value instanceof Date) {
-          return value.toISOString();
-        }
-        if (Array.isArray(value)) {
-          return `(${value.map(RequestBuilder.serializeValue).join(',')})`;
-        }
-        return unexpected(value);
-      case 'undefined':
-        return 'null';
-      default:
-        return unexpected(value);
-    }
   }
 
   private static getUnderlyingExpression<T extends Expression>(expression: T): Exclude<T, SpecifyTypeExpression> {

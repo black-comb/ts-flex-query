@@ -1,3 +1,7 @@
+# v0.3.0 (?)
+
+* OData: Added support for custom expression handlers and query composers.
+
 # v0.2.4 (06.07.2022)
 
 * Functions count and countDistinct now accepting possibly undefined arguments.

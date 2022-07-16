@@ -17,6 +17,10 @@ import { groupAndAggregate } from '../../operators/convenience/group-and-aggrega
 import { includeCount } from '../../operators/convenience/include-count';
 import { querySchema } from '../../operators/convenience/query-schema';
 import { slice } from '../../operators/convenience/slice';
+import {
+  search,
+  SearchExpression
+} from '../../tests/custom-expressions';
 import { SampleType1 } from '../../tests/types/sample-type-1';
 import { SampleType2 } from '../../tests/types/sample-type-2';
 import { oDataCollection } from '../expressions/odata-collection';
@@ -33,7 +37,26 @@ describe('ODataExecutor', () => {
     console.log('OData request', collectionName, queryText);
     return of({ value: [], [oDataCountField]: 0 });
   };
-  const executor = new ODataExecutor(executionFunction);
+  const executor = new ODataExecutor({
+    execute: executionFunction,
+    expressionHandler: ({ expression, currentRequest }) =>
+      expression instanceof SearchExpression
+        ? {
+          innerExpression: expression.inner,
+          newRequest: {
+            ...currentRequest,
+            customValues: {
+              ...currentRequest.customValues,
+              search: expression.searchText
+            }
+          }
+        }
+        : null,
+    customQueryComposer: ({ request, defaultParts }) => ({
+      ...defaultParts,
+      search: typeof request.customValues?.search === 'string' ? request.customValues.search : undefined
+    })
+  });
 
   afterEach(() => requests = []);
 
@@ -219,6 +242,19 @@ describe('ODataExecutor', () => {
     const result = await executor.execute(expr);
 
     expect(requests).toEqual([{ collectionName: 'test', queryText: '$filter=((field4/$count) gt 0)&$select=field2,field4' }]);
+  });
+
+  it('custom search expression', async () => {
+    const expr = pipeExpression(
+      oDataCollection<SampleType1>('test'),
+      search('Suchtext&Sonderzeichen'),
+      querySchema([{
+        field2: true
+      }])
+    );
+    const result = await executor.execute(expr);
+
+    expect(requests).toEqual([{ collectionName: 'test', queryText: '$select=field2&search=Suchtext%26Sonderzeichen' }]);
   });
 
 });

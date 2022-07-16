@@ -4,16 +4,23 @@ import { map } from 'rxjs/operators';
 import { Expression } from '../../core/expression';
 import { EvaluatedResultType } from '../../types/evaluated-result-type';
 import { ODataCollectionExpression } from '../expressions/odata-collection';
-import { isODataExpression } from '../expressions/odata-expression';
 import {
   oDataCountField,
   ODataResponse
 } from '../helpers/definitions';
-import { QueryTextBuilder } from '../helpers/query-text-builder';
+import { QueryComposer } from '../query-composition/query-composer';
+import { ODataCustomQueryComposer } from '../query-composition/types';
+import { ODataExpressionHandler } from './odata-expression-handler';
 import { RequestBuilder } from './request-builder';
 
 export interface ODataExecutionFunction {
   (collectionName: string, oDataQueryText: string): Observable<ODataResponse>;
+}
+
+export interface ODataExecutorParams {
+  execute: ODataExecutionFunction;
+  expressionHandler?: ODataExpressionHandler;
+  customQueryComposer?: ODataCustomQueryComposer;
 }
 
 export class ODataExecutor {
@@ -24,39 +31,35 @@ export class ODataExecutor {
    * @param unexpandableFieldChains Specifies field chains which cannot be expanded. The select OData operator is used for these fields instead.
    */
   public constructor(
-    private readonly query: ODataExecutionFunction
+    private readonly params: ODataExecutorParams
   ) {
   }
 
   public execute<T>(expression: Expression<T>): Observable<EvaluatedResultType<T>> {
-    if (isODataExpression(expression)) {
-      const builder = new RequestBuilder();
-      const includeCountResult: { countFieldName: string, elementsFieldName: string } | void = builder.buildWithPossibleIncludeCount(expression);
-      const queryText: string = QueryTextBuilder.buildFromRequest(builder.result);
-      const rootExpression: Expression | undefined = builder.rootExpression;
-      if (!(rootExpression instanceof ODataCollectionExpression)) {
-        throw new Error('No ODataCollection root expression was found. Cannot determine OData collection name.');
-      }
-
-      return this.query(rootExpression.name, queryText).pipe(
-        map((response) => {
-          if (typeof response !== 'object') {
-            throw new Error(`OData response must be an object with field value, but type was: ${typeof response}`);
-          }
-
-          if (includeCountResult) {
-            const typedResponse: ODataResponse = response;
-            return {
-              [includeCountResult.countFieldName]: typedResponse[oDataCountField],
-              [includeCountResult.elementsFieldName]: typedResponse.value
-            } as any;
-          }
-
-          return response.value;
-        })
-      );
+    const builder = new RequestBuilder(this.params);
+    const includeCountResult: { countFieldName: string, elementsFieldName: string } | void = builder.buildWithPossibleIncludeCount(expression);
+    const queryText: string = new QueryComposer(this.params).buildFromRequest(builder.result);
+    const rootExpression: Expression | undefined = builder.rootExpression;
+    if (!(rootExpression instanceof ODataCollectionExpression)) {
+      throw new Error('No ODataCollection root expression was found. Cannot determine OData collection name.');
     }
 
-    throw new Error(`Unsupported expression: ${expression.constructor}`);
+    return this.params.execute(rootExpression.name, queryText).pipe(
+      map((response) => {
+        if (typeof response !== 'object') {
+          throw new Error(`OData response must be an object with field value, but type was: ${typeof response}`);
+        }
+
+        if (includeCountResult) {
+          const typedResponse: ODataResponse = response;
+          return {
+            [includeCountResult.countFieldName]: typedResponse[oDataCountField],
+            [includeCountResult.elementsFieldName]: typedResponse.value
+          } as any;
+        }
+
+        return response.value;
+      })
+    );
   }
 }

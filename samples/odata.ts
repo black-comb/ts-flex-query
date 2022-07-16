@@ -34,12 +34,12 @@ interface City {
 }
 
 // 2. Create an ODataExecutor connecting to your OData backend:
-const executor = new ODataExecutor(
-  (collection, queryString) =>
+const executor = new ODataExecutor({
+  execute: (collection, queryString) =>
     from(fetch(`https://odata-backend.com/${collection}?${queryString}`)).pipe(
       switchMap((response) => response.json())
     )
-);
+});
 
 // 3. Define the query:
 const query = new QueryFactory<Person[]>().create(
