@@ -44,9 +44,11 @@ const result1 = evaluateExpression(expr1);
 const expr2 = pipeExpression(oDataCollection<Node>('Nodes'), query);
 
 // 2. Evaluate the query:
-const evaluator = new ODataExecutor((collectionName, queryText) => {
-  // Go to your OData endpoint here using collectionName and queryText.
-  return undefined as any;
+const evaluator = new ODataExecutor({
+  execute: (collectionName, queryText) => {
+    // Go to your OData endpoint here using collectionName and queryText.
+    return undefined as any;
+  }
 });
 evaluator.execute(expr2).subscribe((result) => {
   // Work with the result.
