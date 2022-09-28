@@ -10,5 +10,5 @@ export * from './map';
 export * from './record';
 export * from './slice';
 export * from './sort';
+export * from './specify-type';
 export * from './variable';
-

@@ -1,3 +1,7 @@
+# v0.3.1 (28.09.2022)
+
+* Exported SpecifyTypeExpression for custom converters.
+
 # v0.3.0 (16.07.2022)
 
 * OData: Added support for custom expression handlers and query composers.
