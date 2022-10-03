@@ -1,10 +1,10 @@
 import { Expression } from '../../core/expression';
 import { PipeOperator } from '../../core/pipe-operator';
 import { func } from '../../expressions/function-application';
-import { Internal } from '../../functions/internal';
+import { internal } from '../../functions/internal';
 import { apply } from '../basic/apply';
 
-export type MergeOutType<TIn extends Record<PropertyKey, any>, TObj extends Record<PropertyKey, any>> =
+export type MergeOutType<in out TIn extends Record<PropertyKey, any>, in out TObj extends Record<PropertyKey, any>> =
   {
     [TKey in keyof TIn | keyof TObj]:
       TKey extends keyof TObj
@@ -23,5 +23,5 @@ export type MergeOutType<TIn extends Record<PropertyKey, any>, TObj extends Reco
 export function merge<TIn extends Record<PropertyKey, any>, TObj extends Record<PropertyKey, any>>(
   obj: Expression<TObj>
 ): PipeOperator<TIn, MergeOutType<TIn, TObj>> {
-  return apply((input) => func(Internal, 'mergeObjects', input, obj) as Expression<MergeOutType<TIn, TObj>>);
+  return apply((input) => func(internal, 'mergeObjects', input, obj) as Expression<MergeOutType<TIn, TObj>>);
 }

@@ -3,7 +3,7 @@ import {
   ValidSchemaSpec
 } from '../operators/convenience/query-schema';
 
-export class SchemaFactory<T> {
+export class SchemaFactory<in T> {
 
   // eslint-disable-next-line class-methods-use-this
   public create<TSchema extends SpecificSchemaSpec<T, null>>(

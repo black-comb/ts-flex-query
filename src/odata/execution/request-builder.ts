@@ -18,8 +18,8 @@ import { SliceExpression } from '../../expressions/slice';
 import { SortExpression } from '../../expressions/sort';
 import { SpecifyTypeExpression } from '../../expressions/specify-type';
 import { VariableExpression } from '../../expressions/variable';
-import { Aggregation } from '../../functions/aggregation';
-import { Internal } from '../../functions/internal';
+import { aggregation } from '../../functions/aggregation';
+import { internal } from '../../functions/internal';
 import { getFunctionContainerName } from '../../functions/main';
 import {
   assertIsDefined,
@@ -73,7 +73,7 @@ export class RequestBuilder {
       && Object.keys(expression.body.fields).length === 2
     ) {
       const entries = Object.entries(expression.body.fields);
-      const countFieldIndex: number = entries.findIndex(([_, value]) => value instanceof FunctionApplicationExpression && value.container === Aggregation && value.member === nameOf<typeof Aggregation>()('count'));
+      const countFieldIndex: number = entries.findIndex(([_, value]) => value instanceof FunctionApplicationExpression && value.container === aggregation && value.member === nameOf<typeof aggregation>()('count'));
       if (countFieldIndex >= 0) {
         const elementsFieldIndex: number = 1 - countFieldIndex;
         const countedExpression: Expression = (entries[countFieldIndex][1] as FunctionApplicationExpression).args[0];
@@ -192,7 +192,7 @@ export class RequestBuilder {
           ...(this.result.apply ?? [])
         ]
       }
-    } else if (isFunctionApplication(mapBody, Internal, 'mergeObjects')) {
+    } else if (isFunctionApplication(mapBody, internal, 'mergeObjects')) {
       RequestBuilder.assertExpectedFieldChain(mapBody.args[0], mapVariable, GroupOperator.groupValueField);
       const mergeArgument: Expression = mapBody.args[1];
       if (!(mergeArgument instanceof RecordExpression)) {

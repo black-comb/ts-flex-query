@@ -32,7 +32,7 @@ export class SortOperator implements PipeOperator {
 
 }
 
-interface SortSpecification<T = any> {
+interface SortSpecification<in T = any> {
   value: ObjectValueSelector<T>;
   isAscending: boolean;
 }

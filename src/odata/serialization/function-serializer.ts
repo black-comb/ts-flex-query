@@ -20,25 +20,25 @@ type ContainerSerializers<TContainer> = {
 };
 
 const serializers: { [TContainer in keyof typeof functionContainers]: ContainerSerializers<(typeof functionContainers)[TContainer]> } = {
-  Aggregation: {
-    count: (collection) => (collection ? `${collection}/` : '') + oDataDataSetAggregationFunctions.Aggregation?.count ?? '',
+  aggregation: {
+    count: (collection) => (collection ? `${collection}/` : '') + oDataDataSetAggregationFunctions.aggregation?.count ?? '',
     maximum: null,
     minimum: null,
     average: null,
     countDistinct: null,
     sum: null
   },
-  Boolean: {
+  boolean: {
     and: (v1, v2) => `${v1} and ${v2}`,
     or: (v1, v2) => `${v1} or ${v2}`,
     not: (v) => `not ${v}`,
     xor: (v1, v2) => `(${v1} and not ${v2}) or (not ${v1} and ${v2})`
   },
-  Collections: {
+  collections: {
     in: (v1, v2) => `${v1} in ${v2}`,
     first: null
   },
-  Comparison: {
+  comparison: {
     equal: (v1, v2) => `${v1} eq ${v2}`,
     notEqual: (v1, v2) => `${v1} ne ${v2}`,
     greater: (v1, v2) => `${v1} gt ${v2}`,
@@ -47,10 +47,10 @@ const serializers: { [TContainer in keyof typeof functionContainers]: ContainerS
     lower: (v1, v2) => `${v1} lt ${v2}`,
     lowerOrEqual: (v1, v2) => `${v1} le ${v2}`
   },
-  Internal: {
+  internal: {
     mergeObjects: null
   },
-  Mathematics: {
+  mathematics: {
     add: (v1, v2) => `${v1} add ${v2}`,
     subtract: (v1, v2) => `${v1} sub ${v2}`,
     multiply: (v1, v2) => `${v1} mul ${v2}`,
@@ -58,7 +58,7 @@ const serializers: { [TContainer in keyof typeof functionContainers]: ContainerS
     divideInteger: (v1, v2) => `${v1} div ${v2}`,
     modulo: (v1, v2) => `${v1} mod ${v2}`
   },
-  Text: {
+  text: {
     concat: (v1, v2) => `concat(${v1}, ${v2})`,
     startsWith: (v1, v2) => `startswith(${v1}, ${v2})`,
     endsWith: (v1, v2) => `endswith(${v1}, ${v2})`,

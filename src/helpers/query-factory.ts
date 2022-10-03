@@ -1,7 +1,7 @@
 import { PipeOperator } from '../core/pipe-operator';
 import { CombineOperator } from '../operators/basic/combine';
 
-export class QueryFactory<T> {
+export class QueryFactory<in T> {
 
   public create<T2>(
     operator1: PipeOperator<T, T2>

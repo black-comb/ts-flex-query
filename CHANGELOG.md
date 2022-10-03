@@ -1,3 +1,8 @@
+# v1.0.0 (03.10.2022)
+
+* Updates: TypeScript 4.8.4, RxJS 7.5.7
+* The keys of the functionContainers constant are now uncapitalized.
+
 # v0.3.1 (28.09.2022)
 
 * Exported SpecifyTypeExpression for custom converters.

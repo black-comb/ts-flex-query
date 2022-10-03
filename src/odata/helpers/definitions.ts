@@ -68,7 +68,7 @@ export interface ODataCountResponse<T = any> {
 export const oDataFieldAggregationFunctions: {
   [TContainer in keyof typeof functionContainers]?: { [TMember in keyof (typeof functionContainers)[TContainer]]?: string }
 } = {
-  Aggregation: {
+  aggregation: {
     maximum: 'max',
     minimum: 'min',
     sum: 'sum',
@@ -80,7 +80,7 @@ export const oDataFieldAggregationFunctions: {
 export const oDataDataSetAggregationFunctions: {
   [TContainer in keyof typeof functionContainers]?: { [TMember in keyof (typeof functionContainers)[TContainer]]?: string }
 } = {
-  Aggregation: {
+  aggregation: {
     count: '$count'
   }
 };

@@ -1,24 +1,24 @@
 import { FunctionContainer } from '../types/function-container';
-import { Aggregation } from './aggregation';
-import { Boolean } from './boolean';
-import { Collections } from './collections';
-import { Comparison } from './comparison';
-import { Internal } from './internal';
-import { Mathematics } from './mathematics';
-import { Text } from './text';
+import { aggregation } from './aggregation';
+import { boolean } from './boolean';
+import { collections } from './collections';
+import { comparison } from './comparison';
+import { internal } from './internal';
+import { mathematics } from './mathematics';
+import { text } from './text';
 
 export const publicFunctionContainers = {
-  Aggregation,
-  Boolean,
-  Collections,
-  Comparison,
-  Mathematics,
-  Text
+  aggregation,
+  boolean,
+  collections,
+  comparison,
+  mathematics,
+  text
 } as const;
 
 export const functionContainers = {
   ...publicFunctionContainers,
-  Internal
+  internal
 } as const;
 
 export function getContainerFunctionKeys(container: Record<string, any>): string[] {

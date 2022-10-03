@@ -38,10 +38,11 @@ type PipeOperators<TIn, TArgs extends unknown[]> =
   ? [PipeOperator<TIn, TFirst>, ...PipeOperators<TIn, TRest>]
   : [];
 
-export function customFunc<TIn, TContainer, TMember extends keyof TContainer & string>(
+export function customFunc<TIn, TContainer extends Record<any, (...xs: any) => any>, TMember extends keyof TContainer & string>(
   container: TContainer,
   member: TMember,
-  ...args: TContainer[TMember] extends (...xs: any) => any ? PipeOperators<TIn, Parameters<TContainer[TMember]>> : never
+  ...args: PipeOperators<TIn, Parameters<TContainer[TMember]>>
+// eslint-disable-next-line function-paren-newline -- False positive.
 ): TContainer[TMember] extends (...xs: any) => any ? PipeOperator<TIn, ReturnType<TContainer[TMember]>> : never {
   return apply((input) => new FunctionApplicationExpression(
     container,

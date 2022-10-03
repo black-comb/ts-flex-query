@@ -1,5 +1,5 @@
 import { constant } from '../../expressions/constant';
-import { Mathematics } from '../../functions';
+import { mathematics } from '../../functions';
 import { evaluateExpression } from '../../helpers/evaluate-expression';
 import { emptyContext } from '../../helpers/evaluation-context-utils';
 import { pipeExpression } from '../../helpers/pipe-expression';
@@ -41,7 +41,7 @@ describe('func', () => {
 describe('customFunc', () => {
 
   it('add', () => {
-    const result = evaluateExpression(pipeExpression(constant(4), customFunc(Mathematics, 'add', noOp(), value(3))), emptyContext);
+    const result = evaluateExpression(pipeExpression(constant(4), customFunc(mathematics, 'add', noOp(), value(3))), emptyContext);
 
     expect(result).toEqual(7);
   });

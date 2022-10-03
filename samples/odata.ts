@@ -49,6 +49,6 @@ const query = new QueryFactory<Person[]>().create(
 );
 
 // 4. Execute the query and work with the result:
-executor.execute(pipeExpression(oDataCollection('Persons'), query)).subscribe((result) => {
+executor.execute(pipeExpression(oDataCollection<Person>('Persons'), query)).subscribe((result) => {
   // Work with the result.
 });
