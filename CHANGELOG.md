@@ -4,6 +4,8 @@
 * The keys of the functionContainers constant are now uncapitalized.
 * querySchema: Now produces a LetExpression where appropriate to avoid redundant expression trees.
 * New debug helper method serializeExpressionForDebugging.
+* New IfExpression.
+* New operators ifThen, ifThenElse, letIfDefined.
 
 # v0.3.1 (28.09.2022)
 

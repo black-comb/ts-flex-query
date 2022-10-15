@@ -4,5 +4,6 @@ export * from './field';
 export * from './filter';
 export * from './flat-map';
 export * from './group';
+export * from './if';
 export * from './map';
 export * from './sort';

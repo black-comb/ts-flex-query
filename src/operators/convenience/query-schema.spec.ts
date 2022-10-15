@@ -85,6 +85,21 @@ describe('querySchema', () => {
     }]);
   });
 
+  it('undefined sub object', () => {
+    const expression = pipeExpression(
+      constant(sample1.obj2),
+      querySchema({
+        fieldE: {
+          fieldA: true
+        }
+      })
+    );
+    type X = typeof expression extends Expression<infer T> ? T : never;
+    const result = evaluateExpression(expression);
+
+    expect(result).toEqual({ fieldE: undefined });
+  });
+
   it('object for expression', () => {
     const result = pipeExpression(
       constant(sample1.obj1),

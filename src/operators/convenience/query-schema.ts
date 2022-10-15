@@ -20,7 +20,7 @@ import {
 import { apply } from '../basic/apply';
 import { FieldOperator } from '../basic/field';
 import { map } from '../basic/map';
-import { letIn } from './let';
+import { letIfDefined } from './let-if-defined';
 
 // Copy primitive value to result.
 export type PrimitiveSchemaSpec = true;
@@ -177,7 +177,7 @@ export function createOperatorForSchema(schema: SchemaSpec, container: Expressio
   }
 
   if (isObjectSchemaSpec(schema)) {
-    return doMap(schema, letIn, false);
+    return doMap(schema, letIfDefined, false);
   }
 
   if (isArraySchemaSpec(schema)) {

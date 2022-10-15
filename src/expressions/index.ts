@@ -5,6 +5,7 @@ export * from './flat-map';
 export * from './framework-expression';
 export * from './function-application';
 export * from './group';
+export * from './if';
 export * from './let';
 export * from './map';
 export * from './record';

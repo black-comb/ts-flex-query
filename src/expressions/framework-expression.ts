@@ -5,6 +5,7 @@ import { FilterExpression } from './filter';
 import { FlatMapExpression } from './flat-map';
 import { FunctionApplicationExpression } from './function-application';
 import { GroupExpression } from './group';
+import { IfExpression } from './if';
 import { LetExpression } from './let';
 import { MapExpression } from './map';
 import { RecordExpression } from './record';
@@ -20,6 +21,7 @@ export type FrameworkExpression =
   | FlatMapExpression
   | FunctionApplicationExpression
   | GroupExpression
+  | IfExpression
   | LetExpression
   | MapExpression
   | RecordExpression

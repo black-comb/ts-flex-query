@@ -6,6 +6,7 @@ export * from './func';
 export * from './group-and-aggregate';
 export * from './include-count';
 export * from './let';
+export * from './let-if-defined';
 export * from './merge';
 export * from './no-op';
 export * from './query-schema';
