@@ -3,6 +3,7 @@ import { of } from 'rxjs';
 import { constant } from '../../expressions/constant';
 import { funcs } from '../../expressions/function-application';
 import { pipeExpression } from '../../helpers/pipe-expression';
+import { serializeExpressionForDebugging } from '../../helpers/serialize-expression-for-debugging';
 import {
   func,
   map,
@@ -86,7 +87,7 @@ describe('ODataExecutor', () => {
         }]
       }])
     );
-    console.log(JSON.stringify(expr));
+    console.log(serializeExpressionForDebugging(expr));
     const result = await executor.execute(expr);
 
     expect(requests).toEqual([{ collectionName: 'test', queryText: '$select=fieldA,fieldB,fieldD&$expand=fieldB($select=field2),fieldD($select=fieldD;$expand=fieldD($select=fieldA))' }]);
@@ -138,7 +139,7 @@ describe('ODataExecutor', () => {
         }
       })
     );
-    console.log(JSON.stringify(expr));
+    console.log(serializeExpressionForDebugging(expr));
     const result = await executor.execute(expr);
 
     expect(requests).toEqual([{ collectionName: 'test', queryText: '$apply=groupby((fieldA,fieldB/field1,fieldB/field2))' }]);

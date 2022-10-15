@@ -6,6 +6,7 @@ import { emptyContext } from '../../helpers/evaluation-context-utils';
 import { pipeExpression } from '../../helpers/pipe-expression';
 import { QueryFactory } from '../../helpers/query-factory';
 import { SchemaFactory } from '../../helpers/schema-factory';
+import { serializeExpressionForDebugging } from '../../helpers/serialize-expression-for-debugging';
 import { expectType } from '../../helpers/utils';
 import { sample1 } from '../../tests/sample-1';
 import { SampleType1 } from '../../tests/types/sample-type-1';
@@ -14,6 +15,7 @@ import { QueryResultType } from '../../types/query-result-type';
 import { field } from '../basic/field';
 import { filter } from '../basic/filter';
 import { func } from './func';
+import { letIn } from './let';
 import { querySchema } from './query-schema';
 import { slice } from './slice';
 import { value } from './value';
@@ -24,10 +26,13 @@ describe('querySchema', () => {
       field2: true,
       field3: true
     });
-    const result = evaluateExpression(pipeExpression(
+    const expression = pipeExpression(
       constant(sample1.obj1),
+      letIn(x => record({ field2: pipeExpression(x, field('field2')), field3: pipeExpression(x, field('field3')) })),
       querySchema(q)
-    ), emptyContext);
+    );
+    const result = evaluateExpression(expression, emptyContext);
+    console.log(serializeExpressionForDebugging(expression));
 
     expect(result).toEqual({ field2: 'ABC', field3: undefined });
 

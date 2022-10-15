@@ -339,6 +339,10 @@ export class RequestBuilder {
         : 'select';
     }
 
+    if (underlyingExpression instanceof LetExpression) {
+      return RequestBuilder.applyLet(underlyingExpression, baseObjectVariableSymbol, expectedFieldChain, this.createFieldRequestFromExpression.bind(this));
+    }
+
     if (underlyingExpression instanceof RecordExpression) {
       return this.createRequestFromRecord(underlyingExpression, baseObjectVariableSymbol, ...expectedFieldChain);
     }
@@ -374,5 +378,15 @@ export class RequestBuilder {
 
   private static getUnderlyingExpression<T extends Expression>(expression: T): Exclude<T, SpecifyTypeExpression> {
     return (expression instanceof SpecifyTypeExpression ? RequestBuilder.getUnderlyingExpression(expression.input) : expression) as Exclude<T, SpecifyTypeExpression>;
+  }
+
+  private static applyLet<T>(
+    expression: LetExpression,
+    baseObjectVariableSymbol: symbol,
+    currentExpectedFieldChain: string[],
+    continuation: (body: Expression, baseObjectVariableSymbol: symbol, ...expectedFieldChain: string[]) => T
+  ): T {
+    RequestBuilder.assertExpectedFieldChain(expression.input, baseObjectVariableSymbol, ...currentExpectedFieldChain);
+    return continuation(expression.body, expression.variableSymbol);
   }
 }

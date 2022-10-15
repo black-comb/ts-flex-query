@@ -26,6 +26,10 @@ export class LetExpression implements Expression {
 }
 
 export function letIn<TValue, TBody>(value: Expression<TValue>, body: (v: Expression<TValue>) => Expression<TBody>): Expression<TBody> {
+  if (value instanceof VariableExpression) {
+    // The LetExpression is not required if the value already is a variable.
+    return body(value);
+  }
   const variableSymbol = Symbol('vLet');
   const variable = new VariableExpression(value.dataType, variableSymbol);
   return new LetExpression(value, variableSymbol, body(variable));

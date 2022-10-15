@@ -6,3 +6,4 @@ export * from './pipe-expression';
 export * from './query-factory';
 export * from './schema-factory';
 export * from './select';
+export * from './serialize-expression-for-debugging';
