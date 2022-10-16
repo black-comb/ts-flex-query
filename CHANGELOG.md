@@ -1,4 +1,4 @@
-# v1.0.0 (xx.xx.2022)
+# v1.0.0 (16.10.2022)
 
 * Updates: TypeScript 4.8.4, RxJS 7.5.7
 * The keys of the functionContainers constant are now uncapitalized.
