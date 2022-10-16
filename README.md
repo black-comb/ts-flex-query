@@ -291,29 +291,32 @@ Requirements a custom evaluator must fulfill:
 
 ## Operator reference
 
-| Name              | Description                                                                                                 | OData-compatible |
-|-------------------|-------------------------------------------------------------------------------------------------------------|------------------|
-| aggregateValue    | Aggregate a selected value of the input elements using a specified function.                                | ✅                |
-| and, or, not      | Boolean operators                                                                                           | ✅                |
-| apply             | Apply a function to the input expression yielding another expression.                                       |                  |
-| chain             | Access a nested field.                                                                                      | ✅                |
-| customFunc        | Apply a custom value-level function.                                                                        |                  |
-| expression        | Ignore the input and switch to the provided expression.                                                     |                  |
-| field             | Map the input object to the value of one of its fields.                                                     | ✅                |
-| filter            | Filter a collection based on a predicate.                                                                   | ✅                |
-| first             | Extract the first element of a collection.                                                                  |                  |
-| flatMap           | Map each element of the input array to a collection and flatten the result.                                 |                  |
-| func              | Apply a predefined value-level function.                                                                    | ✅                |
-| groupAndAggregate | Group the collection elements and optionally merge the group key record with calculated aggregation values. | ✅                |
-| groupBy           | Group collection elements.                                                                                  |                  |
-| includeCount      | Create a record with a count field and an elements field.                                                   | ✅                |
-| letIn             | Save the input before continuing with further steps for better performance.                                 | ✅                |
-| map               | Map each element of the input collection to another value.                                                  | ✅                |
-| merge             | Recursively merge two records.                                                                              |                  |
-| noOp              | No operation. Return the input as-is.                                                                       | ✅                |
-| orderBy           | Sort the collection elements by provided criteria.                                                          | ✅                |
-| pipe              | Apply multiple operators.                                                                                   |                  |
-| querySchema       | Select parts of an object tree.                                                                             | ✅                |
-| record            | Specify a record.                                                                                           |                  |
-| slice             | Skip and take elements from the input collection.                                                           | ✅                |
-| value             | Ignore the input and return the provided value.                                                             | ✅                |
+| Name | Description | OData-compatible |
+|---|---|---|
+| aggregateValue | Aggregate a selected value of the input elements using a specified function. | ✅ |
+| and, or, not | Boolean operators | ✅ |
+| apply | Apply a function to the input expression yielding another expression. |  |
+| chain | Access a nested field. | ✅ |
+| customFunc | Apply a custom value-level function. |  |
+| expression | Ignore the input and switch to the provided expression. |  |
+| field | Map the input object to the value of one of its fields. | ✅ |
+| filter | Filter a collection based on a predicate. | ✅ |
+| first | Extract the first element of a collection. |  |
+| flatMap | Map each element of the input array to a collection and flatten the result. |  |
+| func | Apply a predefined value-level function. | ✅ |
+| groupAndAggregate | Group the collection elements and optionally merge the group key record with calculated aggregation values. | ✅ |
+| groupBy | Group collection elements. |  |
+| includeCount | Create a record with a count field and an elements field. | ✅ |
+| ifThen | Evaluate the then operator if the condition operator evaluates to true. Otherwise, return undefined. |  |
+| ifThenElse | Evaluate the then operator if the condition operator evaluates to true and the else operator otherwise. |  |
+| letIfDefined | Save the input before continuing with further steps for better performance. Evaluate the selector only if the input value is defined, i.e., not null or undefined. |  |
+| letIn | Save the input before continuing with further steps for better performance. | ✅ |
+| map | Map each element of the input collection to another value. | ✅ |
+| merge | Recursively merge two records. |  |
+| noOp | No operation. Return the input as-is. | ✅ |
+| orderBy | Sort the collection elements by provided criteria. | ✅ |
+| pipe | Apply multiple operators. |  |
+| querySchema | Select parts of an object tree. | ✅ |
+| record | Specify a record. |  |
+| slice | Skip and take elements from the input collection. | ✅ |
+| value | Ignore the input and return the provided value. | ✅ |

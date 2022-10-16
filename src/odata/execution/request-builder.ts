@@ -25,6 +25,7 @@ import {
   assertIsDefined,
   nameOf
 } from '../../helpers/utils';
+import { unwrapLetIfDefined } from '../../operators';
 import { GroupOperator } from '../../operators/basic/group';
 import { isExpansionDataType } from '../../types';
 import {
@@ -179,13 +180,29 @@ export class RequestBuilder {
   }
 
   private applyGroup(expression: GroupExpression, mapBody: Expression, mapVariable: symbol): Expression {
-    if (!(expression.groupValue instanceof RecordExpression)) {
+    return this.applyGroupForValue(expression, expression.groupValue, expression.variableSymbol, mapBody, mapVariable);
+  }
+
+  private applyGroupForValue(expression: GroupExpression, groupValue: Expression, groupVariableSymbol: symbol, mapBody: Expression, mapVariable: symbol): Expression {
+    const unwrapLetIfDefinedResult = unwrapLetIfDefined(groupValue);
+    if (unwrapLetIfDefinedResult) {
+      RequestBuilder.assertExpectedFieldChain(unwrapLetIfDefinedResult.baseExpression, groupVariableSymbol);
+      return this.applyGroupForValue(
+        expression,
+        unwrapLetIfDefinedResult.body,
+        unwrapLetIfDefinedResult.baseExpressionVariableSymbol,
+        mapBody,
+        mapVariable
+      );
+    }
+
+    if (!(groupValue instanceof RecordExpression)) {
       throw new Error('Only records are allowed as group values.');
     }
 
     if (mapBody instanceof FieldExpression && mapBody.field === expression.groupValueField) {
       RequestBuilder.assertExpectedFieldChain(mapBody.input, mapVariable);
-      const apply: ODataGroupBy = this.createODataApplyForGroupValue(expression.groupValue, expression.variableSymbol);
+      const apply: ODataGroupBy = this.createODataApplyForGroupValue(groupValue, groupVariableSymbol);
       if (apply.fields.length) {
         this.result.apply = [
           apply,
@@ -198,7 +215,7 @@ export class RequestBuilder {
       if (!(mergeArgument instanceof RecordExpression)) {
         throw new Error('GroupExpression is mapped to a mergeObjects application with unsupported arguments. Use the groupAndAggregate operator to support OData.');
       }
-      const groupBy: ODataGroupBy = this.createODataApplyForGroupValue(expression.groupValue, expression.variableSymbol);
+      const groupBy: ODataGroupBy = this.createODataApplyForGroupValue(groupValue, groupVariableSymbol);
       const aggregate: ODataAggregate = RequestBuilder.createODataApplyForAggregate(mergeArgument, mapVariable);
       let consolidatedApply: ODataApply | undefined;
       if (groupBy.fields.length) {
@@ -337,6 +354,12 @@ export class RequestBuilder {
       return isExpansionDataType(expression.dataType) && (expression.dataType.isExpandable ?? true)
         ? 'expand'
         : 'select';
+    }
+
+    const unwrapLetIfDefinedResult = unwrapLetIfDefined(underlyingExpression);
+    if (unwrapLetIfDefinedResult) {
+      RequestBuilder.assertExpectedFieldChain(unwrapLetIfDefinedResult.baseExpression, baseObjectVariableSymbol, ...expectedFieldChain);
+      return this.createFieldRequestFromExpression(unwrapLetIfDefinedResult.body, unwrapLetIfDefinedResult.baseExpressionVariableSymbol);
     }
 
     if (underlyingExpression instanceof LetExpression) {

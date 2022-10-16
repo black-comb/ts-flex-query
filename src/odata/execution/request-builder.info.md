@@ -8,10 +8,14 @@
 ```
 Map
     input: Group
-        value: Record
-            fields:
-                x: Field
-                ...
+        variableSymbol: s_group
+        value: If
+            condition: <s_group> is undefined
+            then: <s_group>
+            else: Record
+                fields:
+                    x: Field
+                    ...
         input: <Input>
     body: Field
         field: Group.groupValueField
@@ -21,8 +25,12 @@ Map
 ```
 Map
     input: Group
-        value: Record
-            fields: ...
+        variableSymbol: s_group
+        value: If
+            condition: <s_group> is undefined
+            then: <s_group>
+            else: Record
+                fields: ...
         input: <Input>
     body: Merge
         record1: Field
