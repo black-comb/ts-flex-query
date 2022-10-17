@@ -1,6 +1,6 @@
-# v1.0.0 (16.10.2022)
+# v0.4.0 (17.10.2022)
 
-* Updates: TypeScript 4.8.4, RxJS 7.5.7
+* Update: RxJS 7.5.7
 * The keys of the functionContainers constant are now uncapitalized.
 * querySchema: Now produces a LetExpression where appropriate to avoid redundant expression trees.
 * New debug helper method serializeExpressionForDebugging.

@@ -33,7 +33,7 @@ enum SpecialObjectSchemaSpec {
   /** Like expand, but when using OData, don't include the field in the $expand clause. */
   select = 'select'
 }
-type ExplicitObjectSchemaSpec<in out T = any> = {
+type ExplicitObjectSchemaSpec<T = any> = {
   [TKey in keyof NonNullable<T> & string]?: SpecificSchemaSpec<NonNullable<T>[TKey], NonNullable<T>>
 };
 type ObjectSchemaSpec<T = any> = keyof typeof SpecialObjectSchemaSpec | ExplicitObjectSchemaSpec<T>;

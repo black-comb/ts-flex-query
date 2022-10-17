@@ -4,7 +4,7 @@ import { func } from '../../expressions/function-application';
 import { internal } from '../../functions/internal';
 import { apply } from '../basic/apply';
 
-export type MergeOutType<in out TIn extends Record<PropertyKey, any>, in out TObj extends Record<PropertyKey, any>> =
+export type MergeOutType<TIn extends Record<PropertyKey, any>, TObj extends Record<PropertyKey, any>> =
   {
     [TKey in keyof TIn | keyof TObj]:
       TKey extends keyof TObj
