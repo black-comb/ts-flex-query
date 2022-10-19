@@ -1,3 +1,7 @@
+# v0.4.1 (19.10.2022)
+
+* Fixed isFrameworkExpression function to consider IfExpression.
+
 # v0.4.0 (17.10.2022)
 
 * Update: RxJS 7.5.7
