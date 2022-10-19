@@ -37,6 +37,7 @@ export function isFrameworkExpression(expression: Expression): expression is Fra
     || expression instanceof FlatMapExpression
     || expression instanceof FunctionApplicationExpression
     || expression instanceof GroupExpression
+    || expression instanceof IfExpression
     || expression instanceof LetExpression
     || expression instanceof MapExpression
     || expression instanceof RecordExpression
