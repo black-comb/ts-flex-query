@@ -320,3 +320,12 @@ Requirements a custom evaluator must fulfill:
 | record | Specify a record. |  |
 | slice | Skip and take elements from the input collection. | ✅ |
 | value | Ignore the input and return the provided value. | ✅ |
+
+## TypeScript Versions
+
+List of supported TypeScript versions by ts-flex-query version (from 0.4.0):
+
+| ts-flex-query version | TypeScript versions |
+|-----------------------|---------------------|
+| 1.0.x                 | ~4.8.4              |
+| 0.4.x                 | ~4.6.4              |
