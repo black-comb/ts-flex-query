@@ -1,4 +1,4 @@
-# ts-flex-query
+# ts-flex-query user documentation
 
 Define flexible and type-safe data queries and execute them against in-memory JS data (arrays and objects), an OData endpoint or an arbitrary data source using a custom query executor.
 
@@ -321,11 +321,70 @@ Requirements a custom evaluator must fulfill:
 | slice | Skip and take elements from the input collection. | ✅ |
 | value | Ignore the input and return the provided value. | ✅ |
 
-## TypeScript Versions
+## Dependency versions
 
-List of supported TypeScript versions by ts-flex-query version (from 0.4.0):
+List of supported dependency versions by ts-flex-query version (from 0.4.0):
 
-| ts-flex-query version | TypeScript versions |
-|-----------------------|---------------------|
-| 1.0.x                 | ~4.8.4              |
-| 0.4.x                 | ~4.6.4              |
+| ts-flex-query | TypeScript   | RxJS    |
+|---------------|--------------|---------|
+| ~1.1.0        | >=4.7 <4.10  | ^7.6.0  |
+| ~1.0.0        | >=4.7 <4.10  | ^7.5.7  |
+| ~0.4.0        | ~4.6.4       | ^7.5.7  |
+
+
+# ts-flex-query development notes
+
+
+## Publishing a new version
+
+* In the [package.json](./package.json), set the desired new version.
+
+* Run the script `publish`.
+
+## TypeScript update
+
+When updating to the latest TypeScript minor version, the update process depends on whether changes to the ts-flex-query code base are required or not.
+
+### No changes required
+
+If no change to the codebase is required, the following steps need to be done:
+
+* Add a new package alias `"typescript-[OLD_MINOR_VERSION]": "npm:typescript@~[OLD_VERSION]"` to the devDependencies in the [package.json](./package.json) file.
+
+  Example: `"typescript-4.8": "npm:typescript@~4.8.4"`
+
+* Update the typescript version in devDependencies to `"~[NEW_VERSION]"`.
+
+  Example: `"typescript": "~4.9.3"`
+
+* Add a new script `"tsc-[OLD_MINOR_VERSION]"` to the [package.json](./package.json) file which will invoke the old tsc.
+
+  Example: `"tsc-4.8": "node ./node_modules/typescript-4.8/bin/tsc"`
+
+* Extend the `build-samples` script to build the samples using the newly created tsc script.
+
+  Example: `npm run tsc-4.8 -- -p ./samples/tsconfig.json`
+
+* In this README.md file, update the [TypeScript Versions](#typescript-versions) table.
+
+These steps will ensure that, for future changes, compatibility with old TypeScript versions is ensured. If compatibilty with an old version breaks, a new major version of ts-flex-query needs to be released according to the following section.
+
+Immediately publishing a new version of ts-flex-query is not required.
+
+### Changes required
+
+If changes to the codebase are required, the following steps need to be done:
+
+* Update the typescript version in devDependencies to `"~[NEW_VERSION]"`.
+
+  Example: `"typescript": "~4.9.3"`
+
+* Remove any existing old version-specific typescript package aliases and tsc scripts from the [package.json](./package.json) file.
+
+* Remove any existing invocations of version-specific tsc scripts from the script `build-samples`.
+
+* Update the ts-flex-query version to the next major version.
+
+* In this README.md file, update the [TypeScript Versions](#typescript-versions) table.
+
+* Publish the new ts-flex-query version.

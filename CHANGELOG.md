@@ -1,3 +1,7 @@
+# v1.1.0 (04.12.2022)
+
+* Dependency updates: TypeScript ~4.9.3, RxJS ^7.6.0
+
 # v1.0.1 (19.10.2022)
 
 * Fixed isFrameworkExpression function to consider IfExpression.
