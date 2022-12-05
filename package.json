@@ -44,9 +44,8 @@
     "lint-fix": "eslint ./src --ext .js,.jsx,.ts,.tsx --fix",
     "prepare-publish": "npm run build-samples && npm run build-and-test",
     "ps": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command",
-    "publish": "npm run prepare-publish && cd lib && npm publish & cd ..",
+    "publish": "npm run prepare-publish && npm publish ./lib",
     "test": "jest",
-    "tmp": "node ./node_modules/typescript/bin/tsc -v",
     "tsc-4.7": "node ./node_modules/typescript-4.7/bin/tsc",
     "tsc-4.8": "node ./node_modules/typescript-4.8/bin/tsc",
     "tsc": "node ./node_modules/typescript/bin/tsc"

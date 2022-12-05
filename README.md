@@ -339,7 +339,7 @@ List of supported dependency versions by ts-flex-query version (from 0.4.0):
 
 * In the [package.json](./package.json), set the desired new version.
 
-* Run the script `publish`.
+* Run the script `do-publish`.
 
 ## TypeScript update
 
