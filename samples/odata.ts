@@ -45,10 +45,18 @@ const executor = new ODataExecutor({
 const query = new QueryFactory<Person[]>().create(
   filter(func('contains', field('name'), value('Müller'))),
   orderBy('name'),
-  querySchema([{ id: true, name: true, city: { name: true } }])
+  querySchema([{ id: true, name: true, city: { name: true } }]) // Compile error if non-existing fields are queried.
 );
 
-// 4. Execute the query and work with the result:
-executor.execute(pipeExpression(oDataCollection<Person>('Persons'), query)).subscribe((result) => {
+// 4. Apply the query to a collection:
+const expression = pipeExpression(oDataCollection<Person>('Persons'), query);
+
+// 5. Execute the query and work with the result:
+executor.execute(expression).subscribe((persons) => {
   // Work with the result.
+  // eslint-disable-next-line no-console -- OK in sample.
+  persons.forEach((person) => console.log(`${person.name} is living in ${person.city.name}.`)); // OK
+  // @ts-expect-error age is not part of the query.
+  // eslint-disable-next-line no-console -- OK in sample
+  persons.forEach((person) => console.log(`${person.name} is ${person.age} years old.`)); // Compile error because age is not part of the query.
 });

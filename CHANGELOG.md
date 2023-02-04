@@ -1,3 +1,7 @@
+# v1.1.1 (04.02.2023)
+
+* Added initial sample to README.md.
+
 # v1.1.0 (04.12.2022)
 
 * Dependency updates: TypeScript ~4.9.3, RxJS ^7.6.0

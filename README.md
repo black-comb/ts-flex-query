@@ -1,6 +1,32 @@
-# ts-flex-query user documentation
+# ts-flex-query
+
+[![npm version](https://badge.fury.io/js/ts-flex-query.svg)](https://www.npmjs.com/package/ts-flex-query)
 
 Define flexible and type-safe data queries and execute them against in-memory JS data (arrays and objects), an OData endpoint or an arbitrary data source using a custom query executor.
+
+## Sample
+
+```TS
+// 1. Define the query:
+const query = new QueryFactory<Person[]>().create(
+  filter(func('contains', field('name'), value('Müller'))),
+  orderBy('name'),
+  querySchema([{ id: true, name: true, city: { name: true } }]) // Compile error if non-existing fields are queried.
+);
+
+// 2. Apply the query to an input, for example an OData collection:
+const expression = pipeExpression(oDataCollection<Person>('Persons'), query);
+
+// 3. Execute the query and work with the result:
+executor.execute(expression).subscribe((persons) => {
+  // Work with the result.
+  persons.forEach((person) => console.log(`${person.name} is living in ${person.city.name}.`)); // OK
+
+  persons.forEach((person) => console.log(`${person.name} is ${person.age} years old.`));
+  //                                                                  ~~~
+  // Compile error because age is not part of the query.
+});
+```
 
 ## Theory
 
@@ -338,6 +364,8 @@ List of supported dependency versions by ts-flex-query version (from 0.4.0):
 ## Publishing a new version
 
 * In the [package.json](./package.json), set the desired new version.
+
+* In the [CHANGELOG.md](./CHANGELOG.md), add an entry for the new version.
 
 * Run the script `do-publish`.
 
