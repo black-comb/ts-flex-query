@@ -354,7 +354,7 @@ List of supported dependency versions by ts-flex-query version (from 0.4.0):
 
 | ts-flex-query | TypeScript   | RxJS    |
 |---------------|--------------|---------|
-| ~1.1.0        | >=4.7 <4.10  | ^7.6.0  |
+| >=1.1.0       | >=4.7 <4.10  | ^7.6.0  |
 | ~1.0.0        | >=4.7 <4.10  | ^7.5.7  |
 | ~0.4.0        | ~4.6.4       | ^7.5.7  |
 
@@ -367,6 +367,8 @@ List of supported dependency versions by ts-flex-query version (from 0.4.0):
 * In the [package.json](./package.json), set the desired new version.
 
 * In the [CHANGELOG.md](./CHANGELOG.md), add an entry for the new version.
+
+* In this README file, update the [Dependency versions](#dependency-versions) table for the new version if it is a new feature or major version.
 
 * Run the script `do-publish`.
 
