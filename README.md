@@ -323,6 +323,7 @@ Requirements a custom evaluator must fulfill:
 | and, or, not | Boolean operators | ✅ |
 | apply | Apply a function to the input expression yielding another expression. |  |
 | chain | Access a nested field. | ✅ |
+| count | Count the number of elements in the input collection. 0 if the input is undefined. | ✅ |
 | customFunc | Apply a custom value-level function. |  |
 | expression | Ignore the input and switch to the provided expression. |  |
 | field | Map the input object to the value of one of its fields. | ✅ |

@@ -7,6 +7,8 @@ import { internal } from './internal';
 import { mathematics } from './mathematics';
 import { text } from './text';
 
+type FunctionContainers = Record<string, FunctionContainer>;
+
 export const publicFunctionContainers = {
   aggregation,
   boolean,
@@ -14,14 +16,14 @@ export const publicFunctionContainers = {
   comparison,
   mathematics,
   text
-} as const;
+} as const satisfies FunctionContainers;
 
 export const functionContainers = {
   ...publicFunctionContainers,
   internal
-} as const;
+} as const satisfies FunctionContainers;
 
-export function getContainerFunctionKeys(container: Record<string, any>): string[] {
+export function getContainerFunctionKeys(container: FunctionContainer): string[] {
   return [...Object.keys(container), ...Object.getOwnPropertyNames(container)]
     .filter((key) => typeof key === 'string' && typeof container[key] === 'function');
 }

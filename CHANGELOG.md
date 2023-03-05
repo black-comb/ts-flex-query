@@ -1,3 +1,7 @@
+# v1.2.0 (05.03.2023)
+
+* Convenience operator count().
+
 # v1.1.1 (04.02.2023)
 
 * Added initial sample to README.md.
