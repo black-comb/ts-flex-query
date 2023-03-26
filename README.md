@@ -352,11 +352,11 @@ Requirements a custom evaluator must fulfill:
 
 List of supported dependency versions by ts-flex-query version (from 0.4.0):
 
-| ts-flex-query | TypeScript   | RxJS    |
-|---------------|--------------|---------|
-| >=1.1.0       | >=4.7 <4.10  | ^7.6.0  |
-| ~1.0.0        | >=4.7 <4.10  | ^7.5.7  |
-| ~0.4.0        | ~4.6.4       | ^7.5.7  |
+| ts-flex-query | TypeScript  | RxJS    |
+|---------------|-------------|---------|
+| >=1.1.0       | >=4.7 <5.1  | ^7.6.0  |
+| ~1.0.0        | >=4.7 <5.1  | ^7.5.7  |
+| ~0.4.0        | ~4.6.4      | ^7.5.7  |
 
 
 # ts-flex-query development notes
@@ -396,7 +396,7 @@ If no change to the codebase is required, the following steps need to be done:
 
   Example: `npm run tsc-4.8 -- -p ./samples/tsconfig.json`
 
-* In this README.md file, update the [TypeScript Versions](#typescript-versions) table.
+* In this README.md file, update the [Dependency Versions](#dependency-versions) table.
 
 These steps will ensure that, for future changes, compatibility with old TypeScript versions is ensured. If compatibilty with an old version breaks, a new major version of ts-flex-query needs to be released according to the following section.
 
