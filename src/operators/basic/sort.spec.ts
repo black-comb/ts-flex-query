@@ -48,4 +48,17 @@ describe('sort', () => {
       sample1.obj1s[3]
     ])
   });
+
+  it('nullable array elements', () => {
+    const q = new QueryFactory<(SampleType1 | undefined)[]>().create(
+      orderBy('field1')
+    );
+    const expr = pipeExpression(
+      constant([undefined, sample1.obj1]),
+      q
+    );
+    const result = evaluateExpression(expr, emptyContext);
+
+    expect(result).toEqual([sample1.obj1, undefined])
+  });
 });

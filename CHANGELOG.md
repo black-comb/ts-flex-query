@@ -1,3 +1,8 @@
+# v1.3.0 (23.05.2023)
+
+* New convenience operators: distinct, filterDefined.
+* flatMap and orderBy now cope with possibly undefined element types.
+
 # v1.2.0 (05.03.2023)
 
 * Convenience operator count().

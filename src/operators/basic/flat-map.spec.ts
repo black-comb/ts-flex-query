@@ -28,4 +28,14 @@ describe('flatMap', () => {
     expect(result).toEqual([1]);
     expectType<number[]>()(result, true);
   });
+
+  it('to nullable field', () => {
+    const result = evaluateExpression(pipeExpression(
+      constant([sample1.obj2]),
+      flatMap('fieldF'),
+      map('fieldA')
+    ), emptyContext);
+    expect(result).toEqual([]);
+    expectType<Date[]>()(result, true);
+  });
 });

@@ -1,6 +1,16 @@
+import { uniq } from 'lodash';
+
 import { isDefined } from '../helpers/utils';
 
 export const collections = {
+  distinct(collection: unknown[]): unknown[] {
+    return uniq(collection);
+  },
+
+  filterDefined(collection: unknown[]): unknown[] {
+    return collection?.filter(isDefined);
+  },
+
   in(value: unknown, collection: unknown[] | undefined): boolean {
     return isDefined(collection) && collection.includes(value);
   },

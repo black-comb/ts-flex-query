@@ -27,13 +27,13 @@ export class FlatMapOperator implements PipeOperator {
 }
 
 export function flatMap<TIn extends unknown[], TOut extends unknown[]>(
-  selector: PipeOperator<TIn[number], TOut>
+  selector: PipeOperator<TIn[number], TOut | undefined>
 ): PipeOperator<TIn, TOut>;
 export function flatMap<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn[number]>>(
-  selector: ObjectValueSelectorType<TIn[number], TSelector> extends unknown[] ? TSelector : Error<'Selected value must be an array.'>
-): PipeOperator<TIn, ObjectValueSelectorType<TIn[number], TSelector>>;
+  selector: ObjectValueSelectorType<TIn[number], TSelector> extends unknown[] | undefined ? TSelector : Error<'Selected value must be an array.'>
+): PipeOperator<TIn, NonNullable<ObjectValueSelectorType<TIn[number], TSelector>>>;
 export function flatMap<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn[number]>>(
   selector: ObjectValueSelectorType<TIn[number], TSelector> extends unknown[] ? TSelector : Error<'Selected value must be an array.'>
-): PipeOperator<TIn, ObjectValueSelectorType<TIn[number], TSelector>> {
+): PipeOperator<TIn, NonNullable<ObjectValueSelectorType<TIn[number], TSelector>>> {
   return new FlatMapOperator((input) => createQueryFromObjectValueSelector(selector).instantiate(input));
 }

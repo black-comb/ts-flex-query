@@ -36,6 +36,8 @@ const serializers: { [TContainer in keyof typeof functionContainers]: ContainerS
   },
   collections: {
     in: (v1, v2) => `${v1} in ${v2}`,
+    distinct: null,
+    filterDefined: null,
     first: null
   },
   comparison: {
