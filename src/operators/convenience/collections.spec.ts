@@ -4,10 +4,7 @@ import {
   pipeExpression
 } from '../../helpers';
 import { sample1 } from '../../tests/sample-1';
-import {
-  distinct,
-  filterDefined
-} from './collections';
+import { distinct } from './collections';
 
 describe('collections', () => {
   describe('distinct', () => {
@@ -16,15 +13,6 @@ describe('collections', () => {
       const result = evaluateExpression(expr);
 
       expect(result).toEqual([sample1.obj1, sample1.obj2]);
-    });
-  });
-
-  describe('filterDefined', () => {
-    it('filters correctly', () => {
-      const expr = pipeExpression(constant([undefined, sample1.obj1]), filterDefined());
-      const result = evaluateExpression(expr);
-
-      expect(result).toEqual([sample1.obj1]);
     });
   });
 });

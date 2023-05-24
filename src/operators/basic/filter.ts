@@ -12,6 +12,12 @@ import {
   DataTypeType
 } from '../../types/data-type';
 import { Error } from '../../types/utils';
+import {
+  and,
+  func,
+  noOp,
+  value
+} from '../convenience';
 
 export class FilterOperator implements PipeOperator {
   public constructor(private readonly predicate: (input: Expression<any>) => Expression<boolean>) {
@@ -37,4 +43,10 @@ export function filter<TIn extends unknown[], TSelector extends ObjectValueSelec
   selector: ObjectValueSelectorType<TIn[number], TSelector> extends boolean ? TSelector : Error<'Selected value must have boolean type.'>
 ): PipeOperator<TIn, TIn> {
   return new FilterOperator((input) => createQueryFromObjectValueSelector(selector).instantiate(input) as Expression<boolean>);
+}
+
+/** Filters the input collection for defined elements (not equal undefined or null). */
+export function filterDefined<TIn extends unknown[]>(
+): PipeOperator<TIn, NonNullable<TIn[number]>[]> {
+  return filter<TIn>(and(func('notEqual', noOp(), value(undefined)), func('notEqual', noOp(), value(null)))) as PipeOperator<TIn, NonNullable<TIn[number]>[]>;
 }

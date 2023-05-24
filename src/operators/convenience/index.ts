@@ -4,6 +4,7 @@ export * from './chain';
 export * from './collections';
 export * from './func';
 export * from './group-and-aggregate';
+export * from './if-undefined';
 export * from './include-count';
 export * from './let';
 export * from './let-if-defined';

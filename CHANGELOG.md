@@ -1,7 +1,8 @@
 # v1.3.0 (23.05.2023)
 
-* New convenience operators: distinct, filterDefined.
+* New convenience operators: distinct, filterDefined, ifUndefined.
 * flatMap and orderBy now cope with possibly undefined element types.
+* Additional overloads of QueryFactory.create for more steps.
 
 # v1.2.0 (05.03.2023)
 

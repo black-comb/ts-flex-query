@@ -325,9 +325,11 @@ Requirements a custom evaluator must fulfill:
 | chain | Access a nested field. | ✅ |
 | count | Count the number of elements in the input collection. 0 if the input is undefined. | ✅ |
 | customFunc | Apply a custom value-level function. |  |
+| distinct | Remove duplicates from the input collection. |  |
 | expression | Ignore the input and switch to the provided expression. |  |
 | field | Map the input object to the value of one of its fields. | ✅ |
 | filter | Filter a collection based on a predicate. | ✅ |
+| filterDefined | Filter a collection for only defined entries (exclude null and undefined). | ✅ |
 | first | Extract the first element of a collection. |  |
 | flatMap | Map each element of the input array to a collection and flatten the result. |  |
 | func | Apply a predefined value-level function. | ✅ |
@@ -336,6 +338,7 @@ Requirements a custom evaluator must fulfill:
 | includeCount | Create a record with a count field and an elements field. | ✅ |
 | ifThen | Evaluate the then operator if the condition operator evaluates to true. Otherwise, return undefined. |  |
 | ifThenElse | Evaluate the then operator if the condition operator evaluates to true and the else operator otherwise. |  |
+| ifUndefined | Apply a fallback value if the input is undefined or null. |  |
 | letIfDefined | Save the input before continuing with further steps for better performance. Evaluate the selector only if the input value is defined, i.e., not null or undefined. |  |
 | letIn | Save the input before continuing with further steps for better performance. | ✅ |
 | map | Map each element of the input collection to another value. | ✅ |

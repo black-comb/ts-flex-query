@@ -7,10 +7,6 @@ export const collections = {
     return uniq(collection);
   },
 
-  filterDefined(collection: unknown[]): unknown[] {
-    return collection?.filter(isDefined);
-  },
-
   in(value: unknown, collection: unknown[] | undefined): boolean {
     return isDefined(collection) && collection.includes(value);
   },
