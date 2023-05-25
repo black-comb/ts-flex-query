@@ -1,4 +1,4 @@
-# v1.3.0 (23.05.2023)
+# v1.3.0 (25.05.2023)
 
 * New convenience operators: distinct, filterDefined, ifUndefined.
 * flatMap and orderBy now cope with possibly undefined element types.
