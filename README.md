@@ -357,6 +357,7 @@ List of supported dependency versions by ts-flex-query version (from 0.4.0):
 
 | ts-flex-query | TypeScript  | RxJS    |
 |---------------|-------------|---------|
+| ~1.4.0        | >=4.7 <5.2  | ^7.8.1  |
 | ~1.3.0        | >=4.7 <5.1  | ^7.8.1  |
 | 1.1.0-1.2.0   | >=4.7 <5.1  | ^7.6.0  |
 | ~1.0.0        | >=4.7 <5.1  | ^7.5.7  |
@@ -378,12 +379,6 @@ List of supported dependency versions by ts-flex-query version (from 0.4.0):
 
 ## TypeScript update
 
-When updating to the latest TypeScript minor version, the update process depends on whether changes to the ts-flex-query code base are required or not.
-
-### No changes required
-
-If no change to the codebase is required, the following steps need to be done:
-
 * Add a new package alias `"typescript-[OLD_MINOR_VERSION]": "npm:typescript@~[OLD_VERSION]"` to the devDependencies in the [package.json](./package.json) file.
 
   Example: `"typescript-4.8": "npm:typescript@~4.8.4"`
@@ -400,26 +395,10 @@ If no change to the codebase is required, the following steps need to be done:
 
   Example: `npm run tsc-4.8 -- -p ./samples/tsconfig.json`
 
+* By running `npm run build-with-samples`, determine if old TypeScript versions are still building. If not, remove the respective TypeScript versions from the package.json (package alias, script, build-samples script part).
+
 * In this README.md file, update the [Dependency Versions](#dependency-versions) table.
 
 These steps will ensure that, for future changes, compatibility with old TypeScript versions is ensured. If compatibilty with an old version breaks, a new major version of ts-flex-query needs to be released according to the following section.
 
-Immediately publishing a new version of ts-flex-query is not required.
-
-### Changes required
-
-If changes to the codebase are required, the following steps need to be done:
-
-* Update the typescript version in devDependencies to `"~[NEW_VERSION]"`.
-
-  Example: `"typescript": "~4.9.3"`
-
-* Remove any existing old version-specific typescript package aliases and tsc scripts from the [package.json](./package.json) file.
-
-* Remove any existing invocations of version-specific tsc scripts from the script `build-samples`.
-
-* Update the ts-flex-query version to the next major version.
-
-* In this README.md file, update the [TypeScript Versions](#typescript-versions) table.
-
-* Publish the new ts-flex-query version.
+Immediately publishing a new version of ts-flex-query is only required if changes were necessary to build with the new TypeScript version.

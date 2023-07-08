@@ -216,6 +216,14 @@ describe('querySchema', () => {
       // @ts-expect-error: fieldNotExisting does not exist.
       fieldNotExisting: true
     });
+
+    new QueryFactory<SampleType2>().create(
+      // @ts-expect-error: Invalid schema.
+      querySchema({
+        fieldA: true,
+        fieldNotExisting: true
+      })
+    );
   }
 
   function testUsingContainerExpressionForRoot(): void {

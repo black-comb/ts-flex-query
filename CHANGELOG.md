@@ -1,3 +1,7 @@
+# v1.4.0 (08.07.2023)
+
+* Update: TypeScript 5.1.6. Update may be required when using the querySchema operator with TypeScript 5.1.
+
 # v1.3.0 (25.05.2023)
 
 * New convenience operators: distinct, filterDefined, ifUndefined.

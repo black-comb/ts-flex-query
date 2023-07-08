@@ -44,6 +44,7 @@ export type ArrayOf<TBase extends unknown[], TElement> = TBase extends [any, ...
   ? []
   : TElement[];
 
-export type Error<TMessage> = [TMessage] & string;
+const errorSymbol = Symbol('error');
+export type Error<TMessage> = [TMessage] & typeof errorSymbol;
 
 export type UnionToIntersection<T> = (T extends any ? (t: T) => void : never) extends ((u: infer U) => void) ? U : never;

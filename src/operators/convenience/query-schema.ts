@@ -22,6 +22,8 @@ import { FieldOperator } from '../basic/field';
 import { map } from '../basic/map';
 import { letIfDefined } from './let-if-defined';
 
+import type { Error } from '../../types/utils';
+
 // Copy primitive value to result.
 export type PrimitiveSchemaSpec = true;
 type PrimitiveQuerySchemaType<TFieldType> = TFieldType;
@@ -103,9 +105,9 @@ export type SchemaType<TValue, TSchema extends SchemaSpec> =
 
 export function querySchema<TIn, TSchema extends SpecificSchemaSpec<TIn, null>>(
   // Save TSchema from being generalized in the "extends" operation by propagating it to T first.
-  schema: TSchema extends infer T ? T extends ValidSchemaSpec<TIn, TSchema> ? TSchema : ValidSchemaSpec<TIn, TSchema> : never
-): PipeOperator<TIn, SchemaType<TIn, TSchema>> {
-  return createOperatorForSchema(schema, null);
+  schema: TSchema
+): TSchema extends infer T ? T extends ValidSchemaSpec<TIn, TSchema> ? PipeOperator<TIn, SchemaType<TIn, TSchema>> : Error<'Invalid schema. Use the SchemaFactory for a detailed error.'> : never {
+  return createOperatorForSchema(schema, null) as any;
 }
 
 function isPrimitiveSchemaSpec(schema: SchemaSpec): schema is PrimitiveSchemaSpec {

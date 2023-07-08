@@ -42,7 +42,7 @@ export function filter<TIn extends unknown[], TSelector extends ObjectValueSelec
 export function filter<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn[number]>>(
   selector: ObjectValueSelectorType<TIn[number], TSelector> extends boolean ? TSelector : Error<'Selected value must have boolean type.'>
 ): PipeOperator<TIn, TIn> {
-  return new FilterOperator((input) => createQueryFromObjectValueSelector(selector).instantiate(input) as Expression<boolean>);
+  return new FilterOperator((input) => createQueryFromObjectValueSelector(selector as ObjectValueSelector<TIn[number]>).instantiate(input) as Expression<boolean>);
 }
 
 /** Filters the input collection for defined elements (not equal undefined or null). */

@@ -35,5 +35,5 @@ export function flatMap<TIn extends unknown[], TSelector extends ObjectValueSele
 export function flatMap<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn[number]>>(
   selector: ObjectValueSelectorType<TIn[number], TSelector> extends unknown[] ? TSelector : Error<'Selected value must be an array.'>
 ): PipeOperator<TIn, NonNullable<ObjectValueSelectorType<TIn[number], TSelector>>> {
-  return new FlatMapOperator((input) => createQueryFromObjectValueSelector(selector).instantiate(input));
+  return new FlatMapOperator((input) => createQueryFromObjectValueSelector(selector as ObjectValueSelector<TIn[number]>).instantiate(input));
 }
