@@ -25,7 +25,7 @@ describe('sort', () => {
       sample1.obj1s[2],
       sample1.obj1s[1],
       sample1.obj1s[3]
-    ])
+    ]);
   });
 
   it('by function result', () => {
@@ -46,7 +46,7 @@ describe('sort', () => {
       sample1.obj1s[2],
       sample1.obj1s[1],
       sample1.obj1s[3]
-    ])
+    ]);
   });
 
   it('nullable array elements', () => {
@@ -59,6 +59,6 @@ describe('sort', () => {
     );
     const result = evaluateExpression(expr, emptyContext);
 
-    expect(result).toEqual([sample1.obj1, undefined])
+    expect(result).toEqual([sample1.obj1, undefined]);
   });
 });

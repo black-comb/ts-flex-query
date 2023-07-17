@@ -49,7 +49,7 @@ describe('groupAndAggregate', () => {
         field3Max: 11,
         count: 1
       }
-    ])
+    ]);
   });
 
   it('group by empty record', () => {

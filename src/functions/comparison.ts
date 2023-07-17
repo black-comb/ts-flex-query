@@ -29,4 +29,4 @@ export const comparison = {
         || (typeof v1 === 'number' && typeof v2 === 'number' && (v1 & v2) === v2)
       );
   }
-}
+};

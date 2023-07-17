@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { Expression } from '../../core/expression';
 import { constant } from '../../expressions/constant';
 import { record } from '../../expressions/record';

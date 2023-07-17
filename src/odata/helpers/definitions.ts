@@ -103,6 +103,6 @@ export function isODataSerializable(value: unknown): value is ODataSerializable 
       }
       return false;
     default:
-      return false
+      return false;
   }
 }

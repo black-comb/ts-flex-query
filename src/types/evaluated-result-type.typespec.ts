@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { QueryFactory } from '../helpers';
 import { expectType } from '../helpers/utils';
 import { querySchema } from '../operators';

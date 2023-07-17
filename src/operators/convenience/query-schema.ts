@@ -103,25 +103,18 @@ export type SchemaType<TValue, TSchema extends SchemaSpec> =
   ? ExpressionSchemaType<TValue, TSchema>
   : never;
 
-export function querySchema<TIn, TSchema extends SpecificSchemaSpec<TIn, null>>(
-  // Save TSchema from being generalized in the "extends" operation by propagating it to T first.
-  schema: TSchema
-): TSchema extends infer T ? T extends ValidSchemaSpec<TIn, TSchema> ? PipeOperator<TIn, SchemaType<TIn, TSchema>> : Error<'Invalid schema. Use the SchemaFactory for a detailed error.'> : never {
-  return createOperatorForSchema(schema, null) as any;
-}
-
 function isPrimitiveSchemaSpec(schema: SchemaSpec): schema is PrimitiveSchemaSpec {
   return typeof schema === 'boolean';
+}
+
+function isArraySchemaSpec(schema: SchemaSpec): schema is ArraySchemaSpec {
+  return Array.isArray(schema);
 }
 
 function isObjectSchemaSpec(schema: SchemaSpec): schema is ObjectSchemaSpec {
   return schema === SpecialObjectSchemaSpec.expand
     || schema === SpecialObjectSchemaSpec.select
     || (typeof schema === 'object' && !isArraySchemaSpec(schema));
-}
-
-function isArraySchemaSpec(schema: SchemaSpec): schema is ArraySchemaSpec {
-  return Array.isArray(schema);
 }
 
 function isExpressionSchemaSpec(schema: SchemaSpec): schema is ExpressionSchemaSpec {
@@ -165,6 +158,7 @@ function doMap(objectSchema: ObjectSchemaSpec, mapOperator: (mapper: (input: Exp
         pipeExpression(
           input,
           new FieldOperator(field, getSchemaDataType(subSchema)),
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define -- Recursive call.
           createOperatorForSchema(
             subSchema,
             input
@@ -191,4 +185,11 @@ export function createOperatorForSchema(schema: SchemaSpec, container: Expressio
   }
 
   return unexpected(schema);
+}
+
+export function querySchema<TIn, TSchema extends SpecificSchemaSpec<TIn, null>>(
+  // Save TSchema from being generalized in the "extends" operation by propagating it to T first.
+  schema: TSchema
+): TSchema extends infer T ? T extends ValidSchemaSpec<TIn, TSchema> ? PipeOperator<TIn, SchemaType<TIn, TSchema>> : Error<'Invalid schema. Use the SchemaFactory for a detailed error.'> : never {
+  return createOperatorForSchema(schema, null) as any;
 }

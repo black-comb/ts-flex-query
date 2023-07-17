@@ -25,4 +25,4 @@ export const text = {
   getLength(v: string | undefined): number {
     return (v ?? '').length;
   }
-}
+};

@@ -14,4 +14,4 @@ export const collections = {
   first(collection: unknown[] | undefined): unknown {
     return collection?.[0];
   }
-}
+};

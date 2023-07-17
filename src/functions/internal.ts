@@ -9,4 +9,4 @@ export const internal = {
   mergeObjects(obj1: Record<PropertyKey, any>, obj2: Record<PropertyKey, any>): Record<PropertyKey, any> {
     return merge({}, obj1, obj2);
   }
-}
+};

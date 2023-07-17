@@ -34,4 +34,4 @@ export const aggregation = {
   average(values: (number | undefined)[]): number | undefined {
     return applyToDefinedValues(values, (vs) => aggregation.sum(vs) / vs.length, undefined);
   }
-}
+};

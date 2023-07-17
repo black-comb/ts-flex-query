@@ -24,4 +24,4 @@ export const mathematics = {
   modulo(v1: number | undefined, v2: number | undefined): number | undefined {
     return isDefined(v1) && isDefined(v2) ? v1 % v2 : undefined;
   }
-}
+};

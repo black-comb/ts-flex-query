@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention -- Server type descriptions. */
 import { Axios } from 'axios';
 import {
   sortBy,

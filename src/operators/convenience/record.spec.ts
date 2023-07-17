@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { constant } from '../../expressions/constant';
 import { funcs } from '../../expressions/function-application';
 import { evaluateExpression } from '../../helpers/evaluate-expression';

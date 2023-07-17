@@ -11,6 +11,7 @@ export function serializeExpressionForDebugging(expression: Expression): string 
   return JSON.stringify(expression, (_, value) => {
     if (typeof value === 'object' && value && value.constructor !== Object) {
       return {
+        // eslint-disable-next-line @typescript-eslint/naming-convention -- By design.
         __type: value.constructor.name,
         ...value
       };

@@ -70,6 +70,10 @@ export function isExpansionDataType(dataType: DataType): dataType is ExpansionDa
 }
 
 export function createUnion(type1: DataType, type2: DataType): DataType {
+  function checkSymmetrically(check: (t1: DataType, t2: DataType) => DataType | undefined): DataType | undefined {
+    return check(type1, type2) ?? check(type2, type1);
+  }
+
   if (isEqual(type1, type2)) {
     return type1;
   }
@@ -124,8 +128,4 @@ export function createUnion(type1: DataType, type2: DataType): DataType {
     }
   );
   return specificResult ?? { type: DataTypeType.union, types: [type1, type2] };
-
-  function checkSymmetrically(check: (t1: DataType, t2: DataType) => DataType | undefined): DataType | undefined {
-    return check(type1, type2) ?? check(type2, type1);
-  }
 }

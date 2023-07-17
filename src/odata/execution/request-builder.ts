@@ -74,7 +74,12 @@ export class RequestBuilder {
       && Object.keys(expression.body.fields).length === 2
     ) {
       const entries = Object.entries(expression.body.fields);
-      const countFieldIndex: number = entries.findIndex(([_, value]) => value instanceof FunctionApplicationExpression && value.container === aggregation && value.member === nameOf<typeof aggregation>()('count'));
+      const countFieldIndex: number = entries.findIndex(
+        ([_, value]) =>
+          value instanceof FunctionApplicationExpression
+          && value.container === aggregation
+          && value.member === nameOf<typeof aggregation>()('count')
+      );
       if (countFieldIndex >= 0) {
         const elementsFieldIndex: number = 1 - countFieldIndex;
         const countedExpression: Expression = (entries[countFieldIndex][1] as FunctionApplicationExpression).args[0];
@@ -207,7 +212,7 @@ export class RequestBuilder {
         this.result.apply = [
           apply,
           ...(this.result.apply ?? [])
-        ]
+        ];
       }
     } else if (isFunctionApplication(mapBody, internal, 'mergeObjects')) {
       RequestBuilder.assertExpectedFieldChain(mapBody.args[0], mapVariable, GroupOperator.groupValueField);
@@ -228,7 +233,7 @@ export class RequestBuilder {
         this.result.apply = [
           consolidatedApply,
           ...(this.result.apply ?? [])
-        ]
+        ];
       }
     } else {
       throw new Error(`GroupExpression is mapped to unsupported expression ${mapBody.constructor.name}.`);
@@ -250,7 +255,7 @@ export class RequestBuilder {
       .map(([name, value]) => {
         assertIsDefined(value, 'value is not defined.');
         if (!(value instanceof FunctionApplicationExpression)) {
-          throw new Error(`Aggregation values must be built using a FunctionApplicationExpression, but was ${value.constructor.name}`)
+          throw new Error(`Aggregation values must be built using a FunctionApplicationExpression, but was ${value.constructor.name}`);
         }
         const containerName = getFunctionContainerName(value.container);
         if (!containerName) {

@@ -25,7 +25,7 @@ export type EvaluatedResultType<T, TExpandObjects = false> =
       ? undefined
       : TExpandObjects extends true
       ? ExpandRecursively<Omit<T, TsFlexQueryTypeProperty>>
-      :  PickPrimitiveFields<T>,
+      : PickPrimitiveFields<T>,
       T
     >
   >;

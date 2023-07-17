@@ -11,4 +11,4 @@ export const boolean = {
   not(v: boolean | undefined): boolean {
     return !v;
   }
-}
+};
