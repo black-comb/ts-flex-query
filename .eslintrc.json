@@ -1,10 +1,7 @@
 {
   "root": true,
-  "plugins": [
-    "mm"
-  ],
   "extends": [
-    "plugin:mm/typescript"
+    "plugin:blackcomb-defaults/typescript"
   ],
   "env": {
     "browser": true,
