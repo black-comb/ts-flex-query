@@ -68,7 +68,8 @@ const serializers: { [TContainer in keyof typeof functionContainers]: ContainerS
     upperCase: (v) => `toupper(${v})`,
     contains: (v1, v2) => `contains(${v1}, ${v2})`,
     indexOf: (v1, v2) => `indexof(${v1}, ${v2})`,
-    getLength: (v) => `length(${v})`
+    getLength: (v) => `length(${v})`,
+    asString: null
   }
 };
 

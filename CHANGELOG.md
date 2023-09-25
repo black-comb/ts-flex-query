@@ -1,3 +1,7 @@
+# vNext
+
+* New function asString.
+
 # v1.4.0 (08.07.2023)
 
 * Update: TypeScript 5.1.6. Update may be required when using the querySchema operator with TypeScript 5.1.

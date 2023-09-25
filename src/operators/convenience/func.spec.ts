@@ -23,6 +23,12 @@ describe('func', () => {
     expect(result).toEqual(4);
   });
 
+  it('asString', () => {
+    const result = evaluateExpression(pipeExpression(constant(4), func('asString', noOp())), emptyContext);
+
+    expect(result).toEqual('4');
+  });
+
   it('nested functions', () => {
     const q = new QueryFactory<SampleType1[]>().create(
       filter(func(

@@ -24,5 +24,9 @@ export const text = {
   },
   getLength(v: string | undefined): number {
     return (v ?? '').length;
+  },
+  /** Converts the value to a string. No guarantuees are made on the string format. If the value cannot be converted to a string, undefined is returned. */
+  asString(v: unknown): string | undefined {
+    return typeof (v as any)?.toString === 'function' ? (v as any).toString() as string : undefined;
   }
 };
