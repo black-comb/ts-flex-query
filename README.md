@@ -357,7 +357,7 @@ List of supported dependency versions by ts-flex-query version (from 0.4.0):
 
 | ts-flex-query | TypeScript  | RxJS    |
 |---------------|-------------|---------|
-| ~1.4.0        | >=4.7 <5.4  | ^7.8.1  |
+| ~1.4.0        | >=4.7 <5.5  | ^7.8.1  |
 | ~1.3.0        | >=4.7 <5.1  | ^7.8.1  |
 | 1.1.0-1.2.0   | >=4.7 <5.1  | ^7.6.0  |
 | ~1.0.0        | >=4.7 <5.1  | ^7.5.7  |
@@ -391,7 +391,7 @@ List of supported dependency versions by ts-flex-query version (from 0.4.0):
 
   Example: `"tsc-4.8": "node ./node_modules/typescript-4.8/bin/tsc"`
 
-* Extend the `build-samples` script to build the samples using the newly created tsc script.
+* Extend the `build-with-samples` script to build the samples using the newly created tsc script.
 
   Example: `npm run tsc-4.8 -- -p ./samples/tsconfig.json`
 
