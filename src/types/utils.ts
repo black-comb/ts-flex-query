@@ -44,6 +44,7 @@ export type ArrayOf<TBase extends unknown[], TElement> = TBase extends [any, ...
   ? []
   : TElement[];
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Only the symbol instance gives uniqueness.
 const errorSymbol = Symbol('error');
 export type Error<TMessage> = [TMessage] & typeof errorSymbol;
 

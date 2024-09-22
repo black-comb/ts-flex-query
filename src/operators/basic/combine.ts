@@ -73,7 +73,6 @@ export function pipe<T, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
   operator8: PipeOperator<T8, T9>,
   operator9: PipeOperator<T9, T10>
 ): PipeOperator<T, T10>;
-// eslint-disable-next-line class-methods-use-this
 export function pipe(...operators: PipeOperator[]): PipeOperator {
   return new CombineOperator(operators);
 }
