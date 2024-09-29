@@ -1,6 +1,7 @@
-# vNext
+# v1.5.0 (29.09.2024)
 
 * New function asString.
+* Dropped support for TypeScript 4.7.
 
 # v1.4.0 (08.07.2023)
 

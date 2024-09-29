@@ -77,12 +77,12 @@ export const oDataFieldAggregationFunctions: {
   }
 };
 
-export const oDataDataSetAggregationFunctions: {
-  [TContainer in keyof typeof functionContainers]?: { [TMember in keyof (typeof functionContainers)[TContainer]]?: string }
-} = {
+export const oDataDataSetAggregationFunctions = {
   aggregation: {
     count: '$count'
   }
+} satisfies {
+  [TContainer in keyof typeof functionContainers]?: { [TMember in keyof (typeof functionContainers)[TContainer]]?: string }
 };
 
 export function isODataSerializable(value: unknown): value is ODataSerializable {
