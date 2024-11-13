@@ -21,7 +21,7 @@ type ContainerSerializers<TContainer> = {
 
 const serializers: { [TContainer in keyof typeof functionContainers]: ContainerSerializers<(typeof functionContainers)[TContainer]> } = {
   aggregation: {
-    count: (collection) => (collection ? `${collection}/` : '') + (oDataDataSetAggregationFunctions.aggregation?.count ?? ''),
+    count: (collection) => (collection ? `${collection}/` : '') + oDataDataSetAggregationFunctions.aggregation.count,
     maximum: null,
     minimum: null,
     average: null,

@@ -1,6 +1,6 @@
 {
   "name": "ts-flex-query",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Flexible and type-safe data queries",
   "type": "module",
   "main": "index.js",
@@ -40,14 +40,13 @@
   "scripts": {
     "build": "npm run ps -- if (Test-Path ./lib) { Remove-Item ./lib -Recurse -Force } && npm run tsc -- -p ./tsconfig.json && npm run ps -- Copy-Item CHANGELOG.md, LICENSE, package.json, README.md lib",
     "build-and-test": "npm run build && jest",
-    "build-with-samples": "npm run build && npm run tsc -- -p ./samples/tsconfig.json && npm run tsc-5.4 -- -p ./samples/tsconfig.json && npm run tsc-5.3 -- -p ./samples/tsconfig.json && npm run tsc-5.2 -- -p ./samples/tsconfig.json && npm run tsc-5.1 -- -p ./samples/tsconfig.json && npm run tsc-5.0 -- -p ./samples/tsconfig.json && npm run tsc-4.9 -- -p ./samples/tsconfig.json && npm run tsc-4.8 -- -p ./samples/tsconfig.json && npm run tsc-4.7 -- -p ./samples/tsconfig.json",
+    "build-with-samples": "npm run build && npm run tsc -- -p ./samples/tsconfig.json && npm run tsc-5.5 -- -p ./samples/tsconfig.json && npm run tsc-5.4 -- -p ./samples/tsconfig.json && npm run tsc-5.3 -- -p ./samples/tsconfig.json && npm run tsc-5.2 -- -p ./samples/tsconfig.json && npm run tsc-5.1 -- -p ./samples/tsconfig.json && npm run tsc-5.0 -- -p ./samples/tsconfig.json && npm run tsc-4.9 -- -p ./samples/tsconfig.json && npm run tsc-4.8 -- -p ./samples/tsconfig.json",
     "do-publish": "npm run prepare-publish && npm publish ./lib",
     "lint": "eslint ./src",
     "lint-fix": "eslint ./src --fix",
     "prepare-publish": "npm run build-with-samples && npm run test && npm run lint",
     "ps": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command",
     "test": "jest",
-    "tsc-4.7": "node ./node_modules/typescript-4.7/bin/tsc",
     "tsc-4.8": "node ./node_modules/typescript-4.8/bin/tsc",
     "tsc-4.9": "node ./node_modules/typescript-4.9/bin/tsc",
     "tsc-5.0": "node ./node_modules/typescript-5.0/bin/tsc",
@@ -55,6 +54,7 @@
     "tsc-5.2": "node ./node_modules/typescript-5.2/bin/tsc",
     "tsc-5.3": "node ./node_modules/typescript-5.3/bin/tsc",
     "tsc-5.4": "node ./node_modules/typescript-5.4/bin/tsc",
+    "tsc-5.5": "node ./node_modules/typescript-5.5/bin/tsc",
     "tsc": "node ./node_modules/typescript/bin/tsc"
   },
   "repository": {
@@ -77,10 +77,13 @@
   "homepage": "https://github.com/black-comb/ts-flex-query#readme",
   "devDependencies": {
     "@eslint/compat": "^1.1.1",
-    "@types/jest": "~29.5.12",
-    "@types/lodash": "^4.17.7",
-    "axios": "^1.7.6",
+    "@types/jest": "~29.5.13",
+    "@types/lodash": "^4.17.9",
+    "@typescript-eslint/eslint-plugin": "^7.15.0",
+    "@typescript-eslint/parser": "^7.15.0",
+    "axios": "^1.7.7",
     "eslint": "^9.11.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-blackcomb-defaults": "^0.2.0",
     "eslint-plugin-deprecation": "^3.0.0",
     "eslint-plugin-import": "^2.30.0",
@@ -88,8 +91,7 @@
     "jest": "~29.7.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "~5.5.4",
-    "typescript-4.7": "npm:typescript@~4.7",
+    "typescript": "~5.6.2",
     "typescript-4.8": "npm:typescript@~4.8",
     "typescript-4.9": "npm:typescript@~4.9.5",
     "typescript-5.0": "npm:typescript@~5.0.4",
@@ -97,6 +99,7 @@
     "typescript-5.2": "npm:typescript@~5.2.2",
     "typescript-5.3": "npm:typescript@~5.3.3",
     "typescript-5.4": "npm:typescript@~5.4.5",
+    "typescript-5.5": "npm:typescript@~5.5.4",
     "typescript-eslint": "^8.6.0"
   },
   "peerDependencies": {
