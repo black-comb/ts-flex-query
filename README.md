@@ -357,6 +357,7 @@ List of supported dependency versions by ts-flex-query version (from 0.4.0):
 
 | ts-flex-query | TypeScript  | RxJS    |
 |---------------|-------------|---------|
+| ~1.6.0        | >=5.0 <5.7  | ^7.8.1  |
 | ~1.5.0        | >=4.8 <5.7  | ^7.8.1  |
 | ~1.4.0        | >=4.7 <5.6  | ^7.8.1  |
 | ~1.3.0        | >=4.7 <5.1  | ^7.8.1  |
