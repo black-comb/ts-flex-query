@@ -1,9 +1,9 @@
 // @ts-check
 import tseslint from 'typescript-eslint';
-import blackcombDefaults from 'eslint-plugin-blackcomb-defaults';
+import blackcombTypescript from 'eslint-plugin-blackcomb-defaults/typescript';
 
 export default tseslint.config(
-  ...blackcombDefaults.configs.typescript,
+  ...blackcombTypescript,
   {
     files: [
       '**/*.ts'
