@@ -4,17 +4,17 @@ import { IfAny } from '../types/utils';
 export function createObjectFromArray<TElement, TKey extends PropertyKey, TValue>(
   array: TElement[],
   keyGetter: (element: TElement) => TKey,
-  valueGetter: (element: TElement) => TValue): { [key in TKey]: TValue };
+  valueGetter: (element: TElement) => TValue): Record<TKey, TValue>;
 /** Creates an object from an array with the given key getter where the value equals the respective element. */
 export function createObjectFromArray<TElement, TKey extends PropertyKey>(
   array: TElement[],
-  keyGetter: (element: TElement) => TKey): { [key in TKey]: TElement };
+  keyGetter: (element: TElement) => TKey): Record<TKey, TElement>;
 /** Creates an object from an array. */
 export function createObjectFromArray<TElement, TKey extends PropertyKey, TValue = TElement>(
   array: TElement[],
   keyGetter: (element: TElement) => TKey,
   valueGetter?: (element: TElement) => TValue
-): { [key in TKey]: TValue } {
+): Record<TKey, TValue> {
   return array.reduce(
     (acc, element) => {
       acc[keyGetter(element)] = valueGetter ? valueGetter(element) : element;
@@ -44,12 +44,12 @@ export function createObjectFromObject<TOldKey extends PropertyKey, TOldValue, T
 export function createObjectFromObject<TOldKey extends PropertyKey, TOldValue, TNewKey extends PropertyKey, TNewValue>(
   obj: Partial<Record<TOldKey, TOldValue>>,
   valueGetter: (value: TOldValue, key: TOldKey) => TNewValue,
-  keyGetter?: (key: TOldKey) => TNewKey,
+  keyGetter?: (key: TOldKey) => TNewKey
 ): Partial<Record<TNewKey, TNewValue>> {
   return createObjectFromArray(
     Object.entries(obj),
-    entry => keyGetter?.(entry[0] as TOldKey) ?? entry[0] as any as TNewKey,
-    entry => valueGetter(entry[1] as TOldValue, entry[0] as TOldKey)
+    (entry) => keyGetter?.(entry[0] as TOldKey) ?? entry[0] as any as TNewKey,
+    (entry) => valueGetter(entry[1] as TOldValue, entry[0] as TOldKey)
   );
 }
 

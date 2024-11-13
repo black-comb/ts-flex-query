@@ -29,7 +29,7 @@ describe('querySchema', () => {
     });
     const expression = pipeExpression(
       constant(sample1.obj1),
-      letIn(x => record({ field2: pipeExpression(x, field('field2')), field3: pipeExpression(x, field('field3')) })),
+      letIn((x) => record({ field2: pipeExpression(x, field('field2')), field3: pipeExpression(x, field('field3')) })),
       querySchema(q)
     );
     const result = evaluateExpression(expression, emptyContext);
@@ -138,7 +138,7 @@ describe('querySchema', () => {
       querySchema([{
         fieldC: (objs) => pipeExpression(
           objs,
-          //filter((x) => funcs.lower(pipeExpression(x, field('field1')), constant(2))),
+          // filter((x) => funcs.lower(pipeExpression(x, field('field1')), constant(2))),
           filter(func('lower', field('field1'), value(2))),
           slice(3, 1),
           querySchema([{ field1: true }])

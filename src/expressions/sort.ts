@@ -7,7 +7,6 @@ import { DataType } from '../types/data-type';
 import { EvaluationContext } from '../types/evaluation-context';
 
 export class SortExpression implements Expression {
-
   public get dataType(): DataType {
     return this.input.dataType;
   }
@@ -33,7 +32,6 @@ export class SortExpression implements Expression {
       this.specs.map((spec) => spec.isAscending ? 'asc' : 'desc')
     );
   }
-
 }
 
 export interface SortSpecification {

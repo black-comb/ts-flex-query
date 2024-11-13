@@ -35,7 +35,7 @@ export class ExpressionSerializer {
       return `(${serializer.serialize(expression)})`;
     }
     if (expression instanceof VariableExpression) {
-      const variableValue: string | undefined | null = (serializedVariableValues)[expression.symbol];
+      const variableValue: string | undefined | null = serializedVariableValues[expression.symbol];
       if (variableValue === undefined) {
         throw new Error(`Access to undefined variable: ${expression.symbol.toString()}`);
       }

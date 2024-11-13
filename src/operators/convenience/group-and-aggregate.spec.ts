@@ -56,7 +56,7 @@ describe('groupAndAggregate', () => {
     const q = new QueryFactory<SampleType1[]>().create(
       groupAndAggregate({}, {
         count: funcs.count
-        //field1Max: aggregateValue('field1', funcs.maximum)
+        // field1Max: aggregateValue('field1', funcs.maximum)
       })
     );
     const expression = pipeExpression(constant(sample1.obj1s), q);
@@ -64,8 +64,8 @@ describe('groupAndAggregate', () => {
     const result = evaluateExpression(expression, emptyContext);
 
     expect(result).toEqual([{
-      count: 4,
-      //field1Max: 42
+      count: 4
+      // field1Max: 42
     }]);
   });
 });

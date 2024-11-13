@@ -21,28 +21,27 @@ type FlattenedFunctions = {
   UnionToIntersection<typeof publicFunctionContainers[keyof typeof publicFunctionContainers]>[TMember]
 };
 
-const flattenedFunctionContainers: {
-  [TFunc in FuncFields<UnionToIntersection<typeof publicFunctionContainers[keyof typeof publicFunctionContainers]>> & string]: keyof typeof publicFunctionContainers
-} = createObjectFromArray(
-  flatten(
-    Object
-      .entries(publicFunctionContainers)
-      .map(([containerKey, container]) => getContainerFunctionKeys(container).map((funcKey) => ({ containerKey, funcKey })))
-  ),
-  (x) => x.funcKey,
-  (x) => x.containerKey
-) as any;
+const flattenedFunctionContainers: Record<FuncFields<UnionToIntersection<typeof publicFunctionContainers[keyof typeof publicFunctionContainers]>> & string, keyof typeof publicFunctionContainers> =
+  createObjectFromArray(
+    flatten(
+      Object
+        .entries(publicFunctionContainers)
+        .map(([containerKey, container]) => getContainerFunctionKeys(container).map((funcKey) => ({ containerKey, funcKey })))
+    ),
+    (x) => x.funcKey,
+    (x) => x.containerKey
+  ) as any;
 
 type PipeOperators<TIn, TArgs extends unknown[]> =
   TArgs extends [infer TFirst, ...infer TRest]
-  ? [PipeOperator<TIn, TFirst>, ...PipeOperators<TIn, TRest>]
-  : [];
+    ? [PipeOperator<TIn, TFirst>, ...PipeOperators<TIn, TRest>]
+    : [];
 
 export function customFunc<TIn, TContainer extends Record<any, (...xs: any) => any>, TMember extends keyof TContainer & string>(
   container: TContainer,
   member: TMember,
   ...args: PipeOperators<TIn, Parameters<TContainer[TMember]>>
-// eslint-disable-next-line function-paren-newline -- False positive.
+
 ): TContainer[TMember] extends (...xs: any) => any ? PipeOperator<TIn, ReturnType<TContainer[TMember]>> : never {
   return apply((input) => new FunctionApplicationExpression(
     container,

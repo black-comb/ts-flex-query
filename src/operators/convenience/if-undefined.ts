@@ -12,7 +12,7 @@ export function ifUndefined<TIn, TFallback>(
   fallbackValue: Expression<TFallback>
 ): PipeOperator<TIn, NonNullable<TIn> | TFallback> {
   return customFunc(internal, 'ifUndefined', noOp(), expression(fallbackValue)) as PipeOperator<TIn, NonNullable<TIn> | TFallback>;
-  //apply((input) => func(internal, 'mergeObjects', input, obj) as Expression<MergeOutType<TIn, TObj>>);
+  // apply((input) => func(internal, 'mergeObjects', input, obj) as Expression<MergeOutType<TIn, TObj>>);
   // return ifThenElse(
   //   or(func('equal', noOp(), value(undefined)), func('equal', noOp(), value(null))),
   //   expression(fallbackValue),

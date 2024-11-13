@@ -55,7 +55,6 @@ interface RequestBuilderParams {
 }
 
 export class RequestBuilder {
-
   public result: ODataRequest = {};
 
   #rootExpression: ODataRootExpression | undefined;
@@ -155,7 +154,7 @@ export class RequestBuilder {
     if (this.result.filter || this.result.apply?.length) {
       this.result.apply = [
         { type: 'filter', ...filter },
-        ...(this.result.apply ?? [])
+        ...this.result.apply ?? []
       ];
     } else {
       this.result.filter = filter;
@@ -211,7 +210,7 @@ export class RequestBuilder {
       if (apply.fields.length) {
         this.result.apply = [
           apply,
-          ...(this.result.apply ?? [])
+          ...this.result.apply ?? []
         ];
       }
     } else if (isFunctionApplication(mapBody, internal, 'mergeObjects')) {
@@ -232,7 +231,7 @@ export class RequestBuilder {
       if (consolidatedApply) {
         this.result.apply = [
           consolidatedApply,
-          ...(this.result.apply ?? [])
+          ...this.result.apply ?? []
         ];
       }
     } else {
@@ -350,7 +349,6 @@ export class RequestBuilder {
     });
     return result;
   }
-
 
   private createFieldRequestFromExpression(expression: Expression, baseObjectVariableSymbol: symbol, ...expectedFieldChain: string[]): ODataRequest | 'select' | 'expand' | null {
     const underlyingExpression: Expression = RequestBuilder.getUnderlyingExpression(expression);

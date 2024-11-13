@@ -13,9 +13,7 @@ import { ODataCustomQueryComposer } from '../query-composition/types';
 import { ODataExpressionHandler } from './odata-expression-handler';
 import { RequestBuilder } from './request-builder';
 
-export interface ODataExecutionFunction {
-  (collectionName: string, oDataQueryText: string): Observable<ODataResponse>;
-}
+export type ODataExecutionFunction = (collectionName: string, oDataQueryText: string) => Observable<ODataResponse>;
 
 export interface ODataExecutorParams {
   execute: ODataExecutionFunction;
@@ -24,7 +22,6 @@ export interface ODataExecutorParams {
 }
 
 export class ODataExecutor {
-
   /**
    * Constructor.
    * @param query The function to execute the query against the backend.

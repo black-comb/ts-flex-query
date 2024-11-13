@@ -33,7 +33,7 @@ export function getDataType(value: unknown): DataType {
       }
       return {
         type: DataTypeType.object,
-        fields: createObjectFromArray(Object.entries(value as object), entry => entry[0], entry => getDataType(entry[1]))
+        fields: createObjectFromArray(Object.entries(value as object), (entry) => entry[0], (entry) => getDataType(entry[1]))
       };
     case 'function':
       throw new Error('Functions are not supported in queries.');

@@ -153,7 +153,7 @@ describe('ODataExecutor', () => {
           field2: true
         }
       }, {
-        //field1Max: aggregateValue(chain('fieldB', 'field1'), funcs.maximum),
+        // field1Max: aggregateValue(chain('fieldB', 'field1'), funcs.maximum),
         field1Max: func('maximum', map(chain('fieldB', 'field1'))),
         count: funcs.count
       })
@@ -200,11 +200,13 @@ describe('ODataExecutor', () => {
     const expr = pipeExpression(
       oDataCollection<SampleType1>('test'),
       filter((e) => funcs.equal(pipeExpression(e, field('field1')), constant(1))),
-      includeCount((e) => pipeExpression(e,
+      includeCount((e) => pipeExpression(
+        e,
         slice(0, 10),
         querySchema([{
           field2: true
-        }])))
+        }])
+      ))
     );
     console.log(JSON.stringify(expr));
     const result = await executor.execute(expr);
@@ -257,5 +259,4 @@ describe('ODataExecutor', () => {
 
     expect(requests).toEqual([{ collectionName: 'test', queryText: '$select=field2&search=Suchtext%26Sonderzeichen' }]);
   });
-
 });

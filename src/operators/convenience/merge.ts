@@ -7,17 +7,17 @@ import { apply } from '../basic/apply';
 export type MergeOutType<in out TIn extends Record<PropertyKey, any>, in out TObj extends Record<PropertyKey, any>> =
   {
     [TKey in keyof TIn | keyof TObj]:
-      TKey extends keyof TObj
+    TKey extends keyof TObj
       ? TKey extends keyof TIn
-      ? TIn[TKey] extends Record<PropertyKey, any>
-      ? TObj[TKey] extends Record<PropertyKey, any>
-      ? MergeOutType<TIn[TKey], TObj[TKey]>
-      : TObj[TKey]
-      : TObj[TKey]
-      : TObj[TKey]
+        ? TIn[TKey] extends Record<PropertyKey, any>
+          ? TObj[TKey] extends Record<PropertyKey, any>
+            ? MergeOutType<TIn[TKey], TObj[TKey]>
+            : TObj[TKey]
+          : TObj[TKey]
+        : TObj[TKey]
       : TKey extends keyof TIn
-      ? TIn[TKey]
-      : never
+        ? TIn[TKey]
+        : never
   };
 
 export function merge<TIn extends Record<PropertyKey, any>, TObj extends Record<PropertyKey, any>>(

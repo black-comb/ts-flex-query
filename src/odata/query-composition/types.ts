@@ -27,11 +27,9 @@ interface CustomQueryComposerParams {
 }
 
 /** A custom query composer. */
-export interface ODataCustomQueryComposer {
-  /**
+/**
    * Creates the query parts.
    * This is usually the defaultParts created by the default composer and contained in the CustomQueryComposerParams,
    * extended with additional parameters.
    */
-  (params: CustomQueryComposerParams): Partial<QueryParts>;
-}
+export type ODataCustomQueryComposer = (params: CustomQueryComposerParams) => Partial<QueryParts>;

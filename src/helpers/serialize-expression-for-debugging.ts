@@ -7,7 +7,7 @@ import { Expression } from '../core';
  */
 export function serializeExpressionForDebugging(expression: Expression): string {
   let nextSymbolIndex = 1;
-  const knownSymbols: { [TSymbol in symbol]?: number } = {};
+  const knownSymbols: Partial<Record<symbol, number>> = {};
   return JSON.stringify(expression, (_, value) => {
     if (typeof value === 'object' && value && value.constructor !== Object) {
       return {

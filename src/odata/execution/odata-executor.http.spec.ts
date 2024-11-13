@@ -138,7 +138,7 @@ describe('ODataExecutor Reference Service Tests', () => {
     const result = await firstValueFrom(executor.execute(expr));
 
     expect(result.length).toBe(2);
-    expect(result.map(r => r.Gender).sort()).toEqual(['Female', 'Male']);
+    expect(result.map((r) => r.Gender).sort()).toEqual(['Female', 'Male']);
     expect(result[0].count).toBeGreaterThan(5);
     expect(result[0].count).toBeGreaterThan(5);
   });
@@ -174,4 +174,3 @@ describe('ODataExecutor Reference Service Tests', () => {
     expect(result[0].count).toBeGreaterThan(0);
   });
 });
-

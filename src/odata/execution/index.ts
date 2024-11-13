@@ -1,2 +1,2 @@
 export * from './odata-executor';
-export * from './odata-expression-handler';
+export type * from './odata-expression-handler';

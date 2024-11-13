@@ -45,11 +45,9 @@ describe('func', () => {
 });
 
 describe('customFunc', () => {
-
   it('add', () => {
     const result = evaluateExpression(pipeExpression(constant(4), customFunc(mathematics, 'add', noOp(), value(3))), emptyContext);
 
     expect(result).toEqual(7);
   });
-
 });

@@ -8,7 +8,6 @@ import {
 import { EvaluationContext } from '../types/evaluation-context';
 
 export class MapExpression implements Expression {
-
   public readonly dataType: DataType;
 
   public constructor(

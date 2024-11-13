@@ -13,8 +13,8 @@ export function chain<
 ): PipeOperator<
   TObj1,
   undefined extends TObj1 | NonNullable<TObj1>[TField1]
-  ? NonNullable<NonNullable<TObj1>[TField1]>[TField2] | undefined
-  : NonNullable<NonNullable<TObj1>[TField1]>[TField2]
+    ? NonNullable<NonNullable<TObj1>[TField1]>[TField2] | undefined
+    : NonNullable<NonNullable<TObj1>[TField1]>[TField2]
 >;
 export function chain<
   TObj1,
@@ -28,8 +28,8 @@ export function chain<
 ): PipeOperator<
   TObj1,
   undefined extends TObj1 | NonNullable<TObj1>[TField1] | NonNullable<NonNullable<TObj1>[TField1]>[TField2]
-  ? NonNullable<NonNullable<NonNullable<TObj1>[TField1]>[TField2]>[TField3] | undefined
-  : NonNullable<NonNullable<NonNullable<TObj1>[TField1]>[TField2]>[TField3]
+    ? NonNullable<NonNullable<NonNullable<TObj1>[TField1]>[TField2]>[TField3] | undefined
+    : NonNullable<NonNullable<NonNullable<TObj1>[TField1]>[TField2]>[TField3]
 >;
 export function chain(...fields: string[]): PipeOperator {
   const chainedOperators: PipeOperator[] = fields.map((field) => new FieldOperator(field));

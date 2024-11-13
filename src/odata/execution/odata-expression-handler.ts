@@ -22,6 +22,4 @@ export interface ExpressionHandlerResult {
 }
 
 /** Handles an unknown expression during OData request creation. */
-export interface ODataExpressionHandler {
-  (params: ExpressionHandlerParams): ExpressionHandlerResult | null;
-}
+export type ODataExpressionHandler = (params: ExpressionHandlerParams) => ExpressionHandlerResult | null;

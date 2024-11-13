@@ -14,9 +14,9 @@ import { SerializedVariableValues } from './types';
 type FunctionSerializerFunction<TFunc extends (...args: any) => any> =
   ((...args: ArrayOf<Parameters<TFunc>, string>) => string) | null;
 type ContainerSerializers<TContainer> = {
-  [TMember in FuncFields<TContainer>]: TContainer extends { [TKey in TMember]: (...args: any) => any }
-  ? FunctionSerializerFunction<TContainer[TMember]>
-  : never
+  [TMember in FuncFields<TContainer>]: TContainer extends Record<TMember, (...args: any) => any>
+    ? FunctionSerializerFunction<TContainer[TMember]>
+    : never
 };
 
 const serializers: { [TContainer in keyof typeof functionContainers]: ContainerSerializers<(typeof functionContainers)[TContainer]> } = {
@@ -74,7 +74,6 @@ const serializers: { [TContainer in keyof typeof functionContainers]: ContainerS
 };
 
 export class FunctionSerializer {
-
   public constructor(
     private readonly baseSerializer: (expr: Expression, variables: SerializedVariableValues) => string | null,
     private readonly initialVariables: SerializedVariableValues

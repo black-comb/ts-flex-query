@@ -15,11 +15,13 @@ import { querySchema } from './query-schema';
 describe('include-count', () => {
   it('with selector', () => {
     const q = new QueryFactory<SampleType1[]>().create(
-      includeCount((e) => pipeExpression(e,
+      includeCount((e) => pipeExpression(
+        e,
         querySchema([{
           field1: true,
           field2: true
-        }])))
+        }])
+      ))
     );
     const result = evaluateExpression(pipeExpression(constant(sample1.obj1s), q), emptyContext);
 

@@ -15,7 +15,6 @@ import {
 } from '../../types/data-type';
 
 export class SortOperator implements PipeOperator {
-
   public constructor(public readonly specs: SortSpecification[]) {
   }
 
@@ -29,7 +28,6 @@ export class SortOperator implements PipeOperator {
     }));
     return new SortExpression(input, variableSymbol, specs);
   }
-
 }
 
 interface SortSpecification<in T = any> {
@@ -41,7 +39,7 @@ type SortElement<T> = ObjectValueSelector<NonNullable<T>> | [ObjectValueSelector
 
 export function orderBy<T>(...elements: SortElement<T>[]): PipeOperator<T[], T[]> {
   const specs: SortSpecification[] = elements.map((element) => Array.isArray(element)
-    ? ({ value: element[0], isAscending: element[1] === 'asc' })
-    : ({ value: element, isAscending: true }));
+    ? { value: element[0], isAscending: element[1] === 'asc' }
+    : { value: element, isAscending: true });
   return new SortOperator(specs);
 }

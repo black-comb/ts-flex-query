@@ -2,7 +2,6 @@ import { PipeOperator } from '../core/pipe-operator';
 import { CombineOperator } from '../operators/basic/combine';
 
 export class QueryFactory<in T> {
-
   public create<T2>(
     operator1: PipeOperator<T, T2>
   ): PipeOperator<T, T2>;
@@ -157,5 +156,4 @@ export class QueryFactory<in T> {
   public create(...operators: PipeOperator[]): PipeOperator {
     return new CombineOperator(operators);
   }
-
 }

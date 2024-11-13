@@ -6,7 +6,6 @@ import { EvaluationContext } from '../types/evaluation-context';
 import { VariableExpression } from './variable';
 
 export class LetExpression implements Expression {
-
   public get dataType(): DataType {
     return this.body.dataType;
   }

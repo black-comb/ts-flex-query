@@ -47,7 +47,6 @@ export function filter<TIn extends unknown[], TSelector extends ObjectValueSelec
 }
 
 /** Filters the input collection for defined elements (not equal undefined or null). */
-export function filterDefined<TIn extends unknown[]>(
-): PipeOperator<TIn, NonNullable<TIn[number]>[]> {
+export function filterDefined<TIn extends unknown[]>(): PipeOperator<TIn, NonNullable<TIn[number]>[]> {
   return filter<TIn>(and(func('notEqual', noOp(), value(undefined)), func('notEqual', noOp(), value(null)))) as PipeOperator<TIn, NonNullable<TIn[number]>[]>;
 }

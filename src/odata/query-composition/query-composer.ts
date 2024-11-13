@@ -26,7 +26,7 @@ export class QueryComposer {
 
   public buildFromRequest(request: ODataRequest, partSeparator = '&'): string {
     const actualSelect = [
-      ...(request.select ?? []),
+      ...request.select ?? [],
       ...Object.keys(request.expand ?? {})
     ];
     const queryParts: Partial<PrefixedDefaultQueryParts> = {
@@ -56,7 +56,7 @@ export class QueryComposer {
       case 'groupby': {
         const groupApply: string = QueryComposer.buildApplyPart(apply.groupApply) || '';
         const groupByFields: string = apply.fields.join(',');
-        return `groupby((${groupByFields})${groupApply && (',' + groupApply)})`;
+        return `groupby((${groupByFields})${groupApply && ',' + groupApply})`;
       }
       case 'aggregate': {
         const elements = apply.elements.map(QueryComposer.serializeAggregateElement).join(',');
@@ -76,15 +76,15 @@ export class QueryComposer {
   private buildExpandPart(expand: ODataExpand): string {
     return Object
       .entries(expand)
-      .map(v => ({ field: v[0], request: v[1] && this.buildFromRequest(v[1], ';') }))
-      .map(v => v.request ? `${v.field}(${v.request})` : v.field)
+      .map((v) => ({ field: v[0], request: v[1] && this.buildFromRequest(v[1], ';') }))
+      .map((v) => v.request ? `${v.field}(${v.request})` : v.field)
       .join(',');
   }
 
   private static buildOrderByPart(orderBy: ODataOrderBy[]): string | undefined {
     return orderBy.length
       ? orderBy
-        .map(element => `${element.field}${element.mode === 'asc' ? '' : ` ${element.mode}`}`)
+        .map((element) => `${element.field}${element.mode === 'asc' ? '' : ` ${element.mode}`}`)
         .join(',')
       : undefined;
   }

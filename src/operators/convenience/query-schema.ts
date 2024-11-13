@@ -41,12 +41,12 @@ type ExplicitObjectSchemaSpec<in out T = any> = {
 type ObjectSchemaSpec<T = any> = keyof typeof SpecialObjectSchemaSpec | ExplicitObjectSchemaSpec<T>;
 type NonNullableObjectSchemaType<TIn, TSchema extends ObjectSchemaSpec<TIn>> =
   TSchema extends ExplicitObjectSchemaSpec<TIn>
-  ? TsFlexQueryTypeMarker<'record'> & {
-    [key in keyof TSchema]: key extends keyof NonNullable<TIn>
-    ? SchemaType<NonNullable<TIn>[key], NonNullable<TSchema[key]>>
-    : never
-  }
-  : NonNullable<TIn>;
+    ? (TsFlexQueryTypeMarker<'record'> & {
+      [key in keyof TSchema]: key extends keyof NonNullable<TIn>
+        ? SchemaType<NonNullable<TIn>[key], NonNullable<TSchema[key]>>
+        : never
+    })
+    : NonNullable<TIn>;
 type ObjectSchemaType<TIn, TSchema extends ObjectSchemaSpec<TIn>> = undefined extends TIn
   ? NonNullableObjectSchemaType<TIn, TSchema> | undefined
   : NonNullableObjectSchemaType<TIn, TSchema>;
@@ -80,28 +80,28 @@ export type SpecificSchemaSpec<T, TContainer> = (
 ) | ExpressionSchemaSpec<T, TContainer>;
 export type ValidSchemaSpec<TValue, TSchema> =
   TSchema extends [infer TObjectSchema]
-  ? TValue extends (infer TElement)[] | undefined
-  ? [ValidObjectSchemaSpec<TElement, TObjectSchema>]
-  : never
-  : TSchema extends Partial<Record<string, any>> | keyof typeof SpecialObjectSchemaSpec // Object schema
-  ? ValidObjectSchemaSpec<TValue, TSchema>
-  : TSchema extends true
-  ? IfPrimitive<TValue, TSchema, never>
-  : TSchema extends (...args: any[]) => any
-  ? TSchema
-  : never;
+    ? TValue extends (infer TElement)[] | undefined
+      ? [ValidObjectSchemaSpec<TElement, TObjectSchema>]
+      : never
+    : TSchema extends Partial<Record<string, any>> | keyof typeof SpecialObjectSchemaSpec // Object schema
+      ? ValidObjectSchemaSpec<TValue, TSchema>
+      : TSchema extends true
+        ? IfPrimitive<TValue, TSchema, never>
+        : TSchema extends (...args: any[]) => any
+          ? TSchema
+          : never;
 export type SchemaType<TValue, TSchema extends SchemaSpec> =
   TSchema extends PrimitiveSchemaSpec
-  ? PrimitiveQuerySchemaType<TValue>
-  : TSchema extends ObjectSchemaSpec
-  ? ObjectSchemaType<TValue, TSchema>
-  : TSchema extends ArraySchemaSpec
-  ? TValue extends (infer TElement)[] | undefined
-  ? ArraySchemaType<TElement, TSchema>
-  : never
-  : TSchema extends ExpressionSchemaSpec
-  ? ExpressionSchemaType<TValue, TSchema>
-  : never;
+    ? PrimitiveQuerySchemaType<TValue>
+    : TSchema extends ObjectSchemaSpec
+      ? ObjectSchemaType<TValue, TSchema>
+      : TSchema extends ArraySchemaSpec
+        ? TValue extends (infer TElement)[] | undefined
+          ? ArraySchemaType<TElement, TSchema>
+          : never
+        : TSchema extends ExpressionSchemaSpec
+          ? ExpressionSchemaType<TValue, TSchema>
+          : never;
 
 function isPrimitiveSchemaSpec(schema: SchemaSpec): schema is PrimitiveSchemaSpec {
   return typeof schema === 'boolean';
@@ -169,7 +169,7 @@ function doMap(objectSchema: ObjectSchemaSpec, mapOperator: (mapper: (input: Exp
 
 export function createOperatorForSchema(schema: SchemaSpec, container: Expression | null): PipeOperator {
   if (isPrimitiveSchemaSpec(schema)) {
-    return apply(input => input);
+    return apply((input) => input);
   }
 
   if (isObjectSchemaSpec(schema)) {
@@ -181,7 +181,7 @@ export function createOperatorForSchema(schema: SchemaSpec, container: Expressio
   }
 
   if (isExpressionSchemaSpec(schema)) {
-    return apply(input => schema(input, container as Expression));
+    return apply((input) => schema(input, container as Expression));
   }
 
   return unexpected(schema);

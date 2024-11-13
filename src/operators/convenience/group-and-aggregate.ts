@@ -27,13 +27,13 @@ import {
 
 type GroupAndAggregateOutType<TIn, TSchema extends SchemaSpec, TAggregations extends RecordSpec<TIn[]> | undefined> =
   SchemaType<TIn, TSchema> extends Record<string, any>
-  ? (undefined extends TAggregations
-    ? SchemaType<TIn, TSchema>
-    : MergeOutType<
-      SchemaType<TIn, TSchema>,
-      RecordOutType<TIn[], NonNullable<TAggregations>>
-    >)[]
-  : never;
+    ? (undefined extends TAggregations
+      ? SchemaType<TIn, TSchema>
+      : MergeOutType<
+        SchemaType<TIn, TSchema>,
+        RecordOutType<TIn[], NonNullable<TAggregations>>
+      >)[]
+    : never;
 
 export function groupAndAggregate<TIn, TSchema extends SpecificSchemaSpec<TIn, null>, TAggregations extends RecordSpec<TIn[]> | undefined>(
   groupValueSchema: TSchema extends infer T ? T extends ValidSchemaSpec<TIn, TSchema> ? TSchema : ValidSchemaSpec<TIn, TSchema> : never,

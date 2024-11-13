@@ -23,26 +23,26 @@ export type ExpandRecursively<T> = IfPrimitive<
   T,
   T,
   T extends object
-  ? T extends infer O ? { [K in keyof O]: ExpandRecursively<O[K]> } : never
-  : T
+    ? T extends infer O ? { [K in keyof O]: ExpandRecursively<O[K]> } : never
+    : T
 >;
 
 export type WithAdditionalPropertyType<TObj, TAdditionalProperty, TActualObj extends TObj = TObj> =
-  TActualObj & { [key in Exclude<keyof TActualObj, keyof TObj>]: TAdditionalProperty };
+  TActualObj & Record<Exclude<keyof TActualObj, keyof TObj>, TAdditionalProperty>;
 
 export type ExpressionArray<T extends unknown[]> = T extends [infer TFirst, ...infer TRest]
   ? [Expression<TFirst>, ...ExpressionArray<TRest>]
   : T extends []
-  ? T
-  : T extends unknown[]
-  ? Expression[]
-  : T;
+    ? T
+    : T extends unknown[]
+      ? Expression[]
+      : T;
 
 export type ArrayOf<TBase extends unknown[], TElement> = TBase extends [any, ...infer TRest]
   ? [TElement, ...ArrayOf<TRest, TElement>]
   : TBase extends []
-  ? []
-  : TElement[];
+    ? []
+    : TElement[];
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Only the symbol instance gives uniqueness.
 const errorSymbol = Symbol('error');

@@ -12,12 +12,12 @@ export type ObjectValueSelector<T = any> =
 
 export type ObjectValueSelectorType<TObj, TSelector extends ObjectValueSelector> =
   TSelector extends keyof TObj
-  ? TObj[TSelector]
-  : TSelector extends PipeOperator<TObj, infer TOut>
-  ? TOut
-  : TSelector extends ((obj: Expression<any>) => Expression<infer TResult>)
-  ? TResult
-  : never;
+    ? TObj[TSelector]
+    : TSelector extends PipeOperator<TObj, infer TOut>
+      ? TOut
+      : TSelector extends ((obj: Expression<any>) => Expression<infer TResult>)
+        ? TResult
+        : never;
 
 export type PrimitiveObjectValueSelector<TObj, TSelector extends ObjectValueSelector> =
   IfPrimitive<ObjectValueSelectorType<TObj, TSelector>, TSelector, [TObj, 'Selected value must be primitve.']>;
