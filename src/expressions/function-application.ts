@@ -35,15 +35,15 @@ export class FunctionApplicationExpression implements Expression {
 }
 
 type ContainerMemberFunction<TContainer, TMember extends FuncFields<TContainer> & string> =
-  TContainer extends { [TKey in TMember]: (...args: any) => any }
-  ? (...args: ExpressionArray<Parameters<TContainer[TMember]>>) => Expression<ReturnType<TContainer[TMember]>>
-  : never;
+  TContainer extends Record<TMember, (...args: any) => any>
+    ? (...args: ExpressionArray<Parameters<TContainer[TMember]>>) => Expression<ReturnType<TContainer[TMember]>>
+    : never;
 
 export function func<TContainer extends FunctionContainer, TMember extends FuncFields<TContainer> & string>(
   container: TContainer,
   member: TMember,
-  ...args: TContainer extends { [TKey in TMember]: (...xs: any) => any } ? ExpressionArray<Parameters<TContainer[TMember]>> : never
-): TContainer extends { [TKey in TMember]: (...xs: any) => any } ? Expression<ReturnType<TContainer[TMember]>> : never {
+  ...args: TContainer extends Record<TMember, (...xs: any) => any> ? ExpressionArray<Parameters<TContainer[TMember]>> : never
+): TContainer extends Record<TMember, (...xs: any) => any> ? Expression<ReturnType<TContainer[TMember]>> : never {
   return new FunctionApplicationExpression(container, member, args) as any;
 }
 
@@ -65,7 +65,7 @@ function createFunctionExpressionFactories<TContainer extends FunctionContainer>
   ) as any;
 }
 
-function createFunctionExpressionFactoriesForContainers<TContainerSpec extends { [TKey in string]: FunctionContainer }>(
+function createFunctionExpressionFactoriesForContainers<TContainerSpec extends Record<string, FunctionContainer>>(
   spec: TContainerSpec
 ): { [TMember in FuncFields<UnionToIntersection<TContainerSpec[keyof TContainerSpec]>> & string]: ContainerMemberFunction<UnionToIntersection<TContainerSpec[keyof TContainerSpec]>, TMember> } {
   const factories = {};

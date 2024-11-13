@@ -52,8 +52,5 @@ export class GroupExpression implements Expression {
 
 export type GroupResultType<TIn extends unknown[], TGroupValue, TElementsField extends string, TGroupValueField extends string> =
   (TsFlexQueryTypeMarker<'record'>
-    & {
-      [TKey in TElementsField]: TIn;
-    } & {
-      [TKey in TGroupValueField]: TGroupValue;
-    })[];
+    & Record<TElementsField, TIn>
+    & Record<TGroupValueField, TGroupValue>)[];

@@ -7,7 +7,6 @@ import { DataType } from '../types/data-type';
 import { EvaluationContext } from '../types/evaluation-context';
 
 export class FlatMapExpression implements Expression {
-
   public readonly dataType: DataType;
 
   public constructor(
