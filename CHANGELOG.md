@@ -1,3 +1,7 @@
+# v1.6.0 (XX.XX.XXXX)
+
+* Dropped support for TypeScript 4.9.
+
 # v1.5.0 (29.09.2024)
 
 * New function asString.
