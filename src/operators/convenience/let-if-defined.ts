@@ -23,10 +23,10 @@ const nullCheckFunction = () => func('in', noOp(), value([null, undefined]));
 
 /** Applies the given operator if the input is defined. Otherwise, the input value (null or undefined) is propagated. */
 export function letIfDefined<TIn, TOut>(
-  selector: PipeOperator<NonNullable<TIn>, TOut>
+  selector: PipeOperator<NonNullable<NoInfer<TIn>>, TOut>
 ): PipeOperator<TIn, TOut | (TIn & (null | undefined))>;
 /** Applies the given selector if the input is defined. Otherwise, the input value (null or undefined) is propagated. */
-export function letIfDefined<TIn, TSelector extends ObjectValueSelector<NonNullable<TIn>>>(
+export function letIfDefined<TIn, TSelector extends ObjectValueSelector<NonNullable<NoInfer<TIn>>>>(
   selector: TSelector
 ): PipeOperator<TIn, ObjectValueSelectorType<NonNullable<TIn>, TSelector> | (TIn & (null | undefined))>;
 /** Applies the given selector if the input is defined. Otherwise, the input value (null or undefined) is propagated. */

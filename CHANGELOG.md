@@ -1,6 +1,7 @@
-# v1.6.0 (XX.XX.XXXX)
+# v1.6.0 (09.05.2025)
 
-* Dropped support for TypeScript 4.9.
+* Fixed letIfDefined operator having type error when used with inner operator.
+* Dropped support for TypeScript 5.3.
 
 # v1.5.0 (29.09.2024)
 
