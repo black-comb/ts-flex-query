@@ -34,7 +34,7 @@ export class FieldOperator implements PipeOperator {
   }
 }
 
-export function field<TIn, TField extends keyof NonNullable<TIn> & string>(
+export function field<TIn, TField extends keyof NonNullable<NoInfer<TIn>> & string>(
   name: TField
 ): PipeOperator<TIn, undefined extends TIn ? NonNullable<TIn>[TField] | undefined : NonNullable<TIn>[TField]> {
   return new FieldOperator(name);

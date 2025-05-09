@@ -27,10 +27,10 @@ export class FlatMapOperator implements PipeOperator {
 }
 
 export function flatMap<TIn extends unknown[], TOut extends unknown[]>(
-  selector: PipeOperator<TIn[number], TOut | undefined>
+  selector: PipeOperator<NoInfer<TIn>[number], TOut | undefined>
 ): PipeOperator<TIn, TOut>;
-export function flatMap<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn[number]>>(
-  selector: ObjectValueSelectorType<TIn[number], TSelector> extends unknown[] | undefined ? TSelector : Error<'Selected value must be an array.'>
+export function flatMap<TIn extends unknown[], TSelector extends ObjectValueSelector<NoInfer<TIn>[number]>>(
+  selector: ObjectValueSelectorType<NoInfer<TIn>[number], TSelector> extends unknown[] | undefined ? TSelector : Error<'Selected value must be an array.'>
 ): PipeOperator<TIn, NonNullable<ObjectValueSelectorType<TIn[number], TSelector>>>;
 export function flatMap<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn[number]>>(
   selector: ObjectValueSelectorType<TIn[number], TSelector> extends unknown[] ? TSelector : Error<'Selected value must be an array.'>

@@ -15,8 +15,8 @@ export function ifThenElse<TInput, TThen, TElse>(
 
 /** Returns the @see thenValue if @see condition evaluates to true. Otherwise, returns undefined. */
 export function ifThen<TInput, TThen>(
-  condition: PipeOperator<TInput, boolean>,
-  thenValue: PipeOperator<TInput, TThen>
+  condition: PipeOperator<NoInfer<TInput>, boolean>,
+  thenValue: PipeOperator<NoInfer<TInput>, TThen>
 ): PipeOperator<TInput, TThen | undefined> {
   return ifThenElse(condition, thenValue, value(undefined));
 }

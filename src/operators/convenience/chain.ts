@@ -5,8 +5,8 @@ import { FieldOperator } from '../basic/field';
 
 export function chain<
   TObj1,
-  TField1 extends ObjectFields<NonNullable<TObj1>> & string,
-  TField2 extends keyof NonNullable<NonNullable<TObj1>[TField1]> & string
+  TField1 extends ObjectFields<NonNullable<NoInfer<TObj1>>> & string,
+  TField2 extends keyof NonNullable<NonNullable<NoInfer<TObj1>>[NoInfer<TField1>]> & string
 >(
   field1: TField1,
   field2: TField2
@@ -18,9 +18,9 @@ export function chain<
 >;
 export function chain<
   TObj1,
-  TField1 extends ObjectFields<NonNullable<TObj1>> & string,
-  TField2 extends ObjectFields<NonNullable<NonNullable<TObj1>[TField1]>> & string,
-  TField3 extends keyof NonNullable<NonNullable<NonNullable<TObj1>[TField1]>[TField2]> & string
+  TField1 extends ObjectFields<NonNullable<NoInfer<TObj1>>> & string,
+  TField2 extends ObjectFields<NonNullable<NonNullable<NoInfer<TObj1>>[NoInfer<TField1>]>> & string,
+  TField3 extends keyof NonNullable<NonNullable<NonNullable<NoInfer<TObj1>>[NoInfer<TField1>]>[NoInfer<TField2>]> & string
 >(
   field1: TField1,
   field2: TField2,

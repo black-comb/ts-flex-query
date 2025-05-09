@@ -33,9 +33,9 @@ export class GroupOperator implements PipeOperator {
 }
 
 export function groupBy<TIn extends unknown[], TGroupValue>(
-  groupValueSelector: PipeOperator<TIn[number], TGroupValue>
+  groupValueSelector: PipeOperator<NoInfer<TIn>[number], TGroupValue>
 ): PipeOperator<TIn, GroupResultType<TIn, TGroupValue, (typeof GroupOperator)['elementsField'], (typeof GroupOperator)['groupValueField']>>;
-export function groupBy<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn[number]>>(
+export function groupBy<TIn extends unknown[], TSelector extends ObjectValueSelector<NoInfer<TIn>[number]>>(
   groupValueSelector: TSelector
 ): PipeOperator<TIn, GroupResultType<TIn, ObjectValueSelectorType<TIn[number], TSelector>, (typeof GroupOperator)['elementsField'], (typeof GroupOperator)['groupValueField']>>;
 export function groupBy(
