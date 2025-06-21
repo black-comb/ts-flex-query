@@ -31,7 +31,8 @@ const obj2: SampleType2 = {
   fieldC: [obj1],
   fieldD: [],
   fieldE: undefined,
-  fieldF: undefined
+  fieldF: undefined,
+  fieldG: obj1s[1]
 };
 
 const obj2b: SampleType2 = {
@@ -40,7 +41,8 @@ const obj2b: SampleType2 = {
   fieldC: [obj1, obj1],
   fieldD: [obj2],
   fieldE: obj2,
-  fieldF: [obj2]
+  fieldF: [obj2],
+  fieldG: obj1s[2]
 };
 
 const obj2s: SampleType2[] = [obj2, obj2b];

@@ -37,10 +37,10 @@ type PipeOperators<TIn, TArgs extends unknown[]> =
     ? [PipeOperator<TIn, TFirst>, ...PipeOperators<TIn, TRest>]
     : [];
 
-export function customFunc<TIn, TContainer extends Record<any, (...xs: any) => any>, TMember extends keyof NoInfer<TContainer> & string>(
+export function customFunc<TIn, TContainer extends Record<any, (...xs: any) => any>, TMember extends keyof TContainer & string>(
   container: TContainer,
   member: TMember,
-  ...args: PipeOperators<NoInfer<TIn>, Parameters<NoInfer<TContainer>[NoInfer<TMember>]>>
+  ...args: PipeOperators<NoInfer<TIn>, Parameters<TContainer[TMember]>>
 
 ): TContainer[TMember] extends (...xs: any) => any ? PipeOperator<TIn, ReturnType<TContainer[TMember]>> : never {
   return apply((input) => new FunctionApplicationExpression(
@@ -52,7 +52,7 @@ export function customFunc<TIn, TContainer extends Record<any, (...xs: any) => a
 
 export function func<TIn, TFunc extends keyof FlattenedFunctions>(
   key: TFunc,
-  ...args: PipeOperators<NoInfer<TIn>, Parameters<FlattenedFunctions[NoInfer<TFunc>]>>
+  ...args: NoInfer<PipeOperators<TIn, Parameters<FlattenedFunctions[TFunc]>>>
 ): PipeOperator<TIn, ReturnType<FlattenedFunctions[TFunc]>> {
   return customFunc(publicFunctionContainers[flattenedFunctionContainers[key]], key as any, ...args);
 }

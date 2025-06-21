@@ -5,6 +5,8 @@ import { pipeExpression } from '../../helpers/pipe-expression';
 import { QueryFactory } from '../../helpers/query-factory';
 import { sample1 } from '../../tests/sample-1';
 import { SampleType1 } from '../../tests/types/sample-type-1';
+import { SampleType2 } from '../../tests/types/sample-type-2';
+import { chain } from '../convenience';
 import { func } from '../convenience/func';
 import { field } from './field';
 import { orderBy } from './sort';
@@ -60,5 +62,21 @@ describe('sort', () => {
     const result = evaluateExpression(expr, emptyContext);
 
     expect(result).toEqual([sample1.obj1, undefined]);
+  });
+
+  it('by chain', () => {
+    const q = new QueryFactory<SampleType2[]>().create(
+      orderBy(chain('fieldG', 'field1'))
+    );
+    const expr = pipeExpression(
+      constant(sample1.obj2s),
+      q
+    );
+    const result = evaluateExpression(expr, emptyContext);
+
+    expect(result).toEqual([
+      sample1.obj2s[1],
+      sample1.obj2s[0]
+    ]);
   });
 });

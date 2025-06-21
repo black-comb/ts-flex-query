@@ -29,10 +29,10 @@ export class MapOperator implements PipeOperator {
 export function map<TIn extends unknown[], TOut>(
   selector: PipeOperator<NoInfer<TIn>[number], TOut>
 ): PipeOperator<TIn, TOut[]>;
-export function map<TIn extends unknown[], TSelector extends ObjectValueSelector<NoInfer<TIn>[number]>>(
+export function map<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn[number]>>(
   selector: TSelector
 ): PipeOperator<TIn, ObjectValueSelectorType<TIn[number], TSelector>[]>;
-export function map<TIn extends unknown[], TSelector extends ObjectValueSelector<NoInfer<TIn>[number]>>(
+export function map<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn[number]>>(
   selector: TSelector
 ): PipeOperator<TIn, ObjectValueSelectorType<TIn[number], TSelector>[]> {
   return new MapOperator((input) => createQueryFromObjectValueSelector(selector).instantiate(input));

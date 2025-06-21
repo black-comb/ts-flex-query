@@ -9,8 +9,8 @@ import { ApplyOperator } from '../basic/apply';
 
 export function letIn<TIn, TOut>(
   selector: PipeOperator<NoInfer<TIn>, TOut>
-): PipeOperator<TIn, TOut>;
-export function letIn<TIn, TSelector extends ObjectValueSelector<NoInfer<TIn>>>(
+): PipeOperator<TIn, NoInfer<TOut>>;
+export function letIn<TIn, TSelector extends ObjectValueSelector<TIn>>(
   selector: TSelector
 ): PipeOperator<TIn, ObjectValueSelectorType<TIn, TSelector>>;
 export function letIn<TIn, TSelector extends ObjectValueSelector<TIn>>(

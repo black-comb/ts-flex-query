@@ -1,6 +1,7 @@
-# v1.6.0 (09.05.2025)
+# v1.6.0 (21.06.2025)
 
 * Fixed letIfDefined operator having type error when used with inner operator.
+* Use NoInfer in external APIs where appropriate.
 * Dropped support for TypeScript 5.3.
 
 # v1.5.0 (29.09.2024)

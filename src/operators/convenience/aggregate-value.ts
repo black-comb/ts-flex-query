@@ -11,18 +11,18 @@ export function aggregateValue<TIn, TValue, TOut>(
   valueSelector: PipeOperator<NoInfer<TIn>, TValue>,
   aggregateSelector: PipeOperator<NoInfer<TValue>[], TOut>
 ): PipeOperator<TIn[], TOut>;
-export function aggregateValue<TIn, TValue, TAggregateSelector extends ObjectValueSelector<NoInfer<TValue>[]>>(
+export function aggregateValue<TIn, TValue, TAggregateSelector extends ObjectValueSelector<TValue[]>>(
   valueSelector: PipeOperator<NoInfer<TIn>, TValue>,
   aggregateSelector: TAggregateSelector
 ): PipeOperator<TIn[], ObjectValueSelectorType<TValue[], TAggregateSelector>>;
-export function aggregateValue<TIn, TValueSelector extends ObjectValueSelector<NoInfer<TIn>>, TOut>(
+export function aggregateValue<TIn, TValueSelector extends ObjectValueSelector<TIn>, TOut>(
   valueSelector: TValueSelector,
   aggregateSelector: PipeOperator<ObjectValueSelectorType<NoInfer<TIn>, NoInfer<TValueSelector>>[], TOut>
-): PipeOperator<TIn[], TOut>;
+): PipeOperator<TIn[], NoInfer<TOut>>;
 export function aggregateValue<
   TIn,
-  TValueSelector extends ObjectValueSelector<NoInfer<TIn>>,
-  TAggregateSelector extends ObjectValueSelector<ObjectValueSelectorType<NoInfer<TIn>, NoInfer<TValueSelector>>[]>
+  TValueSelector extends ObjectValueSelector<TIn>,
+  TAggregateSelector extends ObjectValueSelector<ObjectValueSelectorType<TIn, TValueSelector>[]>
 >(
   valueSelector: TValueSelector,
   aggregateSelector: TAggregateSelector

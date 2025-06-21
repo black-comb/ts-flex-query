@@ -7,4 +7,5 @@ export interface SampleType2 {
   fieldD: SampleType2[];
   fieldE: SampleType2 | undefined;
   fieldF: SampleType2[] | undefined;
+  fieldG: SampleType1;
 }

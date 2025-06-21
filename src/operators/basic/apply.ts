@@ -15,7 +15,7 @@ export class ApplyOperator implements PipeOperator {
   }
 }
 
-export function apply<TIn, TSelector extends ObjectValueSelector<NoInfer<TIn>>>(
+export function apply<TIn, TSelector extends ObjectValueSelector<TIn>>(
   selector: TSelector
 ): PipeOperator<TIn, ObjectValueSelectorType<TIn, TSelector>> {
   return new ApplyOperator((input) => createQueryFromObjectValueSelector(selector).instantiate(input));
