@@ -1,4 +1,8 @@
-import { PipeOperator } from '../core';
+import {
+  Expression,
+  PipeOperator
+} from '../core';
+import { ExpressionResultType } from './expression-result-type';
 import { QueryResultType } from './query-result-type';
 import {
   TsFlexQueryTypeMarker,
@@ -30,4 +34,5 @@ export type EvaluatedResultType<T, TExpandObjects = false> =
       >
   >;
 
+export type EvaluatedExpressionType<T extends Expression> = EvaluatedResultType<ExpressionResultType<T>>;
 export type EvaluatedQueryType<T extends PipeOperator> = EvaluatedResultType<QueryResultType<T>>;

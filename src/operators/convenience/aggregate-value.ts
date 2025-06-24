@@ -8,17 +8,17 @@ import { apply } from '../basic/apply';
 import { map } from '../basic/map';
 
 export function aggregateValue<TIn, TValue, TOut>(
-  valueSelector: PipeOperator<NoInfer<TIn>, TValue>,
-  aggregateSelector: PipeOperator<NoInfer<TValue>[], TOut>
+  valueSelector: PipeOperator<TIn, TValue>,
+  aggregateSelector: PipeOperator<TValue[], TOut>
 ): PipeOperator<TIn[], TOut>;
 export function aggregateValue<TIn, TValue, TAggregateSelector extends ObjectValueSelector<TValue[]>>(
-  valueSelector: PipeOperator<NoInfer<TIn>, TValue>,
+  valueSelector: PipeOperator<TIn, TValue>,
   aggregateSelector: TAggregateSelector
 ): PipeOperator<TIn[], ObjectValueSelectorType<TValue[], TAggregateSelector>>;
 export function aggregateValue<TIn, TValueSelector extends ObjectValueSelector<TIn>, TOut>(
   valueSelector: TValueSelector,
-  aggregateSelector: PipeOperator<ObjectValueSelectorType<NoInfer<TIn>, NoInfer<TValueSelector>>[], TOut>
-): PipeOperator<TIn[], NoInfer<TOut>>;
+  aggregateSelector: PipeOperator<ObjectValueSelectorType<TIn, TValueSelector>[], TOut>
+): PipeOperator<TIn[], TOut>;
 export function aggregateValue<
   TIn,
   TValueSelector extends ObjectValueSelector<TIn>,

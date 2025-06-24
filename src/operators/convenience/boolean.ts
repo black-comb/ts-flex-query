@@ -8,15 +8,15 @@ function reduceBooleanOperands<TIn>(functionKey: 'and' | 'or', defaultValue: boo
   return operands.length ? operands.reduce((prev, op) => func(functionKey, prev, op)) : value(defaultValue);
 }
 
-export function and<TIn>(...operands: PipeOperator<NoInfer<TIn>, boolean>[]): PipeOperator<TIn, boolean> {
+export function and<TIn>(...operands: NoInfer<PipeOperator<TIn, boolean>[]>): PipeOperator<TIn, boolean> {
   return reduceBooleanOperands('and', true, operands);
 }
 
-export function or<TIn>(...operands: PipeOperator<NoInfer<TIn>, boolean>[]): PipeOperator<TIn, boolean> {
+export function or<TIn>(...operands: NoInfer<PipeOperator<TIn, boolean>[]>): PipeOperator<TIn, boolean> {
   return reduceBooleanOperands('or', false, operands);
 }
 
-export function not<TIn>(operand: PipeOperator<NoInfer<TIn>, boolean>): PipeOperator<TIn, boolean> {
+export function not<TIn>(operand: NoInfer<PipeOperator<TIn, boolean>>): PipeOperator<TIn, boolean> {
   return func('not', operand);
 }
 

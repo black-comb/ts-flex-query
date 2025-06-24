@@ -15,7 +15,7 @@ export type RecordOutType<TIn, TRecord extends RecordSpec> = TsFlexQueryTypeMark
   [TKey in keyof TRecord]: ObjectValueSelectorType<TIn, TRecord[TKey]>
 };
 
-export function record<TIn, TRecord extends RecordSpec<TIn>>(spec: TRecord): PipeOperator<TIn, NoInfer<RecordOutType<TIn, TRecord>>> {
+export function record<TIn, TRecord extends RecordSpec<TIn>>(spec: TRecord): PipeOperator<TIn, RecordOutType<TIn, TRecord>> {
   return new ApplyOperator(
     (input) => recordExpression(
       createObjectFromObject(spec, (value) => createQueryFromObjectValueSelector(value).instantiate(input))

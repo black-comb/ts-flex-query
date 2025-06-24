@@ -40,7 +40,7 @@ type PipeOperators<TIn, TArgs extends unknown[]> =
 export function customFunc<TIn, TContainer extends Record<any, (...xs: any) => any>, TMember extends keyof TContainer & string>(
   container: TContainer,
   member: TMember,
-  ...args: PipeOperators<NoInfer<TIn>, Parameters<TContainer[TMember]>>
+  ...args: NoInfer<PipeOperators<TIn, Parameters<TContainer[TMember]>>>
 
 ): TContainer[TMember] extends (...xs: any) => any ? PipeOperator<TIn, ReturnType<TContainer[TMember]>> : never {
   return apply((input) => new FunctionApplicationExpression(

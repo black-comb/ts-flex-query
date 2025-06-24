@@ -27,7 +27,7 @@ export class MapOperator implements PipeOperator {
 }
 
 export function map<TIn extends unknown[], TOut>(
-  selector: PipeOperator<NoInfer<TIn>[number], TOut>
+  selector: PipeOperator<TIn[number], TOut>
 ): PipeOperator<TIn, TOut[]>;
 export function map<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn[number]>>(
   selector: TSelector

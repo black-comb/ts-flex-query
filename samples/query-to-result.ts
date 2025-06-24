@@ -52,4 +52,4 @@ const evaluator = new ODataExecutor({
 });
 evaluator.execute(expr2).subscribe((result) => {
   // Work with the result.
-})
+});

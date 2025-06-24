@@ -1,8 +1,8 @@
 {
   "name": "ts-flex-query",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Flexible and type-safe data queries",
-  "type": "module",
+  "type": "commonjs",
   "main": "index.js",
   "types": "index.d.ts",
   "files": [
@@ -46,7 +46,7 @@
     "lint-fix": "eslint ./src --fix",
     "prepare-publish": "npm run build-with-samples && npm run test && npm run lint",
     "ps": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command",
-    "test": "jest --config=jest-prod.config.js",
+    "test": "jest --config=jest-prod.config.mjs",
     "tsc-5.4": "node ./node_modules/typescript-5.4/bin/tsc",
     "tsc-5.5": "node ./node_modules/typescript-5.5/bin/tsc",
     "tsc-5.6": "node ./node_modules/typescript-5.6/bin/tsc",

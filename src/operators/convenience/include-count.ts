@@ -15,13 +15,13 @@ const countFieldName = 'count';
 const elementsFieldName = 'elements';
 
 export function includeCount<TIn extends unknown[], TOut>(
-  elementsSelector: PipeOperator<NoInfer<TIn>, TOut>
-): PipeOperator<TIn, TsFlexQueryTypeMarker<'record'> & { [countFieldName]: number, [elementsFieldName]: NoInfer<TOut> }>;
+  elementsSelector: PipeOperator<TIn, TOut>
+): PipeOperator<TIn, TsFlexQueryTypeMarker<'record'> & { [countFieldName]: number, [elementsFieldName]: TOut }>;
 export function includeCount<TIn extends unknown[], TSelector extends ObjectValueSelector<TIn>>(
   elementsSelector: TSelector
 ): PipeOperator<TIn, TsFlexQueryTypeMarker<'record'> & { [countFieldName]: number, [elementsFieldName]: ObjectValueSelectorType<TIn, TSelector> }>;
 export function includeCount<TIn extends unknown[]>(
-): PipeOperator<TIn, TsFlexQueryTypeMarker<'record'> & { [countFieldName]: number, [elementsFieldName]: NoInfer<TIn> }>;
+): PipeOperator<TIn, TsFlexQueryTypeMarker<'record'> & { [countFieldName]: number, [elementsFieldName]: TIn }>;
 export function includeCount(
   elementsSelector?: ObjectValueSelector
 ): PipeOperator {

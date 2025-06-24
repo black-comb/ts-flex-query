@@ -1,3 +1,7 @@
+# v1.6.1 (24.06.2025)
+
+* Removed NoInfer from problematic places.
+
 # v1.6.0 (21.06.2025)
 
 * Fixed letIfDefined operator having type error when used with inner operator.

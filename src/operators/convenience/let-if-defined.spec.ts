@@ -13,7 +13,7 @@ describe('letIfDefined', () => {
     const q = new QueryFactory<SampleType1 | undefined>().create(
       letIfDefined('field1')
     );
-    const result = evaluateExpression(pipeExpression(constant(sample1.obj1), q), emptyContext);
+    const result: number | undefined = evaluateExpression(pipeExpression(constant(sample1.obj1), q), emptyContext);
 
     expect(result).toEqual(1);
   });
@@ -22,7 +22,7 @@ describe('letIfDefined', () => {
     const q = new QueryFactory<SampleType1 | undefined>().create(
       letIfDefined('field1')
     );
-    const result = evaluateExpression(pipeExpression(constant(undefined), q), emptyContext);
+    const result: number | undefined = evaluateExpression(pipeExpression(constant(undefined), q), emptyContext);
 
     expect(result).toEqual(undefined);
   });
@@ -31,7 +31,7 @@ describe('letIfDefined', () => {
     const q = new QueryFactory<SampleType1 | undefined>().create(
       letIfDefined(field('field1'))
     );
-    const result = evaluateExpression(pipeExpression(constant(sample1.obj1), q), emptyContext);
+    const result: number | undefined = evaluateExpression(pipeExpression(constant(sample1.obj1), q), emptyContext);
 
     expect(result).toEqual(1);
   });

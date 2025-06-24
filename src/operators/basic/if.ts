@@ -4,7 +4,7 @@ import { value } from '../convenience';
 
 /** Returns the @see thenValue if @see condition evaluates to true and @see elseValue otherwise. */
 export function ifThenElse<TInput, TThen, TElse>(
-  condition: PipeOperator<TInput, boolean>,
+  condition: NoInfer<PipeOperator<TInput, boolean>>,
   thenValue: PipeOperator<TInput, TThen>,
   elseValue: PipeOperator<TInput, TElse>
 ): PipeOperator<TInput, TThen | TElse> {
@@ -15,8 +15,8 @@ export function ifThenElse<TInput, TThen, TElse>(
 
 /** Returns the @see thenValue if @see condition evaluates to true. Otherwise, returns undefined. */
 export function ifThen<TInput, TThen>(
-  condition: PipeOperator<NoInfer<TInput>, boolean>,
-  thenValue: PipeOperator<NoInfer<TInput>, TThen>
+  condition: NoInfer<PipeOperator<TInput, boolean>>,
+  thenValue: PipeOperator<TInput, TThen>
 ): PipeOperator<TInput, TThen | undefined> {
   return ifThenElse(condition, thenValue, value(undefined));
 }

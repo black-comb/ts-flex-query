@@ -6,7 +6,7 @@
 
 * In the [CHANGELOG.md](./CHANGELOG.md), add an entry for the new version.
 
-* In this README file, update the [Dependency versions](#dependency-versions) table for the new version if it is a new feature or major version.
+* In the [README.md](./README.md) file, update the [Dependency versions](./README.md#dependency-versions) table for the new version if it is a new feature or major version.
 
 * Run the script `do-publish`.
 

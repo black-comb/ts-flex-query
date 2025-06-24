@@ -37,7 +37,7 @@ interface SortSpecification<in T = any> {
 
 type SortElement<T> = ObjectValueSelector<NonNullable<T>> | [ObjectValueSelector<NonNullable<T>>, 'asc' | 'desc'];
 
-export function orderBy<T>(...elements: NoInfer<SortElement<T>>[]): PipeOperator<T[], NoInfer<T[]>> {
+export function orderBy<T>(...elements: NoInfer<SortElement<T>[]>): PipeOperator<T[], T[]> {
   const specs: SortSpecification[] = elements.map((element) => Array.isArray(element)
     ? { value: element[0], isAscending: element[1] === 'asc' }
     : { value: element, isAscending: true });

@@ -36,7 +36,7 @@ type GroupAndAggregateOutType<TIn, TSchema extends SchemaSpec, TAggregations ext
     : never;
 
 export function groupAndAggregate<TIn, TSchema extends SpecificSchemaSpec<TIn, null>, TAggregations extends RecordSpec<TIn[]> | undefined>(
-  groupValueSchema: TSchema extends infer T ? T extends ValidSchemaSpec<TIn, TSchema> ? TSchema : ValidSchemaSpec<NoInfer<TIn>, TSchema> : never,
+  groupValueSchema: TSchema extends infer T ? T extends ValidSchemaSpec<TIn, TSchema> ? TSchema : ValidSchemaSpec<TIn, TSchema> : never,
   aggregates?: TAggregations
 ): PipeOperator<TIn[], GroupAndAggregateOutType<TIn, TSchema, TAggregations>> {
   return new QueryFactory<TIn[]>().create(

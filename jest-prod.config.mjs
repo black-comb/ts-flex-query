@@ -3,7 +3,7 @@
  * https://jestjs.io/docs/configuration
  */
 
-import baseConfig from './jest.config.js';
+import baseConfig from './jest.config.mjs';
 
 export default {
   ...baseConfig,
