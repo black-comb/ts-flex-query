@@ -13,10 +13,7 @@ import {
 } from '../../types/data-type';
 import { ExpressionResultType } from '../../types/expression-result-type';
 import { TsFlexQueryTypeMarker } from '../../types/ts-flex-query-type';
-import {
-  IfObject,
-  IfPrimitive
-} from '../../types/utils';
+import { IfPrimitive } from '../../types/utils';
 import { apply } from '../basic/apply';
 import { FieldOperator } from '../basic/field';
 import { map } from '../basic/map';
@@ -55,7 +52,7 @@ type ValidObjectSchemaSpec<TObj, TSchema> = keyof typeof SpecialObjectSchemaSpec
 };
 
 // Specify schema for objects in array.
-export type ArraySchemaSpec<TElement = any> = [ObjectSchemaSpec<TElement>];
+export type ArraySchemaSpec<TElement = any> = readonly [ObjectSchemaSpec<TElement>];
 type ArraySchemaType<TElement, TSchema extends ArraySchemaSpec<TElement>> =
   (
     ObjectSchemaType<TElement, TSchema[number]>
@@ -68,20 +65,14 @@ type ExpressionSchemaType<TElement, TSchema extends ExpressionSchemaSpec<TElemen
 
 export type SchemaSpec = PrimitiveSchemaSpec | ObjectSchemaSpec | ArraySchemaSpec | ExpressionSchemaSpec;
 export type SpecificSchemaSpec<T, TContainer> = (
-  IfPrimitive<
-    T,
-    PrimitiveSchemaSpec,
-    IfObject<
-      T,
-      ObjectSchemaSpec<T>,
-      NonNullable<T> extends (infer TElement)[] ? ArraySchemaSpec<TElement> : never
-    >
-  >
-) | ExpressionSchemaSpec<T, TContainer>;
+  NonNullable<T> extends (infer TElement)[]
+    ? ArraySchemaSpec<TElement>
+    : IfPrimitive<T, PrimitiveSchemaSpec, ObjectSchemaSpec<T>>
+  ) | ExpressionSchemaSpec<T, TContainer>;
 export type ValidSchemaSpec<TValue, TSchema> =
-  TSchema extends [infer TObjectSchema]
+  TSchema extends readonly [infer TObjectSchema]
     ? TValue extends (infer TElement)[] | undefined
-      ? [ValidObjectSchemaSpec<TElement, TObjectSchema>]
+      ? readonly [ValidObjectSchemaSpec<TElement, TObjectSchema>]
       : never
     : TSchema extends Partial<Record<string, any>> | keyof typeof SpecialObjectSchemaSpec // Object schema
       ? ValidObjectSchemaSpec<TValue, TSchema>
@@ -187,9 +178,8 @@ export function createOperatorForSchema(schema: SchemaSpec, container: Expressio
   return unexpected(schema);
 }
 
-export function querySchema<TIn, TSchema extends SpecificSchemaSpec<TIn, null>>(
-  // Save TSchema from being generalized in the "extends" operation by propagating it to T first.
+export function querySchema<TIn, const TSchema extends SpecificSchemaSpec<TIn, null>>(
   schema: TSchema
-): TSchema extends infer T ? T extends ValidSchemaSpec<TIn, TSchema> ? PipeOperator<TIn, SchemaType<TIn, TSchema>> : Error<'Invalid schema. Use the SchemaFactory for a detailed error.'> : never {
+): TSchema extends ValidSchemaSpec<TIn, TSchema> ? PipeOperator<TIn, SchemaType<TIn, TSchema>> : Error<'Invalid schema. Use the SchemaFactory for a detailed error.'> {
   return createOperatorForSchema(schema, null) as any;
 }

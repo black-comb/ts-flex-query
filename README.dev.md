@@ -30,7 +30,7 @@
 
 * By running `npm run build-with-samples`, determine if old TypeScript versions are still building. If not, remove the respective TypeScript versions from the package.json (package alias, script, build-samples script part).
 
-* In this README.md file, update the [Dependency Versions](#dependency-versions) table.
+* In the [README.md](./README.md) file, update the [Dependency Versions](./README.md#dependency-versions) table.
 
 These steps will ensure that, for future changes, compatibility with old TypeScript versions is ensured. If compatibilty with an old version breaks, a new major version of ts-flex-query needs to be released according to the following section.
 

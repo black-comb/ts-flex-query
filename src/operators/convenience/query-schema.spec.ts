@@ -22,6 +22,24 @@ import { slice } from './slice';
 import { value } from './value';
 
 describe('querySchema', () => {
+  it('object for one primitive field', () => {
+    const expression = pipeExpression(
+      constant(sample1.obj1),
+      querySchema({
+        field1: true
+      })
+    );
+    const result = evaluateExpression(expression, emptyContext);
+    console.log(serializeExpressionForDebugging(expression));
+
+    expect(result).toEqual({ field1: 1 });
+
+    // Type checks:
+    result.field1 = 42;
+    // @ts-expect-error -- Not present.
+    result.field2 = 'x';
+  });
+
   it('object for primitives', () => {
     const q = new SchemaFactory<SampleType1>().create({
       field2: true,
@@ -44,6 +62,26 @@ describe('querySchema', () => {
     result.field2 = 42;
     // @ts-expect-error Expect number.
     result.field3 = 'abc';
+  });
+
+  it('nested array', () => {
+    const expression = pipeExpression(
+      constant([sample1.obj2b]),
+      querySchema([{
+        fieldC: [{
+          field2: true
+        }]
+      }])
+    );
+    type X = typeof expression extends Expression<infer T> ? T : never;
+    const result = evaluateExpression(expression, emptyContext);
+
+    expect(result).toEqual([{
+      fieldC: [{ field2: 'ABC' }, { field2: 'ABC' }]
+    }]);
+
+    // Type checks:
+    result[0].fieldC[0].field2 = 'ABC';
   });
 
   it('array for object and array', () => {
@@ -84,6 +122,10 @@ describe('querySchema', () => {
         fieldA: sample1.obj2.fieldA
       }
     }]);
+
+    // Type checks:
+    result[0].fieldA = new Date();
+    result[0].fieldB.field1 = 42;
   });
 
   it('undefined sub object', () => {

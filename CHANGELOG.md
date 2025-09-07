@@ -1,3 +1,7 @@
+# v1.7.0 (07.09.2025)
+
+* Support for TypeScript 5.9.
+
 # v1.6.1 (24.06.2025)
 
 * Removed NoInfer from problematic places.
