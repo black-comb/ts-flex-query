@@ -38,7 +38,7 @@ export function createObjectFromObject<TKey extends PropertyKey, TOldValue, TNew
 export function createObjectFromObject<TOldKey extends PropertyKey, TOldValue, TNewKey extends PropertyKey, TNewValue>(
   obj: Partial<Record<TOldKey, TOldValue>>,
   valueGetter: (value: TOldValue, key: TOldKey) => TNewValue,
-  keyGetter: (key: TOldKey) => TNewKey,
+  keyGetter: (key: TOldKey) => TNewKey
 ): Partial<Record<TNewKey, TNewValue>>;
 /** Creates a new object from the given object by rewriting keys and values. */
 export function createObjectFromObject<TOldKey extends PropertyKey, TOldValue, TNewKey extends PropertyKey, TNewValue>(
