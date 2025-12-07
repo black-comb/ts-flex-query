@@ -8,14 +8,6 @@ export default defineConfig(
     files: [
       '**/*.ts'
     ],
-    languageOptions: {
-      parserOptions: {
-        project: [
-          './tsconfig.json',
-          'samples/tsconfig.json'
-        ]
-      }
-    },
     rules: {
       '@typescript-eslint/naming-convention': [
         'warn',
