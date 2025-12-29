@@ -78,7 +78,7 @@
     "@types/jest": "^30.0.0",
     "@types/lodash": "^4.17.21",
     "axios": "^1.13.2",
-    "eslint": "^9.39.1",
+    "eslint": "^9.39.2",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-blackcomb-defaults": "^2.1.0",
     "eslint-plugin-deprecation": "^3.0.0",
@@ -93,7 +93,7 @@
     "typescript-5.6": "npm:typescript@~5.6.3",
     "typescript-5.7": "npm:typescript@~5.7.3",
     "typescript-5.8": "npm:typescript@~5.8.3",
-    "typescript-eslint": "^8.48.1"
+    "typescript-eslint": "^8.50.1"
   },
   "peerDependencies": {
     "lodash": "~4.17.21",
