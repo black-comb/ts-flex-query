@@ -73,15 +73,14 @@
   },
   "homepage": "https://github.com/black-comb/ts-flex-query#readme",
   "devDependencies": {
-    "@eslint/compat": "^2.0.0",
-    "@stylistic/eslint-plugin": "^5.6.1",
+    "@eslint/compat": "^2.0.2",
+    "@stylistic/eslint-plugin": "^5.8.0",
     "@types/jest": "^30.0.0",
-    "@types/lodash": "^4.17.21",
-    "axios": "^1.13.2",
+    "@types/lodash": "^4.17.23",
+    "axios": "^1.13.5",
     "eslint": "^9.39.2",
     "eslint-import-resolver-typescript": "^4.4.4",
-    "eslint-plugin-blackcomb-defaults": "^2.1.1",
-    "eslint-plugin-deprecation": "^3.0.0",
+    "eslint-plugin-blackcomb-defaults": "^2.2.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-import-newlines": "^1.4.0",
     "jest": "^30.2.0",
@@ -93,15 +92,10 @@
     "typescript-5.6": "npm:typescript@~5.6.3",
     "typescript-5.7": "npm:typescript@~5.7.3",
     "typescript-5.8": "npm:typescript@~5.8.3",
-    "typescript-eslint": "^8.50.1"
+    "typescript-eslint": "^8.55.0"
   },
   "peerDependencies": {
-    "lodash": "~4.17.21",
+    "lodash": "~4.17.23",
     "rxjs": "^7.8.2"
-  },
-  "overrides": {
-    "eslint-plugin-deprecation": {
-      "eslint": "^9"
-    }
   }
 }
