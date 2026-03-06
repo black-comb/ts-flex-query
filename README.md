@@ -321,6 +321,7 @@ Requirements a custom evaluator must fulfill:
 |---|---|---|
 | aggregateValue | Aggregate a selected value of the input elements using a specified function. | ✅ |
 | and, or, not | Boolean operators | ✅ |
+| any | Check if the input collection contains any elements. |  |
 | apply | Apply a function to the input expression yielding another expression. |  |
 | chain | Access a nested field. | ✅ |
 | count | Count the number of elements in the input collection. 0 if the input is undefined. | ✅ |

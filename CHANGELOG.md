@@ -1,3 +1,8 @@
+# v1.8.0 (06.03.2026)
+
+* Export convenience operator count().
+* New convenience operator any().
+
 # v1.7.0 (07.09.2025)
 
 * Support for TypeScript 5.9.

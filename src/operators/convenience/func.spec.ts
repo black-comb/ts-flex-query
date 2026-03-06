@@ -4,6 +4,7 @@ import { evaluateExpression } from '../../helpers/evaluate-expression';
 import { emptyContext } from '../../helpers/evaluation-context-utils';
 import { pipeExpression } from '../../helpers/pipe-expression';
 import { QueryFactory } from '../../helpers/query-factory';
+import { expectType } from '../../helpers/utils';
 import { sample1 } from '../../tests/sample-1';
 import { SampleType1 } from '../../tests/types/sample-type-1';
 import { field } from '../basic/field';
@@ -27,6 +28,28 @@ describe('func', () => {
     const result = evaluateExpression(pipeExpression(constant(4), func('asString', noOp())), emptyContext);
 
     expect(result).toEqual('4');
+  });
+
+  it('any-true', () => {
+    const q = new QueryFactory<SampleType1[]>().create(
+      filter(func('lower', field('field1'), value(42))),
+      func('any', noOp())
+    );
+    const result = evaluateExpression(pipeExpression(constant(sample1.obj1s), q), emptyContext);
+
+    expectType<boolean>()(result, true);
+    expect(result).toEqual(true);
+  });
+
+  it('any-false', () => {
+    const q = new QueryFactory<SampleType1[]>().create(
+      filter(func('lower', field('field1'), value(1))),
+      func('any', noOp())
+    );
+    const result = evaluateExpression(pipeExpression(constant(sample1.obj1s), q), emptyContext);
+
+    expectType<boolean>()(result, true);
+    expect(result).toEqual(false);
   });
 
   it('nested functions', () => {

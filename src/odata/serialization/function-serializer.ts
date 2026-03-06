@@ -19,9 +19,12 @@ type ContainerSerializers<TContainer> = {
     : never
 };
 
+function countSerializer(collection: string | undefined): string {
+  return (collection ? `${collection}/` : '') + oDataDataSetAggregationFunctions.aggregation.count;
+}
 const serializers: { [TContainer in keyof typeof functionContainers]: ContainerSerializers<(typeof functionContainers)[TContainer]> } = {
   aggregation: {
-    count: (collection) => (collection ? `${collection}/` : '') + oDataDataSetAggregationFunctions.aggregation.count,
+    count: countSerializer,
     maximum: null,
     minimum: null,
     average: null,
@@ -35,6 +38,7 @@ const serializers: { [TContainer in keyof typeof functionContainers]: ContainerS
     xor: (v1, v2) => `(${v1} and not ${v2}) or (not ${v1} and ${v2})`
   },
   collections: {
+    any: (collection) => countSerializer(collection) + ' gt 0',
     in: (v1, v2) => `${v1} in ${v2}`,
     distinct: null,
     first: null
