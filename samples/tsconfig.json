@@ -9,6 +9,7 @@
     "lib": [
       "DOM"
     ],
+    "rootDir": "..",
     "paths": {
       "ts-flex-query": [
         "../lib"
