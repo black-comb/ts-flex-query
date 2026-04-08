@@ -1,3 +1,7 @@
+# v1.9.0 (08.04.2026)
+
+* Support for lodash@^4.18.1.
+
 # v1.8.0 (06.03.2026)
 
 * Export convenience operator count().

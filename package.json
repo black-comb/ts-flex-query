@@ -1,6 +1,6 @@
 {
   "name": "ts-flex-query",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Flexible and type-safe data queries",
   "type": "commonjs",
   "main": "index.js",
@@ -98,7 +98,7 @@
     "typescript-eslint": "^8.58.0"
   },
   "peerDependencies": {
-    "lodash": "~4.18.1",
+    "lodash": "^4.18.1",
     "rxjs": "^7.8.2"
   },
   "overrides": {
