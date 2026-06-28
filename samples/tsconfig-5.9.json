@@ -6,6 +6,7 @@
   ],
   "compilerOptions": {
     "noEmit": true,
+    "skipLibCheck": true,
     "lib": [
       "DOM"
     ],
